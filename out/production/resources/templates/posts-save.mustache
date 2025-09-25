@@ -1,0 +1,52 @@
+{{>layout/header}}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">🤖 로봇 등록</h3>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group mb-3">
+                            <label for="title" class="form-label">로봇명 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" placeholder="로봇 이름을 입력하세요">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="model" class="form-label">모델명 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="model" placeholder="로봇 모델을 입력하세요 (예: RB-100, ALPHA-V2)">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="author" class="form-label">등록자 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="author" placeholder="등록자명을 입력하세요">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="active" class="form-label">활성 상태</label>
+                            <select class="form-control" id="active">
+                                <option value="true" selected>활성</option>
+                                <option value="false">비활성</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="content" class="form-label">설명</label>
+                            <textarea class="form-control" id="content" rows="4" placeholder="로봇에 대한 설명을 입력하세요"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="/" role="button" class="btn btn-secondary me-2">취소</a>
+                    <button type="button" class="btn btn-primary" id="btn-save">
+                        <i class="fas fa-save"></i> 등록
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>layout/footer}}
