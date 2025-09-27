@@ -13,3 +13,6 @@ Thumbs.db
 
 # Oauth
 application-oauth.properties
+
+# out
+out/
