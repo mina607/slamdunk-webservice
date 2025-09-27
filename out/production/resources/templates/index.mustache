@@ -142,6 +142,7 @@
     </style>
 </head>
 <body>
+
 <div class="overlay">
     <div class="kiosk-container">
         <h1 class="text-center header-title">
@@ -180,9 +181,13 @@
                         룸서비스, 음식 배달, 음료 주문 등<br>
                         객실까지 안전하게 배달해드립니다
                     </p>
-                    <button class="btn service-button" onclick="selectDeliveryService()">
-                        <i class="fas fa-shopping-cart me-2"></i>배달 주문하기
-                    </button>
+<!--                    <button class="btn service-button" onclick="selectDeliveryService()">-->
+<!--                        <i class="fas fa-shopping-cart me-2"></i>배달 주문하기-->
+<!--                    </button>-->
+
+                    <a href="/food-delivery" role="button" class="btn service-button">
+                        <i class="fas fa-shopping-cart me-2"></i> 배달 주문하기
+                    </a>
                 </div>
             </div>
 
@@ -227,16 +232,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function selectDeliveryService() {
-        // 배달 서비스 선택 시 처리 로직
-        alert('배달 서비스를 선택하셨습니다.\n메뉴 선택 페이지로 이동합니다.');
-        // window.location.href = '/delivery/menu';
-    }
 
+    // 물품 서비스 선택 시 처리 로직
     function selectItemService() {
-        // 물품 서비스 선택 시 처리 로직
         alert('물품 서비스를 선택하셨습니다.\n물품 선택 페이지로 이동합니다.');
-        // window.location.href = '/items/select';
+        window.location.href = '/items/select';
     }
 
     // 로봇 상태 실시간 업데이트 (시뮬레이션)
@@ -260,5 +260,3 @@
     // 30초마다 로봇 상태 업데이트
     setInterval(updateRobotStatus, 30000);
 </script>
-</body>
-</html>
