@@ -22,11 +22,17 @@ public class SecurityConfig {
                 .headers(headers ->
                         headers.frameOptions(frameOptions -> frameOptions.disable())  // h2-console 화면을 사용하기 위해
                 )
-                .authorizeHttpRequests(auth -> auth  // authorizeRequests() → authorizeHttpRequests()
-                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()  // antMatchers() → requestMatchers()
-                        .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        // 고객용 페이지는 로그인 없이 접근 허용
+                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/food-delivery/**").permitAll()
+
+                        // 관리자 페이지만 로그인 필요
+                        .requestMatchers("/admin/**").authenticated()
+
+                        // 나머지 경로는 모두 허용 (또는 필요하면 authenticated())
+                        .anyRequest().permitAll()
                 )
+
                 .logout(logout ->
                         logout.logoutSuccessUrl("/")  // 람다 방식으로 변경
                 )
