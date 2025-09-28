@@ -51,4 +51,7 @@ dependencies {
     // MariaDB JDBC 드라이버 (11.x 호환)
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
 
+    // 라이브
+    implementation  'org.springframework.boot:spring-boot-devtools'
+
 }
