@@ -3,82 +3,789 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>배달 주문 - 호텔 로봇 서비스</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* 공통 스타일 */
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
+            background-image: url('/images/forest.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .header {
-            background-color: #2c5530;
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .header-title {
             color: white;
-            padding: 1rem;
-            text-align: center;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 2rem;
+            font-weight: bold;
         }
 
         .back-button {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: none;
-            border: 2px solid white;
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
+            font-size: 1.2rem;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
         }
 
         .back-button:hover {
-            background-color: white;
-            color: #2c5530;
+            color: #a8d5aa;
+            text-decoration: none;
         }
 
-        .container {
+        /* 음식 주문 페이지 전용 스타일 */
+        .order-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             padding: 2rem;
-            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
         }
 
-        h1 {
-            margin: 0;
-            font-size: 2rem;
+        .order-sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
         }
 
-        h2 {
+        .category-tabs {
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .category-tab {
+            display: inline-block;
+            padding: 15px 25px;
+            margin-right: 1rem;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .category-tab:hover {
             color: #2c5530;
-            margin-top: 2rem;
+            background: rgba(44, 85, 48, 0.1);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .category-tab.active {
+            color: #2c5530;
+            border-bottom-color: #2c5530;
+            background: rgba(44, 85, 48, 0.1);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #2c5530;
+        }
+
+        .menu-item-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c5530;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .menu-item-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c5530;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #2c5530, #4a7c59);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: linear-gradient(45deg, #4a7c59, #2c5530);
+            transform: scale(1.02);
+            color: white;
+        }
+
+        .order-summary {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h6 {
+            color: #2c5530;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-info small {
+            color: #666;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #2c5530;
+            background: white;
+            color: #2c5530;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: #2c5530;
+            color: white;
+        }
+
+        .order-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c5530;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .customer-info {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            color: #2c5530;
+            font-weight: 600;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #2c5530;
+            box-shadow: 0 0 0 0.2rem rgba(44, 85, 48, 0.25);
+        }
+
+        .place-order {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #2c5530, #4a7c59);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .place-order:hover:not(:disabled) {
+            background: linear-gradient(45deg, #4a7c59, #2c5530);
+            transform: scale(1.02);
+            color: white;
+        }
+
+        .place-order:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .order-container {
+                padding: 0 15px;
+            }
+
+            .header-title {
+                font-size: 2rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-tabs {
+                padding-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="header">
-    <button class="back-button" onclick="goBack()">←</button>
-    <h1></h1>
+
+<div class="overlay">
+    <div class="order-container">
+        <a href="/" class="back-button">
+            <i class="fas fa-arrow-left"></i> 메인으로 돌아가기
+        </a>
+
+        <h1 class="text-center header-title">
+            <i class="fas fa-utensils me-3"></i>음식 주문
+        </h1>
+
+        <div class="row">
+            <!-- 메인 메뉴 영역 -->
+            <div class="col-lg-8">
+                <div class="main-content">
+                    <!-- 카테고리 탭 -->
+                    <div class="category-tabs">
+                        <button class="category-tab active" data-category="burger">
+                            <i class="fas fa-hamburger me-2"></i>햄버거
+                        </button>
+                        <button class="category-tab" data-category="pizza">
+                            <i class="fas fa-pizza-slice me-2"></i>피자
+                        </button>
+                        <button class="category-tab" data-category="drinks">
+                            <i class="fas fa-wine-bottle me-2"></i>주류
+                        </button>
+                        <button class="category-tab" data-category="dessert">
+                            <i class="fas fa-ice-cream me-2"></i>디저트
+                        </button>
+                        <button class="category-tab" data-category="coffee">
+                            <i class="fas fa-coffee me-2"></i>음료/커피
+                        </button>
+                    </div>
+
+                    <!-- 메뉴 아이템들 -->
+                    <div id="menu-content">
+                        <!-- 햄버거 메뉴 -->
+                        <div class="menu-category" id="burger">
+                            <div class="menu-grid">
+                                <div class="menu-item">
+
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-hamburger"></i>
+                                    </div>
+                                    <div class="menu-item-name">클래식 비프 버거</div>
+                                    <div class="menu-item-description">신선한 양상추, 토마토, 양파와 함께하는 육즙 가득한 비프 패티</div>
+                                    <div class="menu-item-price">₩15,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('클래식 비프 버거', 15000, 'fas fa-hamburger')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-hamburger"></i>
+                                    </div>
+                                    <div class="menu-item-name">치킨 버거</div>
+                                    <div class="menu-item-description">바삭한 치킨 패티와 특제 소스의 완벽한 조화</div>
+                                    <div class="menu-item-price">₩13,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('치킨 버거', 13000, 'fas fa-hamburger')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-hamburger"></i>
+                                    </div>
+                                    <div class="menu-item-name">더블 치즈 버거</div>
+                                    <div class="menu-item-description">두 장의 치즈와 더블 패티로 만든 진짜 버거</div>
+                                    <div class="menu-item-price">₩18,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('더블 치즈 버거', 18000, 'fas fa-hamburger')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 피자 메뉴 -->
+                        <div class="menu-category d-none" id="pizza">
+                            <div class="menu-grid">
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-pizza-slice"></i>
+                                    </div>
+                                    <div class="menu-item-name">마르게리타 피자</div>
+                                    <div class="menu-item-description">토마토 소스, 모짜렐라 치즈, 바질의 클래식한 조합</div>
+                                    <div class="menu-item-price">₩22,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('마르게리타 피자', 22000, 'fas fa-pizza-slice')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-pizza-slice"></i>
+                                    </div>
+                                    <div class="menu-item-name">페퍼로니 피자</div>
+                                    <div class="menu-item-description">매콤한 페퍼로니와 치즈의 완벽한 하모니</div>
+                                    <div class="menu-item-price">₩25,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('페퍼로니 피자', 25000, 'fas fa-pizza-slice')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-pizza-slice"></i>
+                                    </div>
+                                    <div class="menu-item-name">하와이안 피자</div>
+                                    <div class="menu-item-description">햄과 파인애플의 달콤짭짤한 맛</div>
+                                    <div class="menu-item-price">₩24,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('하와이안 피자', 24000, 'fas fa-pizza-slice')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--  주류   -->
+                        <div class="menu-category d-none" id="drinks">
+                            <div class="menu-grid">
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-wine-glass"></i>
+                                    </div>
+                                    <div class="menu-item-name">하우스 와인</div>
+                                    <div class="menu-item-description">선별된 레드/화이트 와인 (글래스)</div>
+                                    <div class="menu-item-price">₩12,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('하우스 와인', 12000, 'fas fa-wine-glass')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-cocktail"></i>
+                                    </div>
+                                    <div class="menu-item-name">칵테일</div>
+                                    <div class="menu-item-description">바텐더 특선 칵테일 (모히토, 마가리타 등)</div>
+                                    <div class="menu-item-price">₩15,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('칵테일', 15000, 'fas fa-cocktail')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-beer"></i>
+                                    </div>
+                                    <div class="menu-item-name">생맥주</div>
+                                    <div class="menu-item-description">시원하고 깔끔한 맛의 프리미엄 생맥주</div>
+                                    <div class="menu-item-price">₩8,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('생맥주', 8000, 'fas fa-beer')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 디저트 메뉴 -->
+                        <div class="menu-category d-none" id="dessert">
+                            <div class="menu-grid">
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-birthday-cake"></i>
+                                    </div>
+                                    <div class="menu-item-name">초콜릿 케이크</div>
+                                    <div class="menu-item-description">진한 초콜릿과 부드러운 크림의 완벽한 조화</div>
+                                    <div class="menu-item-price">₩9,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('초콜릿 케이크', 9000, 'fas fa-birthday-cake')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-ice-cream"></i>
+                                    </div>
+                                    <div class="menu-item-name">바닐라 아이스크림</div>
+                                    <div class="menu-item-description">프리미엄 바닐라 빈으로 만든 수제 아이스크림</div>
+                                    <div class="menu-item-price">₩7,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('바닐라 아이스크림', 7000, 'fas fa-ice-cream')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-cookie"></i>
+                                    </div>
+                                    <div class="menu-item-name">쿠키 세트</div>
+                                    <div class="menu-item-description">갓 구운 초콜릿칩 쿠키 6개 세트</div>
+                                    <div class="menu-item-price">₩6,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('쿠키 세트', 6000, 'fas fa-cookie')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 음료/커피 메뉴 -->
+                        <div class="menu-category d-none" id="coffee">
+                            <div class="menu-grid">
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-coffee"></i>
+                                    </div>
+                                    <div class="menu-item-name">아메리카노</div>
+                                    <div class="menu-item-description">깊고 진한 맛의 프리미엄 에스프레소</div>
+                                    <div class="menu-item-price">₩5,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('아메리카노', 5000, 'fas fa-coffee')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-coffee"></i>
+                                    </div>
+                                    <div class="menu-item-name">카푸치노</div>
+                                    <div class="menu-item-description">부드러운 우유 거품과 에스프레소의 조화</div>
+                                    <div class="menu-item-price">₩6,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('카푸치노', 6000, 'fas fa-coffee')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-glass-water"></i>
+                                    </div>
+                                    <div class="menu-item-name">생수</div>
+                                    <div class="menu-item-description">시원한 생수 500ml</div>
+                                    <div class="menu-item-price">₩2,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('생수', 2000, 'fas fa-glass-water')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <i class="fas fa-wine-glass-alt"></i>
+                                    </div>
+                                    <div class="menu-item-name">오렌지 주스</div>
+                                    <div class="menu-item-description">신선한 오렌지로 만든 100% 생과일 주스</div>
+                                    <div class="menu-item-price">₩4,000</div>
+                                    <button class="add-to-cart" onclick="addToCart('오렌지 주스', 4000, 'fas fa-wine-glass-alt')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 주문 사이드바 -->
+            <div class="col-lg-4">
+                <div class="order-sidebar">
+                    <h4 class="mb-3"><i class="fas fa-shopping-cart me-2"></i>주문 내역</h4>
+
+                    <!-- 주문 요약 -->
+                    <div class="order-summary">
+                        <div id="order-items">
+                            <div class="text-center text-muted py-4">
+                                <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
+                                <p>선택한 메뉴가 없습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 합계 -->
+                    <div class="order-total">
+                        총액: <span id="total-price">₩0</span>
+                    </div>
+
+                    <!-- 고객 정보 -->
+                    <div class="customer-info">
+                        <h6 class="mb-3"><i class="fas fa-user me-2"></i>배송 정보</h6>
+                        <div class="mb-3">
+                            <label for="room-number" class="form-label">객실 번호</label>
+                            <input type="text" class="form-control" id="room-number" placeholder="예: 501호" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customer-name" class="form-label">성함</label>
+                            <input type="text" class="form-control" id="customer-name" placeholder="홍길동" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone-number" class="form-label">연락처</label>
+                            <input type="tel" class="form-control" id="phone-number" placeholder="010-1234-5678" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="special-requests" class="form-label">특별 요청사항</label>
+                            <textarea class="form-control" id="special-requests" rows="3" placeholder="알레르기, 매운맛 조절 등"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 주문하기 버튼 -->
+                    <button class="place-order" id="place-order-btn" onclick="placeOrder()" disabled>
+                        <i class="fas fa-robot me-2"></i>로봇 배달 주문하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="container">
-    <h2></h2>
-    <p></p>
-
-        <!--    {{#menuItems}}-->
-    <!--        <div class="menu-item">-->
-    <!--            <h3>{{name}}</h3>-->
-    <!--            <p>{{description}}</p>-->
-    <!--            <p><strong>{{price}}</strong></p>-->
-    <!--        </div>-->
-        <!--    {{/menuItems}}-->
-
-        <!--    {{^menuItems}}-->
-    <!--        <p>표시할 메뉴가 없습니다.</p>-->
-        <!--    {{/menuItems}}-->
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function goBack() {
-        window.history.back();
+    let cart = [];
+    let totalPrice = 0;
+
+    // 카테고리 탭 클릭 처리
+    document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            // 모든 탭에서 active 클래스 제거
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            // 클릭된 탭에 active 클래스 추가
+            tab.classList.add('active');
+
+            // 모든 메뉴 카테고리 숨기기
+            document.querySelectorAll('.menu-category').forEach(category => {
+                category.classList.add('d-none');
+            });
+
+            // 선택된 카테고리만 표시
+            const selectedCategory = tab.getAttribute('data-category');
+            document.getElementById(selectedCategory).classList.remove('d-none');
+        });
+    });
+
+    // 장바구니에 아이템 추가
+    function addToCart(name, price, icon) {
+        const existingItem = cart.find(item => item.name === name);
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                name: name,
+                price: price,
+                icon: icon,
+                quantity: 1
+            });
+        }
+
+        updateCartDisplay();
+        updateOrderButton();
+    }
+
+    // 장바구니 수량 변경
+    function updateQuantity(itemName, change) {
+        const item = cart.find(item => item.name === itemName);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                cart = cart.filter(item => item.name !== itemName);
+            }
+        }
+        updateCartDisplay();
+        updateOrderButton();
+    }
+
+    // 장바구니 표시 업데이트
+    function updateCartDisplay() {
+        const orderItemsContainer = document.getElementById('order-items');
+        const totalPriceElement = document.getElementById('total-price');
+
+        if (cart.length === 0) {
+            orderItemsContainer.innerHTML = `
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
+                    <p>선택한 메뉴가 없습니다.</p>
+                </div>
+            `;
+            totalPrice = 0;
+        } else {
+            let itemsHtml = '';
+            totalPrice = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+
+                itemsHtml += `
+                    <div class="order-item">
+                        <div class="item-info">
+                            <h6><i class="${item.icon} me-2"></i>${item.name}</h6>
+                            <small>₩${item.price.toLocaleString()} × ${item.quantity}</small>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity('${item.name}', -1)">-</button>
+                            <span class="mx-2">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity('${item.name}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            orderItemsContainer.innerHTML = itemsHtml;
+        }
+
+        totalPriceElement.textContent = `₩${totalPrice.toLocaleString()}`;
+    }
+
+    // 주문하기 버튼 상태 업데이트
+    function updateOrderButton() {
+        const placeOrderBtn = document.getElementById('place-order-btn');
+        const roomNumber = document.getElementById('room-number').value.trim();
+        const customerName = document.getElementById('customer-name').value.trim();
+        const phoneNumber = document.getElementById('phone-number').value.trim();
+
+        if (cart.length > 0 && roomNumber && customerName && phoneNumber) {
+            placeOrderBtn.disabled = false;
+        } else {
+            placeOrderBtn.disabled = true;
+        }
+    }
+
+    // 입력 필드 변경 시 주문 버튼 상태 업데이트
+    document.getElementById('room-number').addEventListener('input', updateOrderButton);
+    document.getElementById('customer-name').addEventListener('input', updateOrderButton);
+    document.getElementById('phone-number').addEventListener('input', updateOrderButton);
+
+    // 주문하기 함수
+    function placeOrder() {
+        const roomNumber = document.getElementById('room-number').value.trim();
+        const customerName = document.getElementById('customer-name').value.trim();
+        const phoneNumber = document.getElementById('phone-number').value.trim();
+        const specialRequests = document.getElementById('special-requests').value.trim();
+
+        if (cart.length === 0) {
+            alert('주문할 메뉴를 선택해주세요.');
+            return;
+        }
+
+        if (!roomNumber || !customerName || !phoneNumber) {
+            alert('필수 정보를 모두 입력해주세요.');
+            return;
+        }
+
+        // 주문 정보 생성
+        const orderInfo = {
+            items: cart,
+            total: totalPrice,
+            customer: {
+                name: customerName,
+                room: roomNumber,
+                phone: phoneNumber,
+                requests: specialRequests
+            },
+            orderTime: new Date().toLocaleString('ko-KR')
+        };
+
+        console.log('주문 정보:', orderInfo);
+
+        // 성공 메시지 표시
+        alert(`주문이 완료되었습니다!\n\n주문자: ${customerName}\n객실: ${roomNumber}\n총액: ₩${totalPrice.toLocaleString()}\n\n로봇이 곧 배달을 시작합니다.\n예상 배달 시간: 15-20분`);
+
+        // 장바구니 초기화
+        cart = [];
+        totalPrice = 0;
+        updateCartDisplay();
+
+        // 입력 필드 초기화
+        document.getElementById('room-number').value = '';
+        document.getElementById('customer-name').value = '';
+        document.getElementById('phone-number').value = '';
+        document.getElementById('special-requests').value = '';
+
+        updateOrderButton();
+
+        // 실제 구현에서는 여기서 서버로 주문 데이터를 전송
+        // fetch('/api/orders', { method: 'POST', body: JSON.stringify(orderInfo) })
     }
 </script>
+
 </body>
 </html>
+
+
