@@ -14,24 +14,32 @@
             min-height: 100vh;
             padding: 2rem 0;
         }
+        .header-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 0;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
 
         .header-title {
             color: white;
             font-size: 3rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            margin-bottom: 2rem;
+            margin-bottom: 0;
             font-weight: bold;
-        }
-
-        .back-button {
-            color: white;
-            font-size: 1.2rem;
-            text-decoration: none;
-            margin-bottom: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
         }
 
         .back-button:hover {
@@ -51,7 +59,18 @@
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            margin-bottom: 2rem;
+
+            top: 2rem;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 4rem);
+            overflow: hidden; /* main-content 자체는 스크롤 방지 */
+        }
+
+        #menu-content {
+            flex: 1;
+            overflow-y: auto; /* 이 부분만 스크롤 */
+            padding-top: 1rem; /* 탭과의 간격 */
         }
 
         .order-sidebar {
@@ -69,6 +88,7 @@
             margin-bottom: 2rem;
             overflow-x: auto;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .category-tab {
@@ -308,7 +328,7 @@
         }
 
     .menu-item-image img.menu-image {
-        max-width: 70%  ; /* 카드 안에서 적당히 작게 */
+        max-width: 66%  ; /* 카드 안에서 적당히 작게 */
         object-fit: contain; /* 이미지 비율 유지 */
     }
 
@@ -317,4 +337,8 @@
     }
     .img-60 {
         width: 60%;
+    }
+
+    .img-50 {
+        width: 50%;
     }
