@@ -304,6 +304,29 @@
                 padding-bottom: 10px;
             }
         }
+
+    .menu-item-image {
+        width: 100%;
+        height: 150px; /* 네모 칸 높이 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f5f5f5; /* 이미지 없을 때 배경색 */
+        border-radius: 8px;
+        overflow: hidden;
+        }
+
+    .menu-item-image img.menu-image {
+        max-width: 70%  ; /* 카드 안에서 적당히 작게 */
+        object-fit: contain; /* 이미지 비율 유지 */
+    }
+
+    .img-80 {
+        width: 80%;
+    }
+    .img-60 {
+        width: 60%;
+    }
     </style>
 </head>
 <body>
@@ -349,7 +372,7 @@
                                 <div class="menu-item">
 
                                     <div class="menu-item-image">
-                                        <i class="fas fa-hamburger"></i>
+                                        <img src="/images/classic-burger.png" alt="클래식 비프 버거" class="menu-image">
                                     </div>
                                     <div class="menu-item-name">클래식 비프 버거</div>
                                     <div class="menu-item-description">신선한 양상추, 토마토, 양파와 함께하는 육즙 가득한 비프 패티</div>
@@ -361,7 +384,7 @@
 
                                 <div class="menu-item">
                                     <div class="menu-item-image">
-                                        <i class="fas fa-hamburger"></i>
+                                        <img class="img-60" src="/images/chicken-burger.png" alt="치킨 버거" class="menu-image">
                                     </div>
                                     <div class="menu-item-name">치킨 버거</div>
                                     <div class="menu-item-description">바삭한 치킨 패티와 특제 소스의 완벽한 조화</div>
@@ -373,7 +396,7 @@
 
                                 <div class="menu-item">
                                     <div class="menu-item-image">
-                                        <i class="fas fa-hamburger"></i>
+                                        <img class="img-60" src="/images/doublecheese-burger.png" alt="더블 치즈 버거" class="menu-image">
                                     </div>
                                     <div class="menu-item-name">더블 치즈 버거</div>
                                     <div class="menu-item-description">두 장의 치즈와 더블 패티로 만든 진짜 버거</div>
