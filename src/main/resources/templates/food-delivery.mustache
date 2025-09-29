@@ -298,10 +298,6 @@
                             <input type="text" class="form-control" id="room-number" placeholder="예: 501호" required>
                         </div>
                         <div class="mb-3">
-                            <label for="customer-name" class="form-label">성함</label>
-                            <input type="text" class="form-control" id="customer-name" placeholder="홍길동" required>
-                        </div>
-                        <div class="mb-3">
                             <label for="phone-number" class="form-label">연락처</label>
                             <input type="tel" class="form-control" id="phone-number" placeholder="010-1234-5678" required>
                         </div>
@@ -423,10 +419,10 @@
     function updateOrderButton() {
         const placeOrderBtn = document.getElementById('place-order-btn');
         const roomNumber = document.getElementById('room-number').value.trim();
-        const customerName = document.getElementById('customer-name').value.trim();
+        // const customerName = document.getElementById('customer-name').value.trim();
         const phoneNumber = document.getElementById('phone-number').value.trim();
 
-        if (cart.length > 0 && roomNumber && customerName && phoneNumber) {
+        if (cart.length > 0 && roomNumber  && phoneNumber) {
             placeOrderBtn.disabled = false;
         } else {
             placeOrderBtn.disabled = true;
@@ -435,13 +431,13 @@
 
     // 입력 필드 변경 시 주문 버튼 상태 업데이트
     document.getElementById('room-number').addEventListener('input', updateOrderButton);
-    document.getElementById('customer-name').addEventListener('input', updateOrderButton);
+    // document.getElementById('customer-name').addEventListener('input', updateOrderButton);
     document.getElementById('phone-number').addEventListener('input', updateOrderButton);
 
     // 주문하기 함수
     function placeOrder() {
         const roomNumber = document.getElementById('room-number').value.trim();
-        const customerName = document.getElementById('customer-name').value.trim();
+        // const customerName = document.getElementById('customer-name').value.trim();
         const phoneNumber = document.getElementById('phone-number').value.trim();
         const specialRequests = document.getElementById('special-requests').value.trim();
 
@@ -450,7 +446,7 @@
             return;
         }
 
-        if (!roomNumber || !customerName || !phoneNumber) {
+        if (!roomNumber || !phoneNumber) {
             alert('필수 정보를 모두 입력해주세요.');
             return;
         }
@@ -460,7 +456,6 @@
             items: cart,
             total: totalPrice,
             customer: {
-                name: customerName,
                 room: roomNumber,
                 phone: phoneNumber,
                 requests: specialRequests
@@ -471,7 +466,7 @@
         console.log('주문 정보:', orderInfo);
 
         // 성공 메시지 표시
-        alert(`주문이 완료되었습니다!\n\n주문자: ${customerName}\n객실: ${roomNumber}\n총액: ₩${totalPrice.toLocaleString()}\n\n로봇이 곧 배달을 시작합니다.\n예상 배달 시간: 15-20분`);
+        alert(`주문이 완료되었습니다!\n\n객실: ${roomNumber}\n총액: ₩${totalPrice.toLocaleString()}\n\n로봇이 곧 배달을 시작합니다.\n예상 배달 시간: 15-20분`);
 
         // 장바구니 초기화
         cart = [];
@@ -480,7 +475,7 @@
 
         // 입력 필드 초기화
         document.getElementById('room-number').value = '';
-        document.getElementById('customer-name').value = '';
+        // document.getElementById('customer-name').value = '';
         document.getElementById('phone-number').value = '';
         document.getElementById('special-requests').value = '';
 

@@ -63,7 +63,7 @@
             top: 2rem;
             display: flex;
             flex-direction: column;
-            max-height: calc(100vh - 4rem);
+            max-height: calc(100vh - 8rem);
             overflow: hidden; /* main-content 자체는 스크롤 방지 */
         }
 
