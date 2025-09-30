@@ -40,6 +40,12 @@ public class IndexController {
     }
 
 
+    @GetMapping("/article-delivery")
+    public String articleDelivery() {
+        return "article-delivery";
+    }
+
+
     @GetMapping("/posts/save")
     public String postSave() {
         return "posts-save";
