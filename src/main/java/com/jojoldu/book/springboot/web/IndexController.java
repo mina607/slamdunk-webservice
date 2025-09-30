@@ -34,9 +34,9 @@ public class IndexController {
         return "food-delivery";
     }
 
-    @GetMapping("/food-order-list")
+    @GetMapping("/order-status")
     public String foodOrder() {
-        return "food-order-list";
+        return "order-status";
     }
 
 
