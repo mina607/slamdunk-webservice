@@ -1,0 +1,42 @@
+#toast-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;   /* 세로 중앙 */
+  justify-content: center; /* 가로 중앙 */
+  z-index: 9999;
+  pointer-events: none;  /* <- 컨테이너는 이벤트 무시 */
+}
+
+.toast {
+  background: #f7fafc;
+  color: #2c5530;
+  padding: 20px 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast button {
+  margin-top: 12px;
+  padding: 12px 24px;   /* 버튼 크기 */
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #2c5530;
+  color: white;
+  cursor: pointer;
+  min-width: 180px;     /* 버튼 최소 너비 */
+  display: inline-block;
+  text-align: center;
+}
