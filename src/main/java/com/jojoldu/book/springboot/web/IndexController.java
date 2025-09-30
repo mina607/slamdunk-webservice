@@ -34,6 +34,11 @@ public class IndexController {
         return "food-delivery";
     }
 
+    @GetMapping("/food-order-list")
+    public String foodOrder() {
+        return "food-order-list";
+    }
+
 
     @GetMapping("/posts/save")
     public String postSave() {
