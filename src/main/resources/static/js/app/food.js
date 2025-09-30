@@ -147,7 +147,7 @@ function placeOrder() {
     // 성공 메시지 표시
     //alert(`주문이 완료되었습니다!\n\n객실: ${roomNumber}\n총액: ₩${totalPrice.toLocaleString()}\n\n로봇이 곧 배달을 시작합니다.\n예상 배달 시간: 15-20분`);
     showToast(
-        `주문이 완료되었습니다! \n\n  ₩${totalPrice.toLocaleString()} \n\n 객실 번호: ${roomNumber}`,
+        `주문이 완료되었습니다! \n\n  ₩${totalPrice.toLocaleString()} \n\n ${roomNumber} 호로 배달이 시작됩니다.`,
         true, // 버튼 추가 여부
         roomNumber // roomNumber 전달
     );
