@@ -73,11 +73,15 @@ function updateCartDisplay() {
             const itemTotal = item.price * item.quantity;
             totalPrice += itemTotal;
 
+            const priceDisplay = item.price == 0
+                ? ""
+                : `₩${item.price.toLocaleString()}`;
+
             itemsHtml += `
                 <div class="order-item">
                     <div class="item-info">
                         <h6><i class="${item.icon} me-2"></i>${item.name}</h6>
-                        <small>₩${item.price.toLocaleString()} × ${item.quantity}</small>
+                        <small>${priceDisplay} × ${item.quantity}</small>
                     </div>
                     <div class="quantity-controls">
                         <button class="quantity-btn" onclick="updateQuantity('${item.name}', -1)">-</button>

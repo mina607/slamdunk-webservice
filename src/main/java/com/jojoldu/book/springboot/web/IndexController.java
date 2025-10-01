@@ -45,7 +45,6 @@ public class IndexController {
         return "article-delivery";
     }
 
-
     @GetMapping("/posts/save")
     public String postSave() {
         return "posts-save";

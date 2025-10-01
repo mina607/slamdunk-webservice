@@ -30,16 +30,21 @@
                 <div class="main-content">
                     <!-- 카테고리 탭 -->
                     <div class="category-tabs">
-                        <button class="category-tab active" data-category="article">
+                        <button class="category-tab active" data-category="bath">
                             <i class="fas fa-bath me-2"></i>욕실용품
                         </button>
-
+                        <button class="category-tab" data-category="indoor">
+                            <i class="fas fa-home me-2"></i>실내 용품
+                        </button>
+                        <button class="category-tab" data-category="convenient">
+                            <i class="fas fa-tag me-2"></i>편의물품
+                        </button>
                     </div>
 
                     <!-- 메뉴 아이템들 -->
                     <div id="menu-content">
                         <!-- 물품 메뉴 -->
-                        <div class="menu-category" id="article">
+                        <div class="menu-category" id="bath">
                             <div class="menu-grid">
 
                                 <div class="menu-item">
@@ -49,7 +54,7 @@
                                     <div class="menu-item-name">치약</div>
                                     <div class="menu-item-description"></div>
                                     <div class="menu-item-price"></div>
-                                    <button class="add-to-cart" onclick="addToCart('치약', 'fas fa-box')">
+                                    <button class="add-to-cart" onclick="addToCart('치약', 0, 'fas fa-box')">
                                         <i class="fas fa-plus me-2"></i>주문하기
                                     </button>
                                 </div>
@@ -61,7 +66,7 @@
                                     <div class="menu-item-name">칫솔</div>
                                     <div class="menu-item-description"></div>
                                     <div class="menu-item-price"></div>
-                                    <button class="add-to-cart" onclick="addToCart('칫솔', 'fas fa-box')">
+                                    <button class="add-to-cart" onclick="addToCart('칫솔', 0, 'fas fa-box')">
                                         <i class="fas fa-plus me-2"></i>주문하기
                                     </button>
                                 </div>
@@ -73,19 +78,125 @@
                                     <div class="menu-item-name">수건</div>
                                     <div class="menu-item-description"></div>
                                     <div class="menu-item-price"></div>
-                                    <button class="add-to-cart" onclick="addToCart('수건', 'fas fa-box')">
+                                    <button class="add-to-cart" onclick="addToCart('수건', 0, 'fas fa-box')">
                                         <i class="fas fa-plus me-2"></i>주문하기
                                     </button>
                                 </div>
 
                                 <div class="menu-item">
                                     <div class="menu-item-image">
-                                        <img src="/images/gown.png" alt="침구류" class="menu-image img-45">
+                                        <img src="/images/gown.png" alt="침구류" class="menu-image img-40">
                                     </div>
                                     <div class="menu-item-name">욕실 가운</div>
                                     <div class="menu-item-description"></div>
                                     <div class="menu-item-price"></div>
-                                    <button class="add-to-cart" onclick="addToCart('욕실 가운', 'fas fa-box')">
+                                    <button class="add-to-cart" onclick="addToCart('욕실 가운', 0, 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--  실내용품   -->
+                        <div class="menu-category d-none" id="indoor">
+                            <div class="menu-grid">
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/water1.png" alt="물" class="menu-image img-35">
+                                    </div>
+                                    <div class="menu-item-name">물</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('물', 0, 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/port.png" alt="포트" class="menu-image img-40">
+                                    </div>
+                                    <div class="menu-item-name">포트</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('포트', 0, 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/coffee2.png" alt="커피" class="menu-image img-60">
+                                    </div>
+                                    <div class="menu-item-name">커피</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('커피', 0, 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/hair brush.png" alt="빗" class="menu-image img-45">
+                                    </div>
+                                    <div class="menu-item-name">빗</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('빗', 0, 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="menu-category d-none" id="convenient">
+                            <div class="menu-grid">
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/pillow.png" alt="베개" class="menu-image img-50">
+                                    </div>
+                                    <div class="menu-item-name">베개</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('베개', 0 , 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/bedding.png" alt="이불" class="menu-image img-50">
+                                    </div>
+                                    <div class="menu-item-name">이불</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('이불', 0, 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/hanger.png" alt="옷걸이" class="menu-image img-55">
+                                    </div>
+                                    <div class="menu-item-name">옷걸이</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('옷걸이', 0, 'fas fa-box')">
+                                        <i class="fas fa-plus me-2"></i>주문하기
+                                    </button>
+                                </div>
+
+                                <div class="menu-item">
+                                    <div class="menu-item-image">
+                                        <img src="/images/slipper.png" alt="슬리퍼" class="menu-image img-50">
+                                    </div>
+                                    <div class="menu-item-name">슬리퍼</div>
+                                    <div class="menu-item-description"></div>
+                                    <div class="menu-item-price"></div>
+                                    <button class="add-to-cart" onclick="addToCart('슬리퍼', 0, 'fas fa-box')">
                                         <i class="fas fa-plus me-2"></i>주문하기
                                     </button>
                                 </div>
@@ -114,14 +225,25 @@
                     <!-- 고객 정보 -->
                     <div class="customer-info">
                         <h6 class="mb-3"><i class="fas fa-user me-2"></i>배송 정보</h6>
-                        <div class="mb-3">
-                            <label for="room-number" class="form-label">객실 번호</label>
-                            <input type="text" class="form-control" id="room-number" placeholder="예: 501호" required>
+
+                        <div class="mb-3 d-flex align-items-center gap-3">
+                            <label for="room-number" class="form-label text-start" style="flex: 0 0 100px;">객실 번호</label>
+                            <select class="form-control flex-grow-1" id="room-number" required>
+                                <option value="" disabled selected>객실 선택</option>
+                                <option value="501">501호</option>
+                                <option value="502">502호</option>
+                                <option value="503">503호</option>
+                                <option value="504">504호</option>
+                                <option value="505">505호</option>
+                                <option value="506">506호</option>
+                            </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="phone-number" class="form-label">연락처</label>
-                            <input type="tel" class="form-control" id="phone-number" placeholder="010-1234-5678" required>
+
+                        <div class="mb-3 d-flex align-items-center gap-3">
+                            <label for="phone-number" class="form-label text-start" style="flex: 0 0 100px;">연락처</label>
+                            <input type="tel" class="form-control flex-grow-1" id="phone-number" placeholder="010-1234-5678" required>
                         </div>
+
                     </div>
 
                     <!-- 주문하기 버튼 -->
@@ -134,8 +256,10 @@
     </div>
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    let cart = [];
-    let totalPrice = 0;
+<script src="/js/app/food.js"></script>
+
+<div id="toast-container"></div>
+
+</body>
+</html>
