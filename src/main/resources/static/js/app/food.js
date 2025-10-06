@@ -138,13 +138,26 @@ function placeOrder() {
     const orderInfo = {
         items: cart,
         total: totalPrice,
+        roomNumber: roomNumber,
         customer: {
-            room: roomNumber,
             phone: phoneNumber,
             requests: specialRequests
         },
         orderTime: new Date().toLocaleString('ko-KR')
     };
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/order',
+        dataType: 'json',
+        contentType:'application/json; charset=utf-8',
+        data: JSON.stringify(orderInfo)
+    }).done(function() {
+        alert('등록되었습니다.');
+        window.location.href = '/';
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
 
     console.log('주문 정보:', orderInfo);
 

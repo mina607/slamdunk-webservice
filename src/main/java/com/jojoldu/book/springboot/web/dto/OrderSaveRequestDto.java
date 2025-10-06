@@ -1,6 +1,6 @@
 package com.jojoldu.book.springboot.web.dto;
 
-import com.jojoldu.book.springboot.domain.orders.Order;
+import com.jojoldu.book.springboot.domain.orders.Orders;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +15,8 @@ public class OrderSaveRequestDto {
         this.roomNumber = roomNumber;
     }
 
-    public Order toEntity() {
-        return Order.builder()
+    public Orders toEntity() {
+        return Orders.builder()
                 .roomNumber(roomNumber)
                 .build();
     }

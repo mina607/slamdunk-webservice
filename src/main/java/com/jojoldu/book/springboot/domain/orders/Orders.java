@@ -15,7 +15,7 @@ import jakarta.persistence.Id;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Order extends BaseTimeEntity {
+public class Orders extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Order extends BaseTimeEntity {
 
 
     @Builder
-    public Order(String roomNumber) {
+    public Orders(String roomNumber) {
         this.roomNumber = roomNumber;
     }
 
