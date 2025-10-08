@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - 호텔 로봇 서비스</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('/images/forest.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 260px;
+            background: rgba(44, 85, 48, 0.95);
+            color: white;
+            padding: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .sidebar-header h4 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: white;
+        }
+
+        .menu-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-left-color: white;
+        }
+
+        .menu-link i {
+            width: 25px;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* 메인 콘텐츠 스타일 */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .content-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-header h2 {
+            margin: 0;
+            color: #2c5530;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #666;
+        }
+
+        .admin-user i {
+            font-size: 1.5rem;
+            color: #2c5530;
+        }
+
+        /* 통계 카드 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(45deg, #3498db, #5dade2);
+            color: white;
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(45deg, #2c5530, #4a7c59);
+            color: white;
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(45deg, #f39c12, #f8b739);
+            color: white;
+        }
+
+        .stat-icon.red {
+            background: linear-gradient(45deg, #e74c3c, #ec7063);
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c5530;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change.positive {
+            color: #27ae60;
+        }
+
+        .stat-change.negative {
+            color: #e74c3c;
+        }
+
+        /* 차트 및 테이블 카드 */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c5530;
+            margin: 0;
+        }
+
+        .card-action {
+            color: #2c5530;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .card-action:hover {
+            color: #4a7c59;
+        }
+
+        /* 로봇 상태 */
+        .robot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .robot-status-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .robot-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #2c5530, #4a7c59);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 1rem;
+        }
+
+        .robot-name {
+            font-weight: bold;
+            color: #2c5530;
+            margin-bottom: 0.5rem;
+        }
+
+        .robot-status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .robot-status-badge.available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .robot-status-badge.busy {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .robot-status-badge.charging {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .battery-info {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* 차트 컨테이너 */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        /* 인기 메뉴 리스트 */
+        .menu-rank-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-rank-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .menu-rank-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-rank-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #2c5530, #4a7c59);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .rank-number.top-1 {
+            background: linear-gradient(45deg, #f39c12, #f8b739);
+        }
+
+        .rank-number.top-2 {
+            background: linear-gradient(45deg, #95a5a6, #bdc3c7);
+        }
+
+        .rank-number.top-3 {
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+        }
+
+        .menu-info {
+            flex: 1;
+        }
+
+        .menu-name {
+            font-weight: bold;
+            color: #2c5530;
+            margin-bottom: 0.3rem;
+        }
+
+        .menu-category {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .menu-orders {
+            text-align: right;
+        }
+
+        .order-count {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c5530;
+        }
+
+        .order-label {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay">
+    <div class="admin-container">
+        <!-- 사이드바 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-robot mb-2" style="font-size: 2rem;"></i>
+                <h4>관리자 시스템</h4>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="#" class="menu-link active">
+                        <i class="fas fa-chart-line"></i>
+                        <span>대시보드</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>주문 관리</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-robot"></i>
+                        <span>로봇 모니터링</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-utensils"></i>
+                        <span>메뉴 관리</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-box"></i>
+                        <span>물품 관리</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>통계 및 분석</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-users"></i>
+                        <span>고객 관리</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class="fas fa-cog"></i>
+                        <span>설정</span>
+                    </a>
+                </li>
+                <li class="menu-item" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <a href="/" class="menu-link">
+                        <i class="fas fa-home"></i>
+                        <span>메인으로</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="main-content">
+            <!-- 헤더 -->
+            <div class="content-header">
+                <h2><i class="fas fa-chart-line me-2"></i>대시보드</h2>
+                <div class="admin-user">
+                    <span>관리자님, 환영합니다</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+            <!-- 통계 카드 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">오늘의 주문</div>
+                        <div class="stat-icon blue">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="today-orders">42</div>
+                    <div class="stat-label">총 주문 건수</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 전일 대비 +12%
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">오늘의 매출</div>
+                        <div class="stat-icon green">
+                            <i class="fas fa-won-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">₩847,000</div>
+                    <div class="stat-label">총 매출액</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 전일 대비 +8%
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">배달 중</div>
+                        <div class="stat-icon orange">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="delivering-count">3</div>
+                    <div class="stat-label">현재 배달 중인 주문</div>
+                    <div class="stat-change">
+                        평균 배달 시간: 12분
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">로봇 가동률</div>
+                        <div class="stat-icon red">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">87%</div>
+                    <div class="stat-label">평균 가동률</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 전일 대비 +5%
+                    </div>
+                </div>
+            </div>
+
+            <!-- 로봇 상태 -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-robot me-2"></i>로봇 상태 모니터링</h3>
+                    <a href="#" class="card-action">자세히 보기 <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+                <div class="robot-grid">
+                    <div class="robot-status-item">
+                        <div class="robot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="robot-name">Alpha</div>
+                        <div class="robot-status-badge available">사용가능</div>
+                        <div class="battery-info">
+                            <i class="fas fa-battery-full text-success"></i> 배터리: 95%
+                        </div>
+                    </div>
+
+                    <div class="robot-status-item">
+                        <div class="robot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="robot-name">Beta</div>
+                        <div class="robot-status-badge busy">배달중</div>
+                        <div class="battery-info">
+                            <i class="fas fa-battery-three-quarters text-warning"></i> 배터리: 72%
+                        </div>
+                    </div>
+
+                    <div class="robot-status-item">
+                        <div class="robot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="robot-name">Gamma</div>
+                        <div class="robot-status-badge busy">배달중</div>
+                        <div class="battery-info">
+                            <i class="fas fa-battery-half text-warning"></i> 배터리: 68%
+                        </div>
+                    </div>
+
+                    <div class="robot-status-item">
+                        <div class="robot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="robot-name">Delta</div>
+                        <div class="robot-status-badge charging">충전중</div>
+                        <div class="battery-info">
+                            <i class="fas fa-battery-quarter text-danger"></i> 배터리: 28%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- 시간대별 주문 추이 -->
+                <div class="col-lg-8">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-chart-area me-2"></i>시간대별 주문 추이</h3>
+                            <a href="#" class="card-action">리포트 다운로드 <i class="fas fa-download ms-1"></i></a>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="orderChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 인기 메뉴 순위 -->
+                <div class="col-lg-4">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-trophy me-2"></i>인기 메뉴 TOP 5</h3>
+                            <a href="#" class="card-action">전체 보기 <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                        <ul class="menu-rank-list">
+                            <li class="menu-rank-item">
+                                <div class="rank-number top-1">1</div>
+                                <div class="menu-info">
+                                    <div class="menu-name">더블 치즈 버거</div>
+                                    <div class="menu-category">햄버거</div>
+                                </div>
+                                <div class="menu-orders">
+                                    <div class="order-count">28</div>
+                                    <div class="order-label">주문</div>
+                                </div>
+                            </li>
+                            <li class="menu-rank-item">
+                                <div class="rank-number top-2">2</div>
+                                <div class="menu-info">
+                                    <div class="menu-name">페퍼로니 피자</div>
+                                    <div class="menu-category">피자</div>
+                                </div>
+                                <div class="menu-orders">
+                                    <div class="order-count">22</div>
+                                    <div class="order-label">주문</div>
+                                </div>
+                            </li>
+                            <li class="menu-rank-item">
+                                <div class="rank-number top-3">3</div>
+                                <div class="menu-info">
+                                    <div class="menu-name">생맥주</div>
+                                    <div class="menu-category">주류</div>
+                                </div>
+                                <div class="menu-orders">
+                                    <div class="order-count">19</div>
+                                    <div class="order-label">주문</div>
+                                </div>
+                            </li>
+                            <li class="menu-rank-item">
+                                <div class="rank-number">4</div>
+                                <div class="menu-info">
+                                    <div class="menu-name">아메리카노</div>
+                                    <div class="menu-category">커피</div>
+                                </div>
+                                <div class="menu-orders">
+                                    <div class="order-count">16</div>
+                                    <div class="order-label">주문</div>
+                                </div>
+                            </li>
+                            <li class="menu-rank-item">
+                                <div class="rank-number">5</div>
+                                <div class="menu-info">
+                                    <div class="menu-name">초콜릿 케이크</div>
+                                    <div class="menu-category">디저트</div>
+                                </div>
+                                <div class="menu-orders">
+                                    <div class="order-count">14</div>
+                                    <div class="order-label">주문</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script>
+    // 시간대별 주문 추이 차트
+    const ctx = document.getElementById('orderChart').getContext('2d');
+    const orderChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'],
+            datasets: [{
+                label: '주문 건수',
+                data: [2, 5, 8, 15, 12, 10, 18, 22, 16, 8],
+                borderColor: '#2c5530',
+                backgroundColor: 'rgba(44, 85, 48, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointRadius: 5,
+                pointBackgroundColor: '#2c5530',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        font: {
+                            size: 12,
+                            family: "'Segoe UI', sans-serif"
+                        },
+                        color: '#2c5530',
+                        padding: 15
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(44, 85, 48, 0.9)',
+                    padding: 12,
+                    titleFont: {
+                        size: 14
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 5,
+                        color: '#666',
+                        font: {
+                            size: 11
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#666',
+                        font: {
+                            size: 11
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+
+    // 실시간 데이터 업데이트 시뮬레이션
+    function updateDashboardData() {
+        // 오늘의 주문 업데이트
+        const ordersElement = document.getElementById('today-orders');
+        const currentOrders = parseInt(ordersElement.textContent);
+        if (Math.random() > 0.7) {
+            ordersElement.textContent = currentOrders + 1;
+        }
+
+        // 배달 중 주문 업데이트
+        const deliveringElement = document.getElementById('delivering-count');
+        const deliveringCount = Math.floor(Math.random() * 5);
+        deliveringElement.textContent = deliveringCount;
+    }
+
+    // 10초마다 데이터 업데이트
+    setInterval(updateDashboardData, 10000);
+
+    // 메뉴 링크 활성화 처리
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#') {
+                e.preventDefault();
+                document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
