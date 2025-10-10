@@ -24,10 +24,10 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         // 고객용 페이지는 로그인 없이 접근 허용
-                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/food-delivery/**").permitAll()
+                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/food-delivery/**", "/admin/**").permitAll()
 
                         // 관리자 페이지만 로그인 필요
-                        .requestMatchers("/admin/**").authenticated()
+                        //.requestMatchers("/admin/**").authenticated()
 
                         // 나머지 경로는 모두 허용 (또는 필요하면 authenticated())
                         .anyRequest().permitAll()
