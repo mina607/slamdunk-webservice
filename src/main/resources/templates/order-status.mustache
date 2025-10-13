@@ -38,213 +38,113 @@
 
             <!-- 진행중인 주문 -->
             <div class="order-content active" id="current-orders">
-                <div class="order-card">
-                    <div class="order-card-header">
-                        <div class="order-info">
-                            <div class="order-number">#20240930-001</div>
-                            <div class="order-time">2024.09.30 14:23 주문</div>
-                        </div>
-                        <div class="status-badge status-delivering">
-                            <i class="fas fa-robot robot-animation"></i>
-                            <span>배달중</span>
-                        </div>
-                    </div>
-
-                    <div class="progress-section">
-                        <div class="progress-steps">
-                            <div class="progress-line">
-                                <div class="progress-line-fill" style="width: 66%"></div>
+                {{#currentOrders}}
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <div class="order-info">
+                                <div class="order-number">#{{orderNumber}}</div>
+                                <div class="order-time">{{orderTime}}</div>
                             </div>
-                            <div class="progress-step completed">
-                                <div class="step-icon">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="step-label">주문접수</div>
-                            </div>
-                            <div class="progress-step completed">
-                                <div class="step-icon">
-                                    <i class="fas fa-utensils"></i>
-                                </div>
-                                <div class="step-label">조리중</div>
-                            </div>
-                            <div class="progress-step active">
-                                <div class="step-icon pulse">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <div class="step-label">배달중</div>
-                            </div>
-                            <div class="progress-step">
-                                <div class="step-icon">
-                                    <i class="fas fa-door-open"></i>
-                                </div>
-                                <div class="step-label">배달완료</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="order-details-wrapper">
-                        <div class="order-items-section">
-                            <div class="order-items-title">주문 상품</div>
-                            <div class="order-item">
-                                <div class="item-info">
-                                    <div class="item-name"><i class="fas fa-hamburger me-2"></i>클래식 비프 버거</div>
-                                    <div class="item-detail">수량: 2개</div>
-                                </div>
-                                <div class="item-price">₩30,000</div>
-                            </div>
-                            <div class="order-item">
-                                <div class="item-info">
-                                    <div class="item-name"><i class="fas fa-pizza-slice me-2"></i>페퍼로니 피자</div>
-                                    <div class="item-detail">수량: 1개</div>
-                                </div>
-                                <div class="item-price">₩25,000</div>
-                            </div>
-                            <div class="order-item">
-                                <div class="item-info">
-                                    <div class="item-name"><i class="fas fa-beer me-2"></i>생맥주</div>
-                                    <div class="item-detail">수량: 2개</div>
-                                </div>
-                                <div class="item-price">₩16,000</div>
+                            <div class="status-badge status-inprogress">
+                                <i class="fas fa-clock"></i>
+                                <span>진행중</span>
                             </div>
                         </div>
 
-                        <div class="delivery-info-section">
-                            <div class="delivery-info">
-                                <div class="delivery-info-title">배송 정보</div>
-                                <div class="delivery-row">
-                                    <span class="delivery-label">객실 번호</span>
-                                    <span class="delivery-value">501호</span>
-                                </div>
-                                <div class="delivery-row">
-                                    <span class="delivery-label">연락처</span>
-                                    <span class="delivery-value">010-1234-5678</span>
-                                </div>
-                                <div class="delivery-row">
-                                    <span class="delivery-label">예상 도착시간</span>
-                                    <span class="delivery-value" style="color: #2c5530; font-weight: 700;">약 8분 후</span>
-                                </div>
+                        <div class="order-details-wrapper">
+                            <div class="order-items-section">
+                                <div class="order-items-title">주문 상품</div>
+                                {{#items}}
+                                    <div class="order-item">
+                                        <div class="item-info">
+                                            <div class="item-name"><i class="fas fa-hamburger me-2"></i>{{itemName}}</div>
+                                            <div class="item-detail">수량: {{quantity}}개</div>
+                                        </div>
+                                        <div class="item-price">₩{{price}}</div>
+                                    </div>
+                                {{/items}}
                             </div>
                         </div>
-                    </div>
 
-                    <div class="order-total">
-                        <span class="total-label">총 결제금액</span>
-                        <span class="total-price">₩71,000</span>
+                        <div class="order-total">
+                            <span class="total-label">총 결제금액</span>
+                            <span class="total-price">₩{{totalPrice}}</span>
+                        </div>
                     </div>
-                </div>
+                {{/currentOrders}}
+
+                {{^currentOrders}}
+                    <div class="empty-orders">
+                        <i class="fas fa-inbox" style="font-size: 48px; color: #ccc;"></i>
+                        <p style="margin-top: 20px; color: #999;">진행중인 주문이 없습니다</p>
+                    </div>
+                {{/currentOrders}}
             </div>
 
             <!-- 이전 주문 내역 -->
             <div class="order-content" id="history-orders">
-                <div class="order-card">
-                    <div class="order-card-header">
-                        <div class="order-info">
-                            <div class="order-number">#20240929-004</div>
-                            <div class="order-time">2024.09.29 19:45 주문</div>
+                {{#historyOrders}}
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <div class="order-info">
+                                <div class="order-number">#{{orderNumber}}</div>
+                                <div class="order-time">{{orderTime}}</div>
+                            </div>
+                            <div class="status-badge status-completed">
+                                <i class="fas fa-check-circle"></i>
+                                <span>배달완료</span>
+                            </div>
                         </div>
-                        <div class="status-badge status-completed">
-                            <i class="fas fa-check-circle"></i>
-                            <span>배달완료</span>
-                        </div>
-                    </div>
 
-                    <div class="order-details-wrapper">
-                        <div class="order-items-section">
-                            <div class="order-items-title">주문 상품</div>
-                            <div class="order-item">
-                                <div class="item-info">
-                                    <div class="item-name"><i class="fas fa-pizza-slice me-2"></i>마르게리타 피자</div>
-                                    <div class="item-detail">수량: 1개</div>
+                        <div class="order-details-wrapper">
+                            <div class="order-items-section">
+                                <div class="order-items-title">주문 상품</div>
+
+                                {{#items}}
+                                    <div class="order-item">
+                                        <div class="item-info">
+                                            <div class="item-name">
+                                                <span class="item-icon">{{icon}}</span>{{name}}
+                                            </div>
+                                            <div class="item-detail">수량: {{quantity}}개</div>
+                                        </div>
+                                        <div class="item-price">₩{{price}}</div>
+                                    </div>
+                                {{/items}}
+                            </div>
+
+                            <div class="delivery-info-section" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                <div></div>
+                                <div class="action-buttons" style="margin-top: 0;">
+                                    <button class="btn-action btn-reorder">
+                                        <i class="fas fa-redo"></i>
+                                        <span>재주문</span>
+                                    </button>
+                                    <button class="btn-action btn-review">
+                                        <i class="fas fa-star"></i>
+                                        <span>리뷰 작성</span>
+                                    </button>
                                 </div>
-                                <div class="item-price">₩22,000</div>
-                            </div>
-                            <div class="order-item">
-                                <div class="item-info">
-                                    <div class="item-name"><i class="fas fa-wine-glass me-2"></i>하우스 와인</div>
-                                    <div class="item-detail">수량: 1개</div>
-                                </div>
-                                <div class="item-price">₩12,000</div>
                             </div>
                         </div>
 
-                        <div class="delivery-info-section" style="display: flex; flex-direction: column; justify-content: space-between;">
-                            <div></div>
-                            <div class="action-buttons" style="margin-top: 0;">
-                                <button class="btn-action btn-reorder">
-                                    <i class="fas fa-redo"></i>
-                                    <span>재주문</span>
-                                </button>
-                                <button class="btn-action btn-review">
-                                    <i class="fas fa-star"></i>
-                                    <span>리뷰 작성</span>
-                                </button>
-                            </div>
+                        <div class="order-total">
+                            <span class="total-label">총 결제금액</span>
+                            <span class="total-price">₩{{totalPrice}}</span>
                         </div>
                     </div>
+                {{/historyOrders}}
 
-                    <div class="order-total">
-                        <span class="total-label">총 결제금액</span>
-                        <span class="total-price">₩34,000</span>
+                {{^historyOrders}}
+                    <div class="empty-orders">
+                        <i class="fas fa-inbox" style="font-size: 48px; color: #ccc;"></i>
+                        <p style="margin-top: 20px; color: #999;">이전 주문 내역이 없습니다</p>
                     </div>
-                </div>
-
-                <div class="order-card">
-                    <div class="order-card-header">
-                        <div class="order-info">
-                            <div class="order-number">#20240928-002</div>
-                            <div class="order-time">2024.09.28 13:20 주문</div>
-                        </div>
-                        <div class="status-badge status-completed">
-                            <i class="fas fa-check-circle"></i>
-                            <span>배달완료</span>
-                        </div>
-                    </div>
-
-                    <div class="order-details-wrapper">
-                        <div class="order-items-section">
-                            <div class="order-items-title">주문 상품</div>
-                            <div class="order-item">
-                                <div class="item-info">
-                                    <div class="item-name"><i class="fas fa-hamburger me-2"></i>더블 치즈 버거</div>
-                                    <div class="item-detail">수량: 1개</div>
-                                </div>
-                                <div class="item-price">₩18,000</div>
-                            </div>
-                            <div class="order-item">
-                                <div class="item-info">
-                                    <div class="item-name"><i class="fas fa-coffee me-2"></i>아메리카노</div>
-                                    <div class="item-detail">수량: 2개</div>
-                                </div>
-                                <div class="item-price">₩10,000</div>
-                            </div>
-                        </div>
-
-                        <div class="delivery-info-section" style="display: flex; flex-direction: column; justify-content: space-between;">
-                            <div></div>
-                            <div class="action-buttons" style="margin-top: 0;">
-                                <button class="btn-action btn-reorder">
-                                    <i class="fas fa-redo"></i>
-                                    <span>재주문</span>
-                                </button>
-                                <button class="btn-action btn-review">
-                                    <i class="fas fa-star"></i>
-                                    <span>리뷰 작성</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="order-total">
-                        <span class="total-label">총 결제금액</span>
-                        <span class="total-price">₩28,000</span>
-                    </div>
-                </div>
+                {{/historyOrders}}
             </div>
         </div>
-    </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function switchOrderTab(tabName) {
         // 탭 버튼 활성화 상태 변경
@@ -273,6 +173,8 @@
     // 페이지 로드 시 실행
     window.onload = function() {
         updateDeliveryStatus();
+
+        switchOrderTab('history');
     };
 </script>
 

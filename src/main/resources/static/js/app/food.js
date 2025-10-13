@@ -80,8 +80,8 @@ function updateCartDisplay() {
             itemsHtml += `
                 <div class="order-item">
                     <div class="item-info">
-                        <h6><i class="${item.icon} me-2"></i>${item.name}</h6>
-                        <small>${priceDisplay} × ${item.quantity}</small>
+                         <h6><span class="item-icon me-2">${item.icon}</span>${item.name}</h6>
+                         <small>${priceDisplay} × ${item.quantity}</small>
                     </div>
                     <div class="quantity-controls">
                         <button class="quantity-btn" onclick="updateQuantity('${item.name}', -1)">-</button>
@@ -120,7 +120,6 @@ document.getElementById('phone-number').addEventListener('input', updateOrderBut
 // 주문하기 함수
 function placeOrder() {
     const roomNumber = document.getElementById('room-number').value.trim();
-    // const customerName = document.getElementById('customer-name').value.trim();
     const phoneNumber = document.getElementById('phone-number').value.trim();
     const specialRequests = document.getElementById('special-requests').value.trim();
 
@@ -148,30 +147,48 @@ function placeOrder() {
 
     console.log('주문 정보:', orderInfo);
 
-    // 성공 메시지 표시
-    //alert(`주문이 완료되었습니다!\n\n객실: ${roomNumber}\n총액: ₩${totalPrice.toLocaleString()}\n\n로봇이 곧 배달을 시작합니다.\n예상 배달 시간: 15-20분`);
-    showToast(
-        `주문이 완료되었습니다! \n\n  ₩${totalPrice.toLocaleString()} \n\n ${roomNumber} 호로 배달이 시작됩니다.`,
-        true, // 버튼 추가 여부
-        roomNumber // roomNumber 전달
-    );
+    // 서버로 주문 데이터 전송
+    fetch('/food-delivery/order-multiple', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            items: cart,
+            roomNumber: roomNumber,
+            phoneNumber: phoneNumber,
+            specialRequests: specialRequests
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        if (data === 'success') {
+            // 성공 메시지 표시
+            showToast(
+                `주문이 완료되었습니다! \n\n  ₩${totalPrice.toLocaleString()} \n\n ${roomNumber} 호로 배달이 시작됩니다.`,
+                true,
+                roomNumber
+            );
 
+            // 장바구니 초기화
+            cart = [];
+            totalPrice = 0;
+            updateCartDisplay();
 
-    // 장바구니 초기화
-    cart = [];
-    totalPrice = 0;
-    updateCartDisplay();
+            // 입력 필드 초기화
+            document.getElementById('room-number').value = '';
+            document.getElementById('phone-number').value = '';
+            document.getElementById('special-requests').value = '';
 
-    // 입력 필드 초기화
-    document.getElementById('room-number').value = '';
-    // document.getElementById('customer-name').value = '';
-    document.getElementById('phone-number').value = '';
-    document.getElementById('special-requests').value = '';
-
-    updateOrderButton();
-
-    // 실제 구현에서는 여기서 서버로 주문 데이터를 전송
-    // fetch('/api/orders', { method: 'POST', body: JSON.stringify(orderInfo) })
+            updateOrderButton();
+        } else {
+            alert('주문 처리 중 오류가 발생했습니다.');
+        }
+    })
+    .catch(error => {
+        console.error('주문 오류:', error);
+        alert('주문 처리 중 오류가 발생했습니다.');
+    });
 }
 
 function showToast(message, withButton = false, roomNumber = null) {

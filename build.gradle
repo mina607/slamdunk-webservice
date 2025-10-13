@@ -37,6 +37,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     // 인메모리형 관계형 데이터 버이스
     implementation('com.h2database:h2')
+
     // 머스타치 스타터 의존성 등록
     implementation('org.springframework.boot:spring-boot-starter-mustache')
 

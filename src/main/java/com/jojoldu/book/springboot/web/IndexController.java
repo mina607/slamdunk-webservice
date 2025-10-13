@@ -1,20 +1,31 @@
 package com.jojoldu.book.springboot.web;
 
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.service.OrderGroupDto;
+import com.jojoldu.book.springboot.service.OrdersService;
 import com.jojoldu.book.springboot.service.PostsService;
+import com.jojoldu.book.springboot.service.OrdersService;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
 
     private final PostsService postsService;
+    private final OrdersService orderService;
     private final HttpSession httpSession;
 
     @GetMapping("/")
@@ -34,11 +45,73 @@ public class IndexController {
         return "food-delivery";
     }
 
-    @GetMapping("/order-status")
-    public String foodOrder() {
-        return "order-status";
+    // 주문 처리 추가
+    @PostMapping("/food-delivery/order")
+    public String createOrder(@RequestParam String itemName,
+                              @RequestParam int quantity,
+                              @RequestParam int price,
+                              @RequestParam String roomNumber,
+                              @RequestParam String phoneNumber) {
+
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        String userId = user != null ? user.getEmail() : "guest";
+
+        // 주문 저장
+        orderService.saveOrder(userId, itemName, quantity, price, roomNumber, phoneNumber);
+
+        // 주문 완료 후 주문내역 페이지로 이동
+        return "redirect:/order-status";
     }
 
+    @PostMapping("/food-delivery/order-multiple")
+    @ResponseBody
+    public String createMultipleOrders(@RequestBody Map<String, Object> orderData) {
+        try {
+            SessionUser user = (SessionUser) httpSession.getAttribute("user");
+            String userId = user != null ? user.getEmail() : "guest";
+
+            String roomNumber = (String) orderData.get("roomNumber");
+            String phoneNumber = (String) orderData.get("phoneNumber");
+            List<Map<String, Object>> itemMaps = (List<Map<String, Object>>) orderData.get("items");
+
+            // Map을 OrderItem 객체로 변환 (반복문 사용)
+            List<OrdersService.OrderItem> items = new ArrayList<>();
+            for (Map<String, Object> itemMap : itemMaps) {
+                String name = (String) itemMap.get("name");
+                int quantity = ((Number) itemMap.get("quantity")).intValue();
+                int price = ((Number) itemMap.get("price")).intValue();
+
+                items.add(new OrdersService.OrderItem(name, quantity, price));
+            }
+
+            // 한 번에 저장 (같은 주문번호로!)
+            orderService.saveMultipleOrders(userId, items, roomNumber, phoneNumber);
+
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    @GetMapping("/order-status")
+    public String foodOrder(Model model) {
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        String userId = user != null ? user.getEmail() : "guest";
+
+        List<OrderGroupDto> current = orderService.getCurrentOrdersGrouped(userId);
+        List<OrderGroupDto> history = orderService.getCompletedOrdersGrouped(userId);
+
+        System.out.println("=== 주문 내역 조회 ===");
+        System.out.println("User ID: " + userId);
+        System.out.println("현재 주문 개수: " + current.size());
+        System.out.println("완료 주문 개수: " + history.size());
+
+        model.addAttribute("currentOrders", current);
+        model.addAttribute("historyOrders", history);
+
+        return "order-status";
+    }
 
     @GetMapping("/article-delivery")
     public String articleDelivery() {
