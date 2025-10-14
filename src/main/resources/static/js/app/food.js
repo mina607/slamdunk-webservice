@@ -80,7 +80,7 @@ function updateCartDisplay() {
             itemsHtml += `
                 <div class="order-item">
                     <div class="item-info">
-                         <h6><span class="item-icon me-2">${item.icon}</span>${item.name}</h6>
+                         <h6><span class="item-icon me-2 ${item.icon}"></span>${item.name}</h6>
                          <small>${priceDisplay} × ${item.quantity}</small>
                     </div>
                     <div class="quantity-controls">
