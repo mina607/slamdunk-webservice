@@ -2,6 +2,7 @@ package com.jojoldu.book.springboot.service;
 
 import com.jojoldu.book.springboot.domain.order.Orders;
 import com.jojoldu.book.springboot.domain.order.OrdersRepository;
+import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,7 +82,7 @@ public class OrdersService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderGroupDto> getCurrentOrdersGrouped(String userId) {
+    public List<PostsListResponseDto.OrderGroupDto> getCurrentOrdersGrouped(String userId) {
         List<Orders> orders = ordersRepository.findCurrentOrdersByUserId(userId);
 
         // 주문번호로 그룹핑
@@ -90,19 +91,19 @@ public class OrdersService {
 
         // OrderGroupDto로 변환
         return grouped.entrySet().stream()
-                .map(entry -> new OrderGroupDto(entry.getKey(), entry.getValue()))
+                .map(entry -> new PostsListResponseDto.OrderGroupDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<OrderGroupDto> getCompletedOrdersGrouped(String userId) {
+    public List<PostsListResponseDto.OrderGroupDto> getCompletedOrdersGrouped(String userId) {
         List<Orders> orders = ordersRepository.findCompletedOrdersByUserId(userId);
 
         Map<String, List<Orders>> grouped = orders.stream()
                 .collect(Collectors.groupingBy(Orders::getOrderNumber));
 
         return grouped.entrySet().stream()
-                .map(entry -> new OrderGroupDto(entry.getKey(), entry.getValue()))
+                .map(entry -> new PostsListResponseDto.OrderGroupDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 

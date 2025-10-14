@@ -1,10 +1,9 @@
 package com.jojoldu.book.springboot.web;
 
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
-import com.jojoldu.book.springboot.service.OrderGroupDto;
 import com.jojoldu.book.springboot.service.OrdersService;
 import com.jojoldu.book.springboot.service.PostsService;
-import com.jojoldu.book.springboot.service.OrdersService;
+import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -99,8 +98,8 @@ public class IndexController {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         String userId = user != null ? user.getEmail() : "guest";
 
-        List<OrderGroupDto> current = orderService.getCurrentOrdersGrouped(userId);
-        List<OrderGroupDto> history = orderService.getCompletedOrdersGrouped(userId);
+        List<PostsListResponseDto.OrderGroupDto> current = orderService.getCurrentOrdersGrouped(userId);
+        List<PostsListResponseDto.OrderGroupDto> history = orderService.getCompletedOrdersGrouped(userId);
 
         System.out.println("=== 주문 내역 조회 ===");
         System.out.println("User ID: " + userId);
