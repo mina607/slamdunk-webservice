@@ -23,10 +23,12 @@ public class Orders {
     private String phoneNumber;      // 연락처
     private String status;           // 상태 (ORDERED, COOKING, DELIVERING, COMPLETED)
     private String orderTime;        // 주문시간
+    private String icon;        // 아이콘
+
 
     @Builder
     public Orders(String orderNumber, String userId, String itemName,
-                  int quantity, int price, String roomNumber,
+                  int quantity, int price, String icon, String roomNumber,
                   String phoneNumber, String status, String orderTime) {
         this.orderNumber = orderNumber;
         this.userId = userId;
@@ -37,5 +39,8 @@ public class Orders {
         this.phoneNumber = phoneNumber;
         this.status = status;
         this.orderTime = orderTime;
+        this.icon = icon;
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.jojoldu.book.springboot.service;
 
 import com.jojoldu.book.springboot.domain.order.Orders;
 import com.jojoldu.book.springboot.domain.order.OrdersRepository;
+import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
 import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,7 @@ public class OrdersService {
             Orders order = Orders.builder()
                     .orderNumber(orderNumber)  // 같은 번호!
                     .userId(userId)
+                    .icon(item.getIcon())
                     .itemName(item.getName())
                     .quantity(item.getQuantity())
                     .price(item.getPrice() * item.getQuantity())
@@ -82,7 +84,7 @@ public class OrdersService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostsListResponseDto.OrderGroupDto> getCurrentOrdersGrouped(String userId) {
+    public List<OrderGroupDto> getCurrentOrdersGrouped(String userId) {
         List<Orders> orders = ordersRepository.findCurrentOrdersByUserId(userId);
 
         // 주문번호로 그룹핑
@@ -91,19 +93,19 @@ public class OrdersService {
 
         // OrderGroupDto로 변환
         return grouped.entrySet().stream()
-                .map(entry -> new PostsListResponseDto.OrderGroupDto(entry.getKey(), entry.getValue()))
+                .map(entry -> new OrderGroupDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<PostsListResponseDto.OrderGroupDto> getCompletedOrdersGrouped(String userId) {
+    public List<OrderGroupDto> getCompletedOrdersGrouped(String userId) {
         List<Orders> orders = ordersRepository.findCompletedOrdersByUserId(userId);
 
         Map<String, List<Orders>> grouped = orders.stream()
                 .collect(Collectors.groupingBy(Orders::getOrderNumber));
 
         return grouped.entrySet().stream()
-                .map(entry -> new PostsListResponseDto.OrderGroupDto(entry.getKey(), entry.getValue()))
+                .map(entry -> new OrderGroupDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -112,22 +114,51 @@ public class OrdersService {
         private String name;
         private int quantity;
         private int price;
+        private String icon;     // Font Awesome 클래스명
 
-        public OrderItem() {}
+        public OrderItem() {
+        }
 
-        public OrderItem(String name, int quantity, int price) {
+        public OrderItem(String name, int quantity, int price, String icon) {
             this.name = name;
             this.quantity = quantity;
             this.price = price;
+            this.icon = icon;
+
         }
 
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
 
-        public int getQuantity() { return quantity; }
-        public void setQuantity(int quantity) { this.quantity = quantity; }
 
-        public int getPrice() { return price; }
-        public void setPrice(int price) { this.price = price; }
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
+        public void setPrice(int price) {
+            this.price = price;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
     }
 }

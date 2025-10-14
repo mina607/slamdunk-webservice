@@ -3,6 +3,7 @@ package com.jojoldu.book.springboot.web;
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
 import com.jojoldu.book.springboot.service.OrdersService;
 import com.jojoldu.book.springboot.service.PostsService;
+import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
 import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import jakarta.servlet.http.HttpSession;
@@ -80,7 +81,11 @@ public class IndexController {
                 int quantity = ((Number) itemMap.get("quantity")).intValue();
                 int price = ((Number) itemMap.get("price")).intValue();
 
-                items.add(new OrdersService.OrderItem(name, quantity, price));
+                String icon = (String) itemMap.get("icon");
+
+                System.out.println("△△△△△ icon △△△△△ : " + icon);
+
+                items.add(new OrdersService.OrderItem(name, quantity, price, icon));
             }
 
             // 한 번에 저장 (같은 주문번호로!)
@@ -98,13 +103,23 @@ public class IndexController {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         String userId = user != null ? user.getEmail() : "guest";
 
-        List<PostsListResponseDto.OrderGroupDto> current = orderService.getCurrentOrdersGrouped(userId);
-        List<PostsListResponseDto.OrderGroupDto> history = orderService.getCompletedOrdersGrouped(userId);
+        List<OrderGroupDto> current = orderService.getCurrentOrdersGrouped(userId);
+        List<OrderGroupDto> history = orderService.getCompletedOrdersGrouped(userId);
 
         System.out.println("=== 주문 내역 조회 ===");
         System.out.println("User ID: " + userId);
         System.out.println("현재 주문 개수: " + current.size());
         System.out.println("완료 주문 개수: " + history.size());
+
+        for (OrderGroupDto group : current) {
+            System.out.println("=== OrderGroup: " + group.getOrderNumber() + " ===");
+            if (group.getItems() != null) {
+                for (OrderGroupDto.OrderItemDto item : group.getItems()) {
+                    System.out.println("itemName: " + item.getItemName() + ", icon: " + item.getIcon());
+                }
+            }
+        }
+
 
         model.addAttribute("currentOrders", current);
         model.addAttribute("historyOrders", history);
