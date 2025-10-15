@@ -139,8 +139,12 @@ function placeOrder(option = null) {
 
     console.log('주문 정보:', orderInfo);
 
+    path = '';
+    if (option == null) { path = '/food-delivery/order-multiple'}
+    else { path = '/article-delivery/order-multiple'}
+
     // 서버로 주문 데이터 전송
-    fetch('/food-delivery/order-multiple', {
+    fetch(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

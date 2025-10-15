@@ -48,6 +48,7 @@ public class IndexController {
     // 주문 처리 추가
     @PostMapping("/food-delivery/order")
     public String createOrder(@RequestParam String itemName,
+                              @RequestParam String option,
                               @RequestParam int quantity,
                               @RequestParam int price,
                               @RequestParam String roomNumber,
@@ -57,7 +58,7 @@ public class IndexController {
         String userId = user != null ? user.getEmail() : "guest";
 
         // 주문 저장
-        orderService.saveOrder(userId, itemName, quantity, price, roomNumber, phoneNumber);
+        orderService.saveOrder(userId, itemName, option, quantity, price, roomNumber, phoneNumber);
 
         // 주문 완료 후 주문내역 페이지로 이동
         return "redirect:/order-status";
@@ -89,7 +90,7 @@ public class IndexController {
             }
 
             // 한 번에 저장 (같은 주문번호로!)
-            orderService.saveMultipleOrders(userId, items, roomNumber, phoneNumber);
+            orderService.saveMultipleOrders(userId, "food", items, roomNumber, phoneNumber);
 
             return "success";
         } catch (Exception e) {

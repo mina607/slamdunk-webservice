@@ -30,7 +30,7 @@ public class OrdersService {
     }
     // 주문 저장 메서드 추가
     @Transactional
-    public Long saveOrder(String userId, String itemName, int quantity,
+    public Long saveOrder(String userId, String itemName, String option, int quantity,
                           int price, String roomNumber, String phoneNumber) {
 
         // 주문번호 생성 (날짜 + 랜덤)
@@ -44,6 +44,7 @@ public class OrdersService {
                 .orderNumber(orderNumber)
                 .userId(userId)
                 .itemName(itemName)
+                .option(option)
                 .quantity(quantity)
                 .price(price)
                 .roomNumber(roomNumber)
@@ -55,7 +56,7 @@ public class OrdersService {
         return ordersRepository.save(order).getId();
     }
     @Transactional
-    public void saveMultipleOrders(String userId, List<OrderItem> items,
+    public void saveMultipleOrders(String userId, String option, List<OrderItem> items,
                                    String roomNumber, String phoneNumber) {
 
         // 같은 주문번호 생성 (한 번만!)
@@ -70,6 +71,7 @@ public class OrdersService {
                     .orderNumber(orderNumber)  // 같은 번호!
                     .userId(userId)
                     .icon(item.getIcon())
+                    .option(option)
                     .itemName(item.getName())
                     .quantity(item.getQuantity())
                     .price(item.getPrice() * item.getQuantity())

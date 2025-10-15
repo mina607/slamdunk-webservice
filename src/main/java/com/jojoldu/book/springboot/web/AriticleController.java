@@ -20,6 +20,7 @@ public class AriticleController {
     private final OrdersService orderService;
     private final HttpSession httpSession;
 
+
     @PostMapping("/article-delivery/order-multiple")
     @ResponseBody
     public String createMultipleOrders(@RequestBody Map<String, Object> orderData) {
@@ -46,7 +47,7 @@ public class AriticleController {
             }
 
             // 한 번에 저장 (같은 주문번호로!)
-            orderService.saveMultipleOrders(userId, items, roomNumber, phoneNumber);
+            orderService.saveMultipleOrders(userId, "article", items, roomNumber, phoneNumber);
 
             return "success";
         } catch (Exception e) {
