@@ -204,7 +204,17 @@ function showToast(message, withButton = false, roomNumber = null, option = null
 
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.innerHTML = `<span>${message.replace(/\n/g, "<br>")}</span>`;
+    toast.innerHTML = `
+        <span style="
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            color: #222;
+            margin-bottom: 12px;
+        ">
+            ${message.replace(/\n/g, "<br>")}
+        </span>
+    `;
 
     // 주문 내역 버튼
     if (withButton && roomNumber && !option) {
@@ -218,26 +228,54 @@ function showToast(message, withButton = false, roomNumber = null, option = null
 
     // 결제 관련 버튼
     if (option === 'payment') {
+        toast.style.width = '432px';
+        // 버튼 컨테이너
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.justifyContent = 'space-between';
+        buttonContainer.style.gap = '10px';
+        buttonContainer.style.marginTop = '10px';
+
+        // 즉시 결제 버튼
         const payNowBtn = document.createElement('button');
         payNowBtn.textContent = '즉시 결제';
+        payNowBtn.style.flex = '1';
         payNowBtn.onclick = () => {
-            // IMP 결제 호출
             requestPayment(roomNumber);
         };
 
+        // 나중에 결제 버튼
         const payLaterBtn = document.createElement('button');
         payLaterBtn.textContent = '나중에 결제';
+        payLaterBtn.style.flex = '1';
         payLaterBtn.style.backgroundColor = '#899d8b';
         payLaterBtn.onclick = () => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 1200);
-            // 주문 완료 처리
             placeOrder();
         };
 
-        toast.appendChild(payNowBtn);
-        toast.appendChild(payLaterBtn);
+        // 버튼 두 개를 한 줄에 추가
+        buttonContainer.appendChild(payNowBtn);
+        buttonContainer.appendChild(payLaterBtn);
+
+        // 취소 버튼 (아래쪽, 가운데 정렬)
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = '취소';
+        cancelBtn.style.backgroundColor = '#777';
+        cancelBtn.style.color = '#fff';
+        cancelBtn.style.marginTop = '10px';
+        cancelBtn.style.width = '100%';
+        cancelBtn.onclick = () => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 200);
+        };
+
+        // 전체 버튼 구성
+        toast.appendChild(buttonContainer);
+        toast.appendChild(cancelBtn);
     }
+
 
     container.appendChild(toast);
 
