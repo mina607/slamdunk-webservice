@@ -207,9 +207,8 @@ function showToast(message, withButton = false, roomNumber = null, option = null
     toast.innerHTML = `
         <span style="
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 500;
             text-align: center;
-            color: #222;
             margin-bottom: 12px;
         ">
             ${message.replace(/\n/g, "<br>")}
