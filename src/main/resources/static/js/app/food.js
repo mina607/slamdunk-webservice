@@ -118,7 +118,7 @@ document.getElementById('room-number').addEventListener('input', updateOrderButt
 document.getElementById('phone-number').addEventListener('input', updateOrderButton);
 
 // 주문하기 함수
-function placeOrder() {
+function placeOrder(option = null) {
     const roomNumber = document.getElementById('room-number').value.trim();
     const phoneNumber = document.getElementById('phone-number').value.trim();
     const specialRequests = document.getElementById('special-requests').value.trim();
@@ -155,17 +155,27 @@ function placeOrder() {
     .then(response => response.text())
     .then(data => {
         if (data === 'success') {
+
             // 성공 메시지 표시
-            showToast(
-                `주문이 완료되었습니다! \n\n  ₩${totalPrice.toLocaleString()} \n\n ${roomNumber} 호로 배달이 시작됩니다.`,
-                true,
-                roomNumber
-            );
+            let message = `주문이 완료되었습니다!`;
+
+            if (totalPrice > 0) {
+                message += `\n\n₩${totalPrice.toLocaleString()}`;
+            }
+
+            message += `\n\n${roomNumber}호로 배달이 시작됩니다.`;
+
+            showToast(message, true, roomNumber);
+
 
             // 장바구니 초기화
             cart = [];
             totalPrice = 0;
-            updateCartDisplay();
+
+            // 룸서비스일 때,,,
+            if(option == null) {
+                updateCartDisplay();
+            }
 
             // 입력 필드 초기화
             document.getElementById('room-number').value = '';
