@@ -123,15 +123,6 @@ function placeOrder() {
     const phoneNumber = document.getElementById('phone-number').value.trim();
     const specialRequests = document.getElementById('special-requests').value.trim();
 
-    if (cart.length === 0) {
-        alert('주문할 메뉴를 선택해주세요.');
-        return;
-    }
-
-    if (!roomNumber || !phoneNumber) {
-        alert('필수 정보를 모두 입력해주세요.');
-        return;
-    }
 
     // 주문 정보 생성
     const orderInfo = {
@@ -192,32 +183,88 @@ function placeOrder() {
     });
 }
 
-function showToast(message, withButton = false, roomNumber = null) {
+
+// 토스트 알림 호출 함수
+function showToast(message, withButton = false, roomNumber = null, option = null) {
     const container = document.getElementById('toast-container');
 
     const toast = document.createElement('div');
     toast.className = 'toast';
-
     toast.innerHTML = `<span>${message.replace(/\n/g, "<br>")}</span>`;
 
-    if (withButton && roomNumber) {
+    // 주문 내역 버튼
+    if (withButton && roomNumber && !option) {
         const btn = document.createElement('button');
         btn.textContent = '주문 내역';
         btn.onclick = () => {
-            // 주문 내역 페이지로 이동 (roomNumber 파라미터 전달 가능)
-            window.location.href = `/order-status`;
+            window.location.href = `/order-status?room=${roomNumber}`;
         };
         toast.appendChild(btn);
     }
 
+    // 결제 관련 버튼
+    if (option === 'payment') {
+        const payNowBtn = document.createElement('button');
+        payNowBtn.textContent = '즉시 결제';
+        payNowBtn.onclick = () => {
+            // IMP 결제 호출
+            requestPayment(roomNumber);
+        };
+
+        const payLaterBtn = document.createElement('button');
+        payLaterBtn.textContent = '나중에 결제';
+        payLaterBtn.style.backgroundColor = '#899d8b';
+        payLaterBtn.onclick = () => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 1200);
+            // 주문 완료 처리
+            placeOrder();
+        };
+
+        toast.appendChild(payNowBtn);
+        toast.appendChild(payLaterBtn);
+    }
+
     container.appendChild(toast);
 
-    // 약간의 지연 후 애니메이션 적용
+    // 토스트 애니메이션
     setTimeout(() => toast.classList.add('show'), 50);
 
-    // 자동으로 사라지게 (5초 후)
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 1200);
-    }, 5000);
+    // 5초 뒤 자동 제거 (결제 옵션이 없을 때만)
+    if (!option) {
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 1200);
+        }, 5000);
+    }
+}
+
+// 포트원 결제 함수
+function requestPayment(roomNumber) {
+
+    if (!window.IMP) {
+        alert("결제 모듈이 로드되지 않았습니다.");
+        return;
+    }
+
+    const IMP = window.IMP;
+    IMP.init("imp02008762"); // ← 여기에 본인의 가맹점 식별코드 입력
+
+    IMP.request_pay({
+        pg: "html5_inicis", // 테스트용
+        pay_method: "card",
+        merchant_uid: "order_" + new Date().getTime(),
+        name: "룸서비스 결제",
+        amount: 15000, // 실제 금액
+        buyer_name: `Room ${roomNumber}`,
+        buyer_email: "guest@example.com"
+    }, function (rsp) {
+        if (rsp.success) {
+            alert("결제가 완료되었습니다!");
+            placeOrder();
+
+        } else {
+            alert("결제가 취소되었습니다.");
+        }
+    });
 }

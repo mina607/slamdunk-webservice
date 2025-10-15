@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/main_style.css">
     <link rel="stylesheet" href="/css/toast.css">
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 <body>
 
@@ -301,7 +302,7 @@
                         <h6 class="mb-3"><i class="fas fa-user me-2"></i>배송 정보</h6>
 
                         <div class="mb-3 d-flex align-items-center gap-3">
-                            <label for="room-number" class="form-label text-start" style="flex: 0 0 100px;">객실 번호</label>
+                            <label for="room-number" class="form-label text-start required" style="flex: 0 0 100px;">객실 번호</label>
                             <select class="form-control flex-grow-1" id="room-number" required>
                                 <option value="" disabled selected>객실 선택</option>
                                 <option value="501">501호</option>
@@ -314,7 +315,7 @@
                         </div>
 
                         <div class="mb-3 d-flex align-items-center gap-3">
-                            <label for="phone-number" class="form-label text-start" style="flex: 0 0 100px;">연락처</label>
+                            <label for="phone-number" class="form-label text-start required" style="flex: 0 0 100px;">연락처</label>
                             <input type="tel" class="form-control flex-grow-1" id="phone-number" placeholder="010-1234-5678" required>
                         </div>
 
@@ -325,7 +326,7 @@
                     </div>
 
                     <!-- 주문하기 버튼 -->
-                    <button class="place-order" id="place-order-btn" onclick="placeOrder()" disabled>
+                    <button class="place-order" id="place-order-btn" onclick="showToast('결제 방식을 확인해주세요.', false, '501', 'payment');" disabled>
                         <i class="fas fa-robot me-2"></i>로봇 배달 주문하기
                     </button>
                 </div>
