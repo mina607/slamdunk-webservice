@@ -23,6 +23,7 @@ public class Orders {
     private String phoneNumber;      // 연락처
     private String status;           // 상태 (ORDERED, COOKING, DELIVERING, COMPLETED)
     private String orderTime;        // 주문시간
+    private String specialRequests;        // 주문시간
     private String icon;        // 아이콘
     private String option;        // 옵션(룸서비스, 물품 주문)
 
@@ -30,7 +31,7 @@ public class Orders {
     @Builder
     public Orders(String orderNumber, String userId, String itemName, String option,
                   int quantity, int price, String icon, String roomNumber,
-                  String phoneNumber, String status, String orderTime) {
+                  String phoneNumber, String status, String orderTime, String specialRequests) {
         this.orderNumber = orderNumber;
         this.option = option;
         this.userId = userId;
@@ -42,6 +43,7 @@ public class Orders {
         this.status = status;
         this.orderTime = orderTime;
         this.icon = icon;
+        this.specialRequests = specialRequests;
     }
 
 

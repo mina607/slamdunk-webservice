@@ -57,7 +57,7 @@ public class OrdersService {
     }
     @Transactional
     public void saveMultipleOrders(String userId, String option, List<OrderItem> items,
-                                   String roomNumber, String phoneNumber) {
+                                   String roomNumber, String phoneNumber, String specialRequests) {
 
         // 같은 주문번호 생성 (한 번만!)
         String orderNumber = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
@@ -79,6 +79,7 @@ public class OrdersService {
                     .phoneNumber(phoneNumber)
                     .status("ORDERED")
                     .orderTime(orderTime)
+                    .specialRequests(specialRequests)
                     .build();
 
             ordersRepository.save(order);

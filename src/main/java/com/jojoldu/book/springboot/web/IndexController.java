@@ -73,6 +73,8 @@ public class IndexController {
 
             String roomNumber = (String) orderData.get("roomNumber");
             String phoneNumber = (String) orderData.get("phoneNumber");
+            String specialRequests = (String) orderData.get("specialRequests");
+
             List<Map<String, Object>> itemMaps = (List<Map<String, Object>>) orderData.get("items");
 
             // Map을 OrderItem 객체로 변환 (반복문 사용)
@@ -90,7 +92,7 @@ public class IndexController {
             }
 
             // 한 번에 저장 (같은 주문번호로!)
-            orderService.saveMultipleOrders(userId, "food", items, roomNumber, phoneNumber);
+            orderService.saveMultipleOrders(userId, "food", items, roomNumber, phoneNumber, specialRequests);
 
             return "success";
         } catch (Exception e) {
