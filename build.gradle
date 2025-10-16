@@ -1,58 +1,83 @@
 // 스프링 부트의 의존성들을 관리해주는 플러그인
 plugins {
-    id 'org.springframework.boot' version '3.2.0' // RELEASE 삭제
-    id 'io.spring.dependency-management' version '1.1.4' //스프링부트의 의존성을 관리해주는 플러그인
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
     id 'java'
 }
 
-group 'com.jopjoldu.book'
-version '1.0.4-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
+group 'com.jojoldu.book' // 💡 오타 수정: com.jopjoldu -> com.jojoldu
+version '1.0.4-SNAPSHOT-' + new Date().format("yyyyMMddHHmmss")
 
 java {
-    JavaVersion.VERSION_17 // Java 17로 업그레이드 (Spring Boot 3.x 최소 요구사항)
+    // Java 17로 설정 (Spring Boot 3.x 최소 요구사항)
+    sourceCompatibility = '17'
 }
+
 // 원격저장소
 repositories {
     mavenCentral()
 }
 
 // for Junit 5
-test { // (2)
+tasks.named('test') { // (2) test 블록 대신 tasks.named 사용 (최신 권장)
     useJUnitPlatform()
 }
 
 dependencies {
-    // 프로젝트 개발에 필요한 의존성을 선언 하는 곳
-    implementation('org.springframework.boot:spring-boot-starter-web')
-    // 테스트
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    // ----------------------------------------------------
+    // 💡 핵심 스타터 및 DB
+    // ----------------------------------------------------
 
-    // Lombok 설정
+    // Spring Web 및 Core
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // JPA (DB 연동)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MariaDB JDBC 드라이버 (버전은 dependency-management가 관리)
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
+
+    // H2 인메모리형 관계형 데이터베이스 (개발/테스트용)
+    implementation 'com.h2database:h2'
+
+    // 머스타치 템플릿 엔진
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
+
+    // ----------------------------------------------------
+    // 💡 보안 및 인증 (관리자 로그인, OAuth2)
+    // ----------------------------------------------------
+
+    // Spring Security 기본 스타터 (인증/권한 관리)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Spring Security OAuth2 클라이언트 (구글, 카카오 등 소셜 로그인)
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // 세션 관리를 DB(JDBC)로 처리
+    implementation 'org.springframework.session:spring-session-jdbc'
+
+    // ----------------------------------------------------
+    // 💡 유틸리티 및 개발 도구
+    // ----------------------------------------------------
+
+    // Lombok 설정 (최신 권장 방식)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // 개발 중 자동 리로드 (라이브)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // ----------------------------------------------------
+    // 💡 테스트
+    // ----------------------------------------------------
+
+    // Spring Boot 테스트 기본
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Lombok 테스트 의존성 (생략해도 무방하나 명시적으로 유지)
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    // 스프링 부트용 Spring Data Jpa 추상화 라이브러리
-    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-    // 인메모리형 관계형 데이터 버이스
-    implementation('com.h2database:h2')
-
-    // 머스타치 스타터 의존성 등록
-    implementation('org.springframework.boot:spring-boot-starter-mustache')
-
-    // Spring Security OAuth2 클라이언트 스타터
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-    // Spring Security 기본 스타터 (보통 함께 사용)
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    implementation 'org.springframework.session:spring-session-jdbc'
-
-    // MariaDB JDBC 드라이버 (11.x 호환)
-    implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
-
-    // 라이브
-    implementation  'org.springframework.boot:spring-boot-devtools'
-
+    // Spring Security 테스트 지원
+    testImplementation 'org.springframework.security:spring-security-test'
 }
