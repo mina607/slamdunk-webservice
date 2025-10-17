@@ -305,17 +305,29 @@ function requestPayment(roomNumber) {
         pg: "html5_inicis", // 테스트용
         pay_method: "card",
         merchant_uid: "order_" + new Date().getTime(),
-        name: "룸서비스 결제",
-        amount: 15000, // 실제 금액
-        buyer_name: `Room ${roomNumber}`,
-        buyer_email: "guest@example.com"
+        name: "[BELLBOT] 룸서비스",
+        amount: `${totalPrice}`, // 실제 금액
+        buyer_name: `Room ${roomNumber}`
     }, function (rsp) {
         if (rsp.success) {
-            alert("결제가 완료되었습니다!");
+//            alert("결제가 완료되었습니다!");
+            hideAllToasts();
             placeOrder();
 
         } else {
-            alert("결제가 취소되었습니다.");
+            hideAllToasts();
+            showToast("결제가 취소되었습니다.", false);
         }
+    });
+}
+
+
+// 모든 토스트창 숨기기
+function hideAllToasts() {
+    const toasts = document.querySelectorAll('.toast');
+    toasts.forEach(toast => {
+        // 사라지는 애니메이션
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500); // 애니메이션 후 제거
     });
 }
