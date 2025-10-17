@@ -14,7 +14,7 @@
 <div class="overlay">
     <div class="order-container">
         <div class="header-container">
-            <a href="/" class="back-button">
+            <a href="javascript:void(0);" class="back-button" onclick="history.back()">
                 <i class="fas fa-arrow-left"></i> 돌아가기
             </a>
 
@@ -65,6 +65,7 @@
                                 {{/items}}
                             </div>
                         </div>
+                        <div class="item-detail">요청사항 : {{specialRequests}}</div>
 
                         <div class="order-total">
                             <span class="total-label">총 결제금액</span>
@@ -112,7 +113,7 @@
                                     </div>
                                 {{/items}}
                             </div>
-
+                            <div class="item-detail">요청사항 : {{specialRequests}}</div>
                             <div class="delivery-info-section" style="display: flex; flex-direction: column; justify-content: space-between;">
                                 <div></div>
                                 <div class="action-buttons" style="margin-top: 0;">

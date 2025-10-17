@@ -14,6 +14,7 @@ public class OrderGroupDto {
     private String phoneNumber;
     private List<OrderItemDto> items;
     private String totalPrice;  // String으로!
+    private String specialRequests;
 
     public OrderGroupDto(String orderNumber, List<Orders> orders) {
         if (orders.isEmpty()) {
@@ -27,6 +28,7 @@ public class OrderGroupDto {
         this.status = first.getStatus();
         this.roomNumber = first.getRoomNumber();
         this.phoneNumber = first.getPhoneNumber();
+        this.specialRequests = first.getSpecialRequests();
 
         // 각 주문을 아이템으로 변환
 //        this.items = orders.stream()

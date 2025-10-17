@@ -23,7 +23,7 @@ public class Orders {
     private String phoneNumber;      // 연락처
     private String status;           // 상태 (ORDERED, COOKING, DELIVERING, COMPLETED)
     private String orderTime;        // 주문시간
-    private String specialRequests;        // 주문시간
+    private String specialRequests;        // 특별 요청사항
     private String icon;        // 아이콘
     private String option;        // 옵션(룸서비스, 물품 주문)
 
