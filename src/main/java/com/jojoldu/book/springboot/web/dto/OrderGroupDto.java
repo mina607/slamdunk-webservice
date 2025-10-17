@@ -3,6 +3,7 @@ package com.jojoldu.book.springboot.web.dto;
 import com.jojoldu.book.springboot.domain.order.Orders;
 import lombok.Getter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -28,7 +29,21 @@ public class OrderGroupDto {
         this.status = first.getStatus();
         this.roomNumber = first.getRoomNumber();
         this.phoneNumber = first.getPhoneNumber();
-        this.specialRequests = first.getSpecialRequests();
+//        this.specialRequests = first.getSpecialRequests();
+
+        // 요청사항이 비어 있으면 기본값 "없음" 설정
+//        String specialRequests = first.getSpecialRequests();
+//        if (specialRequests == null || specialRequests.trim().isEmpty()) {
+//            this.specialRequests = "없음";
+//        } else {
+//            this.specialRequests = specialRequests;
+//        }
+
+        this.specialRequests =
+                Optional.ofNullable(first.getSpecialRequests())
+                        .filter(s -> !s.trim().isEmpty())
+                        .orElse("없음");
+
 
         // 각 주문을 아이템으로 변환
 //        this.items = orders.stream()

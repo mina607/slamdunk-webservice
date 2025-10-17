@@ -19,7 +19,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#adminLoginModal"
                         data-bs-placement="bottom"
-                        title="관리자 로그인"
+                        title="관리자 페이지"
                         id="adminLoginBtn">
                     <i class="fas fa-cog"></i>
                 </button>
@@ -164,10 +164,10 @@
             errorMsg.style.display = 'none';
         }
 
-        // 1. 모달 닫기
+
         const modalElement = document.getElementById('adminLoginModal');
         const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-        modal.hide();
+        // modal.hide();
 
         // 2. 서버로 로그인 정보 전송
         // **이 경로는 실제 백엔드 관리자 로그인 API 엔드포인트로 대체되어야 합니다.**
@@ -191,6 +191,7 @@
                 // 4. 로그인 실패 시 처리 (HTTP 401, 403 등)
                 document.getElementById('loginErrorMsg').textContent = 'ID 또는 Password가 올바르지 않습니다.';
                 document.getElementById('loginErrorMsg').style.display = 'block';
+
                 modal.show(); // 실패 시 모달을 다시 열어 사용자에게 오류 메시지를 보여줌
             }
         })
