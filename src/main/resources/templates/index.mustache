@@ -12,25 +12,18 @@
 
 <div class="overlay">
     <div class="admin-login-area">
-        {{#userName}}
-            <div class="d-flex align-items-center">
-                {{#isAdmin}}
-                    <a href="/admin/index" role="button" class="btn btn-warning btn-sm me-3">
-                        <i class="fas fa-user-shield me-2"></i> 관리자 페이지
-                    </a>
-                {{/isAdmin}}
-
-                <span class="text-white me-2">반갑습니다, 관리자님!</span>
-                <a href="/logout" role="button" class="btn btn-outline-light btn-sm">
-                    <i class="fas fa-sign-out-alt"></i> 로그아웃
-                </a>
-            </div>
-        {{/userName}}
-
         {{^userName}}
-            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
-                <i class="fas fa-sign-in-alt"></i> 관리자 로그인
-            </button>
+            <div class="admin-login-icon position-absolute top-0 end-0 p-3">
+                <button type="button"
+                        class="btn btn-outline-light btn-sm rounded-circle"
+                        data-bs-toggle="modal"
+                        data-bs-target="#adminLoginModal"
+                        data-bs-placement="bottom"
+                        title="관리자 로그인"
+                        id="adminLoginBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
         {{/userName}}
     </div>
     <div class="kiosk-container">
@@ -114,6 +107,7 @@
     </div>
 </div>
 
+// 관리자 로그인용 모달창
 <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -141,7 +135,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="submit" form="adminLoginForm" class="btn btn-primary">
+                <button type="submit" form="adminLoginForm" class="btn login-button">
                     <i class="fas fa-sign-in-alt"></i> 로그인
                 </button>
             </div>
@@ -150,6 +144,11 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // 툴팁
+    document.addEventListener('DOMContentLoaded', function () {
+        const tooltip = new bootstrap.Tooltip(document.getElementById('adminLoginBtn'));
+    });
+
     // 💡 관리자 로그인 처리 함수
     function adminLogin() {
         const id = document.getElementById('adminId').value.trim();
@@ -185,14 +184,14 @@
         .then(response => {
             if (response.ok) {
                 // 3. 로그인 성공 시 처리 (HTTP 200 OK)
-                alert(`로그인 성공! 관리자 페이지로 이동합니다.`);
+                //alert(`로그인 성공! 관리자 페이지로 이동합니다.`);
                 // 관리자 페이지로 리다이렉션 (원하는 페이지: /admin/index)
                 window.location.href = '/admin/index';
             } else {
                 // 4. 로그인 실패 시 처리 (HTTP 401, 403 등)
-                modal.show(); // 실패 시 모달을 다시 열어 사용자에게 오류 메시지를 보여줌
                 document.getElementById('loginErrorMsg').textContent = 'ID 또는 Password가 올바르지 않습니다.';
                 document.getElementById('loginErrorMsg').style.display = 'block';
+                modal.show(); // 실패 시 모달을 다시 열어 사용자에게 오류 메시지를 보여줌
             }
         })
         .catch(error => {
