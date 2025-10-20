@@ -109,12 +109,16 @@ public class IndexController {
     }
 
     @GetMapping("/order-status")
-    public String foodOrder(Model model) {
+    public String foodOrder(
+            @RequestParam(value = "room", required = false, defaultValue = "") String roomNumber,
+            Model model) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         String userId = user != null ? user.getEmail() : "guest";
 
-        List<OrderGroupDto> current = orderService.getCurrentOrdersGrouped(userId);
-        List<OrderGroupDto> history = orderService.getCompletedOrdersGrouped(userId);
+        System.out.println("room number: " + roomNumber);
+
+        List<OrderGroupDto> current = orderService.getCurrentOrdersGrouped(roomNumber);
+        List<OrderGroupDto> history = orderService.getCompletedOrdersGrouped(roomNumber);
 
         System.out.println("=== 주문 내역 조회 ===");
         System.out.println("User ID: " + userId);

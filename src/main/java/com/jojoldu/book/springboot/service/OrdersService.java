@@ -89,8 +89,8 @@ public class OrdersService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderGroupDto> getCurrentOrdersGrouped(String userId) {
-        List<Orders> orders = ordersRepository.findCurrentOrdersByUserId(userId);
+    public List<OrderGroupDto> getCurrentOrdersGrouped(String roomNumber) {
+        List<Orders> orders = ordersRepository.findCurrentOrdersByUserId(roomNumber);
 
         // 주문번호로 그룹핑
         Map<String, List<Orders>> grouped = orders.stream()
@@ -103,8 +103,8 @@ public class OrdersService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderGroupDto> getCompletedOrdersGrouped(String userId) {
-        List<Orders> orders = ordersRepository.findCompletedOrdersByUserId(userId);
+    public List<OrderGroupDto> getCompletedOrdersGrouped(String roomNumber) {
+        List<Orders> orders = ordersRepository.findCompletedOrdersByUserId(roomNumber);
 
         Map<String, List<Orders>> grouped = orders.stream()
                 .collect(Collectors.groupingBy(Orders::getOrderNumber));
