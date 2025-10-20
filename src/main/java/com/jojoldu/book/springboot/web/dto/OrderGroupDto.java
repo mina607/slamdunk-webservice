@@ -1,6 +1,7 @@
 package com.jojoldu.book.springboot.web.dto;
 
 import com.jojoldu.book.springboot.domain.order.Orders;
+import com.jojoldu.book.springboot.domain.order.PaymentType;
 import lombok.Getter;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ public class OrderGroupDto {
     private List<OrderItemDto> items;
     private String totalPrice;  // String으로!
     private String specialRequests;
+    private PaymentType paymentType;
 
     public OrderGroupDto(String orderNumber, List<Orders> orders) {
         if (orders.isEmpty()) {
@@ -32,17 +34,11 @@ public class OrderGroupDto {
 //        this.specialRequests = first.getSpecialRequests();
 
         // 요청사항이 비어 있으면 기본값 "없음" 설정
-//        String specialRequests = first.getSpecialRequests();
-//        if (specialRequests == null || specialRequests.trim().isEmpty()) {
-//            this.specialRequests = "없음";
-//        } else {
-//            this.specialRequests = specialRequests;
-//        }
-
         this.specialRequests =
                 Optional.ofNullable(first.getSpecialRequests())
                         .filter(s -> !s.trim().isEmpty())
                         .orElse("없음");
+        this.paymentType = first.getPaymentType();
 
 
         // 각 주문을 아이템으로 변환

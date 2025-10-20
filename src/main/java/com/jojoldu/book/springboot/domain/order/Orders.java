@@ -27,11 +27,17 @@ public class Orders {
     private String icon;        // 아이콘
     private String option;        // 옵션(룸서비스, 물품 주문)
 
+    // enum 클래스 사용해서 타입 안정성 확보
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    private PaymentType paymentType;     // 결제 방식 (IMMEDIATE, DEFERRED 등)
+
 
     @Builder
     public Orders(String orderNumber, String userId, String itemName, String option,
                   int quantity, int price, String icon, String roomNumber,
-                  String phoneNumber, String status, String orderTime, String specialRequests) {
+                  String phoneNumber, String status, String orderTime, String specialRequests,
+                  PaymentType paymentType) {
         this.orderNumber = orderNumber;
         this.option = option;
         this.userId = userId;
@@ -44,6 +50,7 @@ public class Orders {
         this.orderTime = orderTime;
         this.icon = icon;
         this.specialRequests = specialRequests;
+        this.paymentType = paymentType;
     }
 
 

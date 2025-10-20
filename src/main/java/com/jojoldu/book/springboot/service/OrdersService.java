@@ -2,6 +2,7 @@ package com.jojoldu.book.springboot.service;
 
 import com.jojoldu.book.springboot.domain.order.Orders;
 import com.jojoldu.book.springboot.domain.order.OrdersRepository;
+import com.jojoldu.book.springboot.domain.order.PaymentType;
 import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
 import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class OrdersService {
     }
     @Transactional
     public void saveMultipleOrders(String userId, String option, List<OrderItem> items,
-                                   String roomNumber, String phoneNumber, String specialRequests) {
+                                   String roomNumber, String phoneNumber, String specialRequests, PaymentType paymentType) {
 
         // 같은 주문번호 생성 (한 번만!)
         String orderNumber = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
@@ -80,6 +81,7 @@ public class OrdersService {
                     .status("ORDERED")
                     .orderTime(orderTime)
                     .specialRequests(specialRequests)
+                    .paymentType(paymentType)
                     .build();
 
             ordersRepository.save(order);

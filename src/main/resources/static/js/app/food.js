@@ -118,7 +118,7 @@ document.getElementById('room-number').addEventListener('input', updateOrderButt
 document.getElementById('phone-number').addEventListener('input', updateOrderButton);
 
 // 주문하기 함수
-function placeOrder(option = null) {
+function placeOrder(option,paymentType = null) {
     const roomNumber = document.getElementById('room-number').value.trim();
     const phoneNumber = document.getElementById('phone-number').value.trim();
     const specialRequests = document.getElementById('special-requests').value.trim();
@@ -129,6 +129,7 @@ function placeOrder(option = null) {
         items: cart,
         total: totalPrice,
         roomNumber: roomNumber,
+        paymentType : paymentType,
         customer: {
             phone: phoneNumber,
             requests: specialRequests
@@ -140,7 +141,7 @@ function placeOrder(option = null) {
     console.log('주문 정보:', orderInfo);
 
     path = '';
-    if (option == null) { path = '/food-delivery/order-multiple'}
+    if (option == 'food') { path = '/food-delivery/order-multiple'}
     else { path = '/article-delivery/order-multiple'}
 
     // 서버로 주문 데이터 전송
@@ -153,7 +154,8 @@ function placeOrder(option = null) {
             items: cart,
             roomNumber: roomNumber,
             phoneNumber: phoneNumber,
-            specialRequests: specialRequests
+            specialRequests: specialRequests,
+            paymentType: paymentType
         })
     })
     .then(response => response.text())
@@ -240,7 +242,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
         payNowBtn.textContent = '즉시 결제';
         payNowBtn.style.flex = '1';
         payNowBtn.onclick = () => {
-            requestPayment(roomNumber);
+            requestPayment(roomNumber,'IMMEDIATE');
         };
 
         // 나중에 결제 버튼
@@ -251,7 +253,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
         payLaterBtn.onclick = () => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 1200);
-            placeOrder();
+            placeOrder('food', 'DEFERRED');
         };
 
         // 버튼 두 개를 한 줄에 추가
@@ -291,7 +293,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
 }
 
 // 포트원 결제 함수
-function requestPayment(roomNumber) {
+function requestPayment(roomNumber, paymentType) {
 
     if (!window.IMP) {
         alert("결제 모듈이 로드되지 않았습니다.");
@@ -312,7 +314,7 @@ function requestPayment(roomNumber) {
         if (rsp.success) {
 //            alert("결제가 완료되었습니다!");
             hideAllToasts();
-            placeOrder();
+            placeOrder('food', paymentType);
 
         } else {
             hideAllToasts();

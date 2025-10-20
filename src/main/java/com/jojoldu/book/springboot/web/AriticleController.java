@@ -49,7 +49,7 @@ public class AriticleController {
             }
 
             // 한 번에 저장 (같은 주문번호로!)
-            orderService.saveMultipleOrders(userId, "article", items, roomNumber, phoneNumber, specialRequests);
+            orderService.saveMultipleOrders(userId, "article", items, roomNumber, phoneNumber, specialRequests, null);
 
             return "success";
         } catch (Exception e) {

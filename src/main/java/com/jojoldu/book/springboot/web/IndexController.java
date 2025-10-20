@@ -1,6 +1,7 @@
 package com.jojoldu.book.springboot.web;
 
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.domain.order.PaymentType;
 import com.jojoldu.book.springboot.service.OrdersService;
 import com.jojoldu.book.springboot.service.PostsService;
 import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
@@ -46,23 +47,23 @@ public class IndexController {
     }
 
     // 주문 처리 추가
-    @PostMapping("/food-delivery/order")
-    public String createOrder(@RequestParam String itemName,
-                              @RequestParam String option,
-                              @RequestParam int quantity,
-                              @RequestParam int price,
-                              @RequestParam String roomNumber,
-                              @RequestParam String phoneNumber) {
-
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        String userId = user != null ? user.getEmail() : "guest";
-
-        // 주문 저장
-        orderService.saveOrder(userId, itemName, option, quantity, price, roomNumber, phoneNumber);
-
-        // 주문 완료 후 주문내역 페이지로 이동
-        return "redirect:/order-status";
-    }
+//    @PostMapping("/food-delivery/order")
+//    public String createOrder(@RequestParam String itemName,
+//                              @RequestParam String option,
+//                              @RequestParam int quantity,
+//                              @RequestParam int price,
+//                              @RequestParam String roomNumber,
+//                              @RequestParam String phoneNumber) {
+//
+//        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+//        String userId = user != null ? user.getEmail() : "guest";
+//
+//        // 주문 저장
+//        orderService.saveOrder(userId, itemName, option, quantity, price, roomNumber, phoneNumber);
+//
+//        // 주문 완료 후 주문내역 페이지로 이동
+//        return "redirect:/order-status";
+//    }
 
     @PostMapping("/food-delivery/order-multiple")
     @ResponseBody
@@ -74,6 +75,12 @@ public class IndexController {
             String roomNumber = (String) orderData.get("roomNumber");
             String phoneNumber = (String) orderData.get("phoneNumber");
             String specialRequests = (String) orderData.get("specialRequests");
+
+            // Enum 변환
+            String paymentTypeStr = (String) orderData.get("paymentType");
+            PaymentType paymentType = PaymentType.valueOf(paymentTypeStr.toUpperCase());
+
+            System.out.println("△△△△△ paymentType △△△△△ : " + paymentType);
 
             List<Map<String, Object>> itemMaps = (List<Map<String, Object>>) orderData.get("items");
 
@@ -92,7 +99,7 @@ public class IndexController {
             }
 
             // 한 번에 저장 (같은 주문번호로!)
-            orderService.saveMultipleOrders(userId, "food", items, roomNumber, phoneNumber, specialRequests);
+            orderService.saveMultipleOrders(userId, "food", items, roomNumber, phoneNumber, specialRequests, paymentType);
 
             return "success";
         } catch (Exception e) {
