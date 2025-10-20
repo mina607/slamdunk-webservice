@@ -12,7 +12,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 //    @Query("SELECT o FROM Orders o WHERE o.userId = ?1 AND o.status != 'COMPLETED' ORDER BY o.id DESC")
 //    List<Orders> findCurrentOrdersByUserId(String userId);
     @Query("SELECT o FROM Orders o WHERE o.roomNumber = :roomNumber AND o.status != 'COMPLETED' ORDER BY o.id DESC")
-    List<Orders> findCurrentOrdersByUserId(@Param("roomNumber") String roomNumber);
+    List<Orders> findCurrentOrdersByRoom(@Param("roomNumber") String roomNumber);
 
 
     // 특정 사용자의 완료된 주문 조회
@@ -20,5 +20,5 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 //    List<Orders> findCompletedOrdersByUserId(String userId);
 
     @Query("SELECT o FROM Orders o WHERE o.roomNumber = :roomNumber AND o.status = 'COMPLETED' ORDER BY o.id DESC")
-    List<Orders> findCompletedOrdersByUserId(@Param("roomNumber") String roomNumber);
+    List<Orders> findCompletedOrdersByRoom(@Param("roomNumber") String roomNumber);
 }
