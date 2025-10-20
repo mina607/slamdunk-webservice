@@ -95,7 +95,7 @@
       line-height: 1.5;
   }
 
-  .login-button {
+  .user-button {
       border: none;
       background: linear-gradient(45deg, #2c5530, #4a7c59);
       color: white;
@@ -103,7 +103,7 @@
       box-shadow: 0 5px 15px rgba(44, 85, 48, 0.3);
   }
 
-  .login-button:hover {
+  .user-button:hover {
       background: linear-gradient(45deg, #4a7c59, #2c5530);
       transform: scale(1.05);
       box-shadow: 0 8px 25px rgba(44, 85, 48, 0.5);

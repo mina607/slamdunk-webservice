@@ -144,8 +144,38 @@
                 {{/historyOrders}}
             </div>
         </div>
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- 모달 -->
+<div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roomModalLabel">객실 번호 선택</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <select id="roomSelect" class="form-select">
+                    <option value="" disabled selected>객실 선택</option>
+                    <option value="501">501</option>
+                    <option value="502">502</option>
+                    <option value="503">503</option>
+                    {{#rooms}}
+                        <option value="{{.}}">{{.}}</option>
+                    {{/rooms}}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" id="roomConfirm" class="btn user-button">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function switchOrderTab(tabName) {
         // 탭 버튼 활성화 상태 변경
@@ -177,6 +207,32 @@
 
 <!--        switchOrderTab('history');-->
 <!--    };-->
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let room = urlParams.get('room');
+
+    if (!room) {
+        // Bootstrap 모달 생성 후 표시
+        const roomModal = new bootstrap.Modal(document.getElementById('roomModal'));
+        roomModal.show();
+
+        document.getElementById('roomConfirm').onclick = () => {
+            const selectedRoom = document.getElementById('roomSelect').value;
+            if (selectedRoom) {
+                roomModal.hide();
+                // 선택한 객실 번호를 파라미터로 페이지 이동
+                window.location.href = `${window.location.pathname}?room=${selectedRoom}`;
+            } else {
+                alert('객실을 선택해주세요.');
+            }
+        };
+    } else {
+        console.log('선택된 객실 번호:', room);
+        // room 파라미터로 주문 내역 로딩 등 처리
+    }
+});
 </script>
 
 </body>
