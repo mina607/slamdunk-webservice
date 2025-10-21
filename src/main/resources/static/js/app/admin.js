@@ -1,4 +1,6 @@
 
+
+
 // 소켓 처리
 const socket = new SockJS('/ws');
 const stompClient = Stomp.over(socket);
@@ -12,9 +14,7 @@ stompClient.connect({}, function() {
             speechSynthesis.speak(utterance);
 
             // 토스트 표시
-            console.log("showToast 호출 전");
-            showToast(msg.body);
-            console.log("showToast 호출 후");
+            showToast(msg.body, true,null,'admin')
 
         } catch (error) {
             console.error("에러 발생:", error);
@@ -23,47 +23,6 @@ stompClient.connect({}, function() {
     });
 });
 
-function showToast(message) {
-    const container = document.getElementById('toast-container');
-
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerHTML = `
-            <span style="
-                font-size: 18px;
-                font-weight: 500;
-                text-align: center;
-                margin-top: 15px;
-                margin-bottom: 12px;
-                display: block;
-            ">
-                ${message.replace(/\n/g, "<br>")}
-            </span>
-        `;
-    const btn = document.createElement('button');
-    btn.className = 'toast-btn';
-    btn.textContent = '주문 관리';
-    btn.style.cssText = 'padding: 8px 16px; cursor: pointer;'; // 스타일 추가
-    btn.onclick = () => {
-        window.location.href = `/order-status`;
-    };
-
-    // X 닫기 버튼
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'toast-close';
-    closeBtn.innerHTML = '×';
-    closeBtn.onclick = () => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'scale(0.9)';
-        setTimeout(() => toast.remove(), 200);
-    };
-
-    toast.appendChild(closeBtn);
-    toast.appendChild(btn);
-    container.appendChild(toast);
-    // 토스트 애니메이션
-    setTimeout(() => toast.classList.add('show'), 50);
-}
 
 // 시간대별 주문 추이 차트
 const ctx = document.getElementById('orderChart').getContext('2d');
