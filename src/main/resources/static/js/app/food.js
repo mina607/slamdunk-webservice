@@ -268,6 +268,10 @@ document.addEventListener("DOMContentLoaded", function() {
     phoneInput.addEventListener("input", function(e) {
         let value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
 
+        if (value.length > 11) {
+            value = value.slice(0, 11); // 11자리까지만 허용
+        }
+
         if (value.length > 3 && value.length <= 7) {
             value = value.replace(/(\d{3})(\d+)/, "$1-$2");
         } else if (value.length > 7) {
