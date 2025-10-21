@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,7 +98,7 @@
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                     </div>
-                    <div class="stat-value" id="today-orders">42</div>
+                    <div class="stat-value" id="today-orders">{{todayOrders}}</div>
                     <div class="stat-label">총 주문 건수</div>
                     <div class="stat-change positive">
                         <i class="fas fa-arrow-up"></i> 전일 대비 +12%
@@ -111,7 +112,7 @@
                             <i class="fas fa-won-sign"></i>
                         </div>
                     </div>
-                    <div class="stat-value">₩847,000</div>
+                    <div class="stat-value">₩{{todayRevenue}}</div>
                     <div class="stat-label">총 매출액</div>
                     <div class="stat-change positive">
                         <i class="fas fa-arrow-up"></i> 전일 대비 +8%
@@ -125,7 +126,7 @@
                             <i class="fas fa-truck"></i>
                         </div>
                     </div>
-                    <div class="stat-value" id="delivering-count">3</div>
+                    <div class="stat-value" id="delivering-count">{{deliveringCount}}</div>
                     <div class="stat-label">현재 배달 중인 주문</div>
                     <div class="stat-change">
                         평균 배달 시간: 12분
@@ -364,24 +365,6 @@
             }
         }
     });
-
-    // 실시간 데이터 업데이트 시뮬레이션
-    function updateDashboardData() {
-        // 오늘의 주문 업데이트
-        const ordersElement = document.getElementById('today-orders');
-        const currentOrders = parseInt(ordersElement.textContent);
-        if (Math.random() > 0.7) {
-            ordersElement.textContent = currentOrders + 1;
-        }
-
-        // 배달 중 주문 업데이트
-        const deliveringElement = document.getElementById('delivering-count');
-        const deliveringCount = Math.floor(Math.random() * 5);
-        deliveringElement.textContent = deliveringCount;
-    }
-
-    // 10초마다 데이터 업데이트
-    setInterval(updateDashboardData, 10000);
 
     // 메뉴 링크 활성화 처리
     document.querySelectorAll('.menu-link').forEach(link => {
