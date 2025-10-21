@@ -9,6 +9,8 @@ import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,9 @@ public class IndexController {
     private final PostsService postsService;
     private final OrdersService orderService;
     private final HttpSession httpSession;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/")
     public  String index(Model model) {
@@ -100,6 +105,9 @@ public class IndexController {
 
             // 한 번에 저장 (같은 주문번호로!)
             orderService.saveMultipleOrders(userId, "food", items, roomNumber, phoneNumber, specialRequests, paymentType);
+
+            // 주문이 완료되면 관리자에게 WebSocket 메시지 전송
+            messagingTemplate.convertAndSend("/topic/orderAlert", "주문이 접수되었습니다.");
 
             return "success";
         } catch (Exception e) {

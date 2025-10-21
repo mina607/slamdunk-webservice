@@ -211,6 +211,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
             font-size: 18px;
             font-weight: 500;
             text-align: center;
+            margin-top: 15px;
             margin-bottom: 12px;
         ">
             ${message.replace(/\n/g, "<br>")}
@@ -277,7 +278,17 @@ function showToast(message, withButton = false, roomNumber = null, option = null
         toast.appendChild(cancelBtn);
     }
 
+    // X 닫기 버튼
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close';
+    closeBtn.innerHTML = '×';
+    closeBtn.onclick = () => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'scale(0.9)';
+        setTimeout(() => toast.remove(), 200);
+    };
 
+    toast.appendChild(closeBtn);
     container.appendChild(toast);
 
     // 토스트 애니메이션

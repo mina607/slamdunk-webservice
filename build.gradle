@@ -67,6 +67,10 @@ dependencies {
     // 개발 중 자동 리로드 (라이브)
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // 웹 소켓
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+
     // ----------------------------------------------------
     // 💡 테스트
     // ----------------------------------------------------

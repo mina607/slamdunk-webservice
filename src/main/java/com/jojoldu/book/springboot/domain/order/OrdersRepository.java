@@ -21,8 +21,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
     @Query("SELECT o FROM Orders o WHERE o.roomNumber = :roomNumber AND o.status = 'COMPLETED' ORDER BY o.id DESC")
     List<Orders> findCompletedOrdersByRoom(@Param("roomNumber") String roomNumber);
-    @Query("SELECT o FROM Orders o WHERE o.userId = ?1 AND o.status = 'COMPLETED' ORDER BY o.id DESC")
-    List<Orders> findCompletedOrdersByUserId(String userId);
+
 
     // 전체 주문 건수 세기 (중복 주문번호 제거)
     @Query("SELECT COUNT(DISTINCT o.orderNumber) FROM Orders o")
