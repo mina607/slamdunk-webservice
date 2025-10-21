@@ -57,7 +57,7 @@ function createAdminButton() {
     const btn = document.createElement('button');
     btn.className = 'toast-btn';
     btn.textContent = '주문 관리';
-    btn.onclick = () => (window.location.href = `/order-status`);
+    btn.onclick = () => (window.location.href = `/admin/order-management`);
     return btn;
 
 }
