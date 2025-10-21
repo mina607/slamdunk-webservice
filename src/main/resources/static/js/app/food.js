@@ -259,3 +259,21 @@ function handlePlaceOrderClick() {
         toastVisible = false;
     });
 }
+
+// 전화번호 입력 시 자동 하이픈(-) 추가
+document.addEventListener("DOMContentLoaded", function() {
+    const phoneInput = document.getElementById("phone-number");
+    if (!phoneInput) return; // 안전장치
+
+    phoneInput.addEventListener("input", function(e) {
+        let value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
+
+        if (value.length > 3 && value.length <= 7) {
+            value = value.replace(/(\d{3})(\d+)/, "$1-$2");
+        } else if (value.length > 7) {
+            value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+        }
+
+        e.target.value = value;
+    });
+});
