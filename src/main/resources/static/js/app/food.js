@@ -333,3 +333,17 @@ function hideAllToasts() {
         setTimeout(() => toast.remove(), 500); // 애니메이션 후 제거
     });
 }
+
+let toastVisible = false;
+
+function handlePlaceOrderClick() {
+  if (toastVisible) return; // 이미 떠 있으면 무시
+
+  toastVisible = true;
+  showToast('결제 방식을 확인해주세요.', false, '', 'payment');
+
+  // 토스트가 사라질 때 다시 허용
+  setTimeout(() => {
+    toastVisible = false;
+  }, 3000); // showToast가 사라지는 시간에 맞게 조정
+}
