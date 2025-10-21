@@ -178,10 +178,8 @@ function placeOrder(option,paymentType = null) {
             cart = [];
             totalPrice = 0;
 
-            // 룸서비스일 때,,,
-            if(option == null) {
-                updateCartDisplay();
-            }
+
+            updateCartDisplay();
 
             // 입력 필드 초기화
             document.getElementById('room-number').value = '';
