@@ -201,7 +201,7 @@ function placeOrder(option,paymentType = null) {
 
 
 // 토스트 알림 호출 함수
-function showToast(message, withButton = false, roomNumber = null, option = null) {
+function showToast(message, withButton = false, roomNumber = null, option = null, onClose = null) {
     const container = document.getElementById('toast-container');
 
     const toast = document.createElement('div');
@@ -274,7 +274,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
         cancelBtn.style.width = '100%';
         cancelBtn.onclick = () => {
             toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 200);
+            setTimeout(() => closeToast(toast, onClose), 200);
         };
 
         // 전체 버튼 구성
@@ -289,7 +289,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
     closeBtn.onclick = () => {
         toast.style.opacity = '0';
         toast.style.transform = 'scale(0.9)';
-        setTimeout(() => toast.remove(), 200);
+        setTimeout(() => closeToast(toast, onClose), 200);
     };
 
     toast.appendChild(closeBtn);
@@ -299,12 +299,23 @@ function showToast(message, withButton = false, roomNumber = null, option = null
     setTimeout(() => toast.classList.add('show'), 50);
 
     // 5초 뒤 자동 제거 (결제 옵션이 없을 때만)
-    if (!option) {
+    if (option == null) {
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 1200);
-        }, 5000);
+        }, 3000);
     }
+}
+
+// 토스트 닫기 함수
+function closeToast(toast, onClose) {
+    toast.classList.remove('show');
+    toast.style.opacity = '0';
+    toast.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+        toast.remove();
+        if (onClose) onClose(); // 토스트 닫히면 콜백 실행
+    }, 300);
 }
 
 // 포트원 결제 함수
@@ -349,16 +360,36 @@ function hideAllToasts() {
     });
 }
 
+// let toastVisible = false;
+//
+// function handlePlaceOrderClick() {
+//   if (toastVisible) return; // 이미 떠 있으면 무시
+//
+//   toastVisible = true;
+//   showToast('결제 방식을 확인해주세요.', false, '', 'payment');
+//
+//   // 토스트가 사라질 때 다시 허용
+//   setTimeout(() => {
+//     toastVisible = false;
+//   }, 3000); // showToast가 사라지는 시간에 맞게 조정
+// }
+
+// 토스트창 활성화 전역변수
 let toastVisible = false;
 
+// 토스트창 호출 함수
 function handlePlaceOrderClick() {
-  if (toastVisible) return; // 이미 떠 있으면 무시
+    const placeOrderBtn = document.getElementById('place-order-btn');
 
-  toastVisible = true;
-  showToast('결제 방식을 확인해주세요.', false, '', 'payment');
+    if (toastVisible) return; // 이미 토스트가 떠있으면 무시
 
-  // 토스트가 사라질 때 다시 허용
-  setTimeout(() => {
-    toastVisible = false;
-  }, 3000); // showToast가 사라지는 시간에 맞게 조정
+    toastVisible = true;
+    placeOrderBtn.disabled = true; // 버튼 비활성화
+
+    // 토스트 띄우기
+    showToast('결제 방식을 확인해주세요.', false, '', 'payment', () => {
+        // 토스트가 사라지면 버튼 다시 활성화
+        placeOrderBtn.disabled = false;
+        toastVisible = false;
+    });
 }
