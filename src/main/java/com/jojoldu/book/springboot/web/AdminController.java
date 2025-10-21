@@ -23,6 +23,16 @@ public class AdminController {
         model.addAttribute("todayRevenue", ordersRepository.sumTodayRevenue());
         model.addAttribute("deliveringCount", ordersRepository.countByStatus("DELIVERING"));
 
+        model.addAttribute("isDashboard", true);
         return "admin/index";
     }
+
+    @GetMapping("/admin/order-management")
+    public String orderManagement(Model model) {
+
+        model.addAttribute("isOrderManagement", true);
+        return "admin/order-management";
+    }
+
+
 }
