@@ -221,6 +221,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
     // 주문 내역 버튼
     if (withButton && roomNumber && !option) {
         const btn = document.createElement('button');
+        btn.className = 'toast-btn';
         btn.textContent = '주문 내역';
         btn.onclick = () => {
             window.location.href = `/order-status?room=${roomNumber}`;
@@ -240,6 +241,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
 
         // 즉시 결제 버튼
         const payNowBtn = document.createElement('button');
+        payNowBtn.className = 'toast-btn';
         payNowBtn.textContent = '즉시 결제';
         payNowBtn.style.flex = '1';
         payNowBtn.onclick = () => {
@@ -248,6 +250,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
 
         // 나중에 결제 버튼
         const payLaterBtn = document.createElement('button');
+        payLaterBtn.className = 'toast-btn';
         payLaterBtn.textContent = '나중에 결제';
         payLaterBtn.style.flex = '1';
         payLaterBtn.style.backgroundColor = '#899d8b';
@@ -263,6 +266,7 @@ function showToast(message, withButton = false, roomNumber = null, option = null
 
         // 취소 버튼 (아래쪽, 가운데 정렬)
         const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'toast-btn';
         cancelBtn.textContent = '취소';
         cancelBtn.style.backgroundColor = '#777';
         cancelBtn.style.color = '#fff';

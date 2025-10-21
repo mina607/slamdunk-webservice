@@ -41,6 +41,7 @@ function showToast(message) {
             </span>
         `;
     const btn = document.createElement('button');
+    btn.className = 'toast-btn';
     btn.textContent = '주문 관리';
     btn.style.cssText = 'padding: 8px 16px; cursor: pointer;'; // 스타일 추가
     btn.onclick = () => {

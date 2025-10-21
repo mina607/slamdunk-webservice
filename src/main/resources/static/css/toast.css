@@ -27,24 +27,10 @@
     transform: translateY(0);
 }
 
-.toast button {
-  margin-top: 12px;
-  padding: 12px 24px;   /* 버튼 크기 */
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  background: #2c5530;
-  color: white;
-  cursor: pointer;
-  min-width: 180px;     /* 버튼 최소 너비 */
-  display: inline-block;
-  text-align: center;
-}
-
 /* X 닫기 버튼 */
 .toast-close {
     position: absolute;
-    top: -10px;
+    top: 2px;
     right: 10px;
     background: transparent;
     border: none;
@@ -61,3 +47,18 @@
 .toast-close:hover {
     opacity: 1;
 }
+
+.toast-btn {
+  margin-top: 12px;
+  padding: 12px 24px;   /* 버튼 크기 */
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #2c5530;
+  color: white;
+  cursor: pointer;
+  min-width: 180px;     /* 버튼 최소 너비 */
+  display: inline-block;
+  text-align: center;
+}
+
