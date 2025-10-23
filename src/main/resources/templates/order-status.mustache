@@ -21,6 +21,11 @@
                 <i class="fas fa-receipt me-3"></i>주문 내역
             </h1>
 
+            <!-- 현재 객실 번호 표시 -->
+            <div class="current-room">
+                <p id="currentRoom"></p>
+            </div>
+
             <!-- 객실 선택 버튼 -->
             <a href="#"
                id="roomSelectBtn"
@@ -295,6 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showRoomModal();
     } else {
         console.log('선택된 객실 번호:', room);
+        document.getElementById('currentRoom').textContent = `${room} 호`;
     }
 
     // 언제든 다시 호출 가능

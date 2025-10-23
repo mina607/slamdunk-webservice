@@ -556,6 +556,17 @@
     gap: 8px;
 }
 
+.current-room {
+    position: absolute;
+    right: 185px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
 .order-tab:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
