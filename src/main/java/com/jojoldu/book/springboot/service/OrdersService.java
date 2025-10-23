@@ -4,7 +4,6 @@ import com.jojoldu.book.springboot.domain.order.Orders;
 import com.jojoldu.book.springboot.domain.order.OrdersRepository;
 import com.jojoldu.book.springboot.domain.order.PaymentType;
 import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
-import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,7 +130,6 @@ public class OrdersService {
             this.icon = icon;
 
         }
-
 
 
         public String getName() {

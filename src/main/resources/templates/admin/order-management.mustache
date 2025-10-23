@@ -105,12 +105,12 @@
             <!-- 주문 목록 -->
             <div id="order-list">
                 {{#orders}}
-                    <div class="order-card" data-status="{{!status}}">
+                    <div class="order-card" data-status="{{status}}">
                         <div class="order-header">
                             <div>
-                                <div class="order-number">주문 #{{!orderNumber}}</div>
+                                <div class="order-number">주문 #{{orderNumber}}</div>
                                 <div class="order-time">
-                                    <i class="fas fa-clock me-1"></i> {{!orderTime}}
+                                    <i class="fas fa-clock me-1"></i> {{orderTime}}
                                 </div>
                             </div>
                             <span class="order-status status-{{!status}}">{{!statusText}}</span>
@@ -118,43 +118,41 @@
 
                         <div class="order-body">
                             <div class="customer-info">
-                                <h4 style="margin-bottom: 1rem; color: #fff;">
+                                <h4 style="margin-bottom: 1rem; color: #666;">
                                     <i class="fas fa-user me-2"></i>고객 정보
                                 </h4>
                                 <div class="info-row">
                                     <span class="info-label">객실:</span>
-                                    <span class="info-value">{{!roomNumber}}</span>
+                                    <span class="info-value">{{roomNumber}}호</span>
                                 </div>
                                 <div class="info-row">
                                     <span class="info-label">연락처:</span>
-                                    <span class="info-value">{{!phoneNumber}}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">고객명:</span>
-                                    <span class="info-value">{{!customerName}}</span>
+                                    <span class="info-value">{{phoneNumber}}</span>
                                 </div>
                             </div>
 
                             <div class="order-items">
-                                <h4 style="margin-bottom: 1rem; color: #fff;">
+                                <h4 style="margin-bottom: 1rem; color: #666;">
                                     <i class="fas fa-shopping-bag me-2"></i>주문 내역
                                 </h4>
-                                {{!#items}}
+                                {{#items}}
                                     <div class="item-row">
                                         <div>
-                                            <span class="item-name">{{!name}}</span>
-                                            <span class="item-quantity">x {{!quantity}}</span>
+                                            <span class="item-name">
+                                                <span class="item-icon {{icon}}"></span> {{itemName}}
+                                            </span>
+                                            <span class="item-quantity">x {{quantity}}</span>
                                         </div>
-                                        <span class="item-price">₩{{!price}}</span>
+                                        <span class="item-price">₩{{price}}</span>
                                     </div>
-                                {{!/items}}
+                                {{/items}}
                             </div>
                         </div>
 
                         <div class="order-footer">
                             <div>
-                                <div style="color: rgba(255,255,255,0.6); margin-bottom: 0.25rem;">총 결제금액</div>
-                                <div class="total-amount">₩{{!totalAmount}}</div>
+                                <div style="color: #666; margin-bottom: 0.25rem;">총 결제금액</div>
+                                <div class="total-amount">₩{{totalPrice}}</div>
                             </div>
 
                             <div class="order-actions">
@@ -168,9 +166,9 @@
                                         <i class="fas fa-check"></i> 배달 완료
                                     </button>
                                 {{!/showCompleteButton}}
-                                <button class="action-btn btn-cancel" onclick="viewOrderDetail('{{!orderNumber}}')">
-                                    <i class="fas fa-info-circle"></i> 상세보기
-                                </button>
+<!--                                <button class="action-btn btn-cancel" onclick="viewOrderDetail('{{!orderNumber}}')">-->
+<!--                                    <i class="fas fa-info-circle"></i> 상세보기-->
+<!--                                </button>-->
                             </div>
                         </div>
                     </div>
@@ -343,7 +341,7 @@
         connectWebSocket();
     });
 </script>
-
+<script src="/js/app/admin.js"></script>
 {{>layout/footer}}
 </body>
 </html>

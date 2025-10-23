@@ -33,4 +33,8 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
     // 배달중인 주문 개수 세기
     Long countByStatus(String status);
+
+    // 배달 상태에 따른 주문 조회
+//    List<Orders> findByStatus(String status);
+    List<Orders> findByStatusOrderByIdDesc(String status);
 }

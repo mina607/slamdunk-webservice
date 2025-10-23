@@ -13,6 +13,15 @@ stompClient.connect({}, function() {
             console.log("TTS 시작:", msg.body);
             speechSynthesis.speak(utterance);
 
+
+            const container = document.getElementById('toast-container');
+            const isToastVisible = container && container.children.length > 0;
+
+            // 토스트가 이미 표시 중이면 새 토스트는 무시
+            if (isToastVisible) {
+                console.log("토스트 표시 중이므로 새 알림 무시");
+                return;
+            }
             // 토스트 표시
             showToast(msg.body, true,null,'admin')
 
