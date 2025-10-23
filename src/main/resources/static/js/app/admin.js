@@ -2,33 +2,35 @@
 
 
 // 소켓 처리
-const socket = new SockJS('/ws');
-const stompClient = Stomp.over(socket);
-stompClient.connect({}, function() {
-    stompClient.subscribe('/topic/orderAlert', function(msg) {
-        console.log("받음:", msg.body);
-        try {
-            // TTS 실행
-            const utterance = new SpeechSynthesisUtterance(msg.body);
-            console.log("TTS 시작:", msg.body);
-            speechSynthesis.speak(utterance);
+window.addEventListener('load', () => {
+    const socket = new SockJS('/ws');
+    const stompClient = Stomp.over(socket);
+    stompClient.connect({}, function () {
+        stompClient.subscribe('/topic/orderAlert', function (msg) {
+            console.log("받음:", msg.body);
+            try {
+                // TTS 실행
+                const utterance = new SpeechSynthesisUtterance(msg.body);
+                console.log("TTS 시작:", msg.body);
+                speechSynthesis.speak(utterance);
 
 
-            const container = document.getElementById('toast-container');
-            const isToastVisible = container && container.children.length > 0;
+                const container = document.getElementById('toast-container');
+                const isToastVisible = container && container.children.length > 0;
 
-            // 토스트가 이미 표시 중이면 새 토스트는 무시
-            if (isToastVisible) {
-                console.log("토스트 표시 중이므로 새 알림 무시");
-                return;
+                // 토스트가 이미 표시 중이면 새 토스트는 무시
+                if (isToastVisible) {
+                    console.log("토스트 표시 중이므로 새 알림 무시");
+                    return;
+                }
+                // 토스트 표시
+                showToast(msg.body, true, null, 'admin')
+
+            } catch (error) {
+                console.error("에러 발생:", error);
             }
-            // 토스트 표시
-            showToast(msg.body, true,null,'admin')
 
-        } catch (error) {
-            console.error("에러 발생:", error);
-        }
-
+        });
     });
 });
 
