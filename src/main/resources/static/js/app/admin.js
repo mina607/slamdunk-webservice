@@ -1,6 +1,3 @@
-
-
-
 // 소켓 처리
 window.addEventListener('load', () => {
     const socket = new SockJS('/ws');
@@ -109,6 +106,52 @@ const orderChart = new Chart(ctx, {
                 }
             }
         }
+    }
+});
+
+// 금액 포맷 함수 (숫자를 3자리마다 콤마 추가)
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 페이지 로드 시 실행
+document.addEventListener("DOMContentLoaded", function() {
+    const statValue = document.getElementById("today-revenue");
+
+    // 요소가 없으면 종료
+    if (!statValue) return;
+
+    // input 태그인지 확인
+    const isInput = statValue.tagName === "INPUT";
+
+    // 현재 값 가져오기
+    const currentValue = isInput ? statValue.value : statValue.textContent;
+
+    // 값이 있으면 포맷 적용
+    if (currentValue && currentValue.trim() !== "") {
+        // 숫자만 추출
+        const numericValue = currentValue.replace(/[^0-9]/g, "");
+
+        // 포맷된 값 설정
+        if (isInput) {
+            statValue.value = formatNumber(numericValue);
+        } else {
+            statValue.textContent = formatNumber(numericValue);
+        }
+    }
+
+    // (선택사항) input 태그라면 사용자가 직접 입력할 때도 포맷 적용
+    if (isInput) {
+        statValue.addEventListener("input", function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, "");
+
+            // 최대 11자리까지만 허용 (필요 없으면 삭제 가능)
+            if (value.length > 11) {
+                value = value.slice(0, 11);
+            }
+
+            e.target.value = formatNumber(value);
+        });
     }
 });
 

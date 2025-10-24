@@ -25,7 +25,7 @@
                     <span>관리자님, 환영합니다</span>
                     <i class="fas fa-user-circle"></i>
                 </div>
-            </div>
+            </div>dhsm
 
             <!-- 통계 카드 -->
             <div class="stats-grid">
@@ -50,7 +50,7 @@
                             <i class="fas fa-won-sign"></i>
                         </div>
                     </div>
-                    <div class="stat-value">₩{{todayRevenue}}</div>
+                    <div class="stat-value" id="today-revenue">₩{{todayRevenue}}</div>
                     <div class="stat-label">총 매출액</div>
                     <div class="stat-change positive">
                         <i class="fas fa-arrow-up"></i> 전일 대비 +8%
@@ -161,61 +161,26 @@
                             <a href="#" class="card-action">전체 보기 <i class="fas fa-arrow-right ms-1"></i></a>
                         </div>
                         <ul class="menu-rank-list">
-                            <li class="menu-rank-item">
-                                <div class="rank-number top-1">1</div>
-                                <div class="menu-info">
-                                    <div class="menu-name">더블 치즈 버거</div>
-                                    <div class="menu-category">햄버거</div>
-                                </div>
-                                <div class="menu-orders">
-                                    <div class="order-count">28</div>
-                                    <div class="order-label">주문</div>
-                                </div>
-                            </li>
-                            <li class="menu-rank-item">
-                                <div class="rank-number top-2">2</div>
-                                <div class="menu-info">
-                                    <div class="menu-name">페퍼로니 피자</div>
-                                    <div class="menu-category">피자</div>
-                                </div>
-                                <div class="menu-orders">
-                                    <div class="order-count">22</div>
-                                    <div class="order-label">주문</div>
-                                </div>
-                            </li>
-                            <li class="menu-rank-item">
-                                <div class="rank-number top-3">3</div>
-                                <div class="menu-info">
-                                    <div class="menu-name">생맥주</div>
-                                    <div class="menu-category">주류</div>
-                                </div>
-                                <div class="menu-orders">
-                                    <div class="order-count">19</div>
-                                    <div class="order-label">주문</div>
-                                </div>
-                            </li>
-                            <li class="menu-rank-item">
-                                <div class="rank-number">4</div>
-                                <div class="menu-info">
-                                    <div class="menu-name">아메리카노</div>
-                                    <div class="menu-category">커피</div>
-                                </div>
-                                <div class="menu-orders">
-                                    <div class="order-count">16</div>
-                                    <div class="order-label">주문</div>
-                                </div>
-                            </li>
-                            <li class="menu-rank-item">
-                                <div class="rank-number">5</div>
-                                <div class="menu-info">
-                                    <div class="menu-name">초콜릿 케이크</div>
-                                    <div class="menu-category">디저트</div>
-                                </div>
-                                <div class="menu-orders">
-                                    <div class="order-count">14</div>
-                                    <div class="order-label">주문</div>
-                                </div>
-                            </li>
+                            {{#popularMenus}}
+                                <li class="menu-rank-item">
+                                    <div class="rank-number {{#isTop3}}top-{{rank}}{{/isTop3}}">{{rank}}</div>
+                                    <div class="menu-info">
+                                        <div class="menu-name">{{menuName}}</div>
+                                        <div class="menu-category">{{category}}</div>
+                                    </div>
+                                    <div class="menu-orders">
+                                        <div class="order-count">{{orderCount}}</div>
+                                        <div class="order-label">주문</div>
+                                    </div>
+                                </li>
+                            {{/popularMenus}}
+                            {{^popularMenus}}
+                                <li class="menu-rank-item">
+                                    <div class="menu-info">
+                                        <div class="menu-name">주문 데이터가 없습니다</div>
+                                    </div>
+                                </li>
+                            {{/popularMenus}}
                         </ul>
                     </div>
                 </div>
