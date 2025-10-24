@@ -63,6 +63,13 @@ public class AdminController {
 
         List<OrderGroupDto> orders = adminService.getOrdersByStatus(status);
 
+        // 상태별 개수 계산
+        long pendingCount = orders.stream()
+                .mapToLong(o -> o.getCountByStatus("ORDERED"))
+                .sum();
+
+        model.addAttribute("pendingCount", pendingCount);
+
         model.addAttribute("orders", orders);
         model.addAttribute("status", status); // 현재 필터 상태 유지용
 
@@ -71,4 +78,5 @@ public class AdminController {
 
         return "admin/order-management";
     }
+
 }

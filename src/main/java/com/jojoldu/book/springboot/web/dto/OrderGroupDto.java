@@ -4,6 +4,7 @@ import com.jojoldu.book.springboot.domain.order.Orders;
 import com.jojoldu.book.springboot.domain.order.PaymentType;
 import lombok.Getter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ public class OrderGroupDto {
     private String totalPrice;  // String으로!
     private String specialRequests;
     private PaymentType paymentType;
+    private Map<String, Long> statusCount;
 
     public OrderGroupDto(String orderNumber, List<Orders> orders) {
         if (orders.isEmpty()) {
@@ -39,6 +41,8 @@ public class OrderGroupDto {
                         .filter(s -> !s.trim().isEmpty())
                         .orElse("없음");
         this.paymentType = first.getPaymentType();
+        this.statusCount = orders.stream()
+                .collect(Collectors.groupingBy(Orders::getStatus, Collectors.counting()));
 
 
         // 각 주문을 아이템으로 변환
@@ -74,6 +78,10 @@ public class OrderGroupDto {
         this.totalPrice = String.format("%,d", total);
         System.out.println("Total Price: " + this.totalPrice);
         System.out.println("icon: " + this.items);
+    }
+
+    public long getCountByStatus(String status) {
+        return statusCount.getOrDefault(status, 0L);
     }
 
     @Getter

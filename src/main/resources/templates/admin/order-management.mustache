@@ -35,19 +35,19 @@
                             <i class="fas fa-clock"></i>
                         </div>
                     </div>
-                    <div class="stat-value" id="pending-count">{{! pendingCount}}</div>
+                    <div class="stat-value" id="pending-count">{{pendingCount}}</div>
                     <div class="stat-label">접수 대기 주문</div>
                 </div>
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <div class="stat-title">준비중</div>
+                        <div class="stat-title">준비완료</div>
                         <div class="stat-icon orange">
-                            <i class="fas fa-utensils"></i>
+                            <i class="fas fa-box"></i>
                         </div>
                     </div>
                     <div class="stat-value" id="preparing-count">{{! preparingCount}}</div>
-                    <div class="stat-label">조리중인 주문</div>
+                    <div class="stat-label">준비가 완료된 주문</div>
                 </div>
 
                 <div class="stat-card">
@@ -97,7 +97,7 @@
 
                     <div class="search-box" style="position: relative; margin-left: auto;">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" class="search-input" placeholder="주문번호, 객실번호로 검색...">
+                        <input type="text" class="search-input" placeholder="주문번호, 객실번호로 검색">
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                                     <i class="fas fa-clock me-1"></i> {{orderTime}}
                                 </div>
                             </div>
-                            <span class="order-status status-{{!status}}">{{!statusText}}</span>
+                            <span class="status-badge status-{{!status}}">{{!statusText}}</span>
                         </div>
 
                         <div class="order-body">
@@ -157,12 +157,12 @@
 
                             <div class="order-actions">
                                 {{!#showRobotButton}}
-                                    <button class="action-btn btn-robot" onclick="assignRobot('{{!orderNumber}}')">
+                                    <button class="action-btn btn-robot" onclick="assignRobot('{{orderNumber}}')">
                                         <i class="fas fa-robot"></i> 로봇 배달 요청
                                     </button>
                                 {{!/showRobotButton}}
                                 {{!#showCompleteButton}}
-                                    <button class="action-btn btn-complete" onclick="completeOrder('{{!orderNumber}}')">
+                                    <button class="action-btn btn-complete" onclick="completeOrder('{{orderNumber}}')">
                                         <i class="fas fa-check"></i> 배달 완료
                                     </button>
                                 {{!/showCompleteButton}}
