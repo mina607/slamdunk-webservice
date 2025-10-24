@@ -507,8 +507,7 @@ body {
 .order-body {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 2rem;
-    margin-bottom: 1rem;
+    gap: 1rem;
 }
 
 .customer-info {
@@ -537,6 +536,11 @@ body {
     background: rgba(255,255,255,0.03);
     padding: 1rem;
     border-radius: 8px;
+}
+
+.item-detail {
+    font-size: 14px;
+    color: #999;
 }
 
 .item-row {
