@@ -132,11 +132,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // 숫자만 추출
         const numericValue = currentValue.replace(/[^0-9]/g, "");
 
-        // 포맷된 값 설정
         if (isInput) {
-            statValue.value = formatNumber(numericValue);
+            statValue.value = "₩" + formatNumber(numericValue);
         } else {
-            statValue.textContent = formatNumber(numericValue);
+            statValue.textContent = "₩" + formatNumber(numericValue);
         }
     }
 
