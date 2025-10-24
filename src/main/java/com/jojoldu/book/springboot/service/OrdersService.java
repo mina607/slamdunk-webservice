@@ -28,6 +28,7 @@ public class OrdersService {
     public List<Orders> getCompletedOrders(String userId) {
         return ordersRepository.findCompletedOrdersByRoom(userId);
     }
+
     // 주문 저장 메서드 추가
     @Transactional
     public Long saveOrder(String userId, String itemName, String option, int quantity,
@@ -44,17 +45,19 @@ public class OrdersService {
                 .orderNumber(orderNumber)
                 .userId(userId)
                 .itemName(itemName)
+                .category(getCategoryByMenuItem(itemName))  // ← 추가!
                 .option(option)
                 .quantity(quantity)
                 .price(price)
                 .roomNumber(roomNumber)
                 .phoneNumber(phoneNumber)
-                .status("ORDERED")  // 초기 상태는 주문접수
+                .status("ORDERED")
                 .orderTime(orderTime)
                 .build();
 
         return ordersRepository.save(order).getId();
     }
+
     @Transactional
     public void saveMultipleOrders(String userId, String option, List<OrderItem> items,
                                    String roomNumber, String phoneNumber, String specialRequests, PaymentType paymentType) {
@@ -68,11 +71,12 @@ public class OrdersService {
         // 각 아이템을 같은 주문번호로 저장
         for (OrderItem item : items) {
             Orders order = Orders.builder()
-                    .orderNumber(orderNumber)  // 같은 번호!
+                    .orderNumber(orderNumber)
                     .userId(userId)
                     .icon(item.getIcon())
                     .option(option)
                     .itemName(item.getName())
+                    .category(getCategoryByMenuItem(item.getName()))  // ← 추가!
                     .quantity(item.getQuantity())
                     .price(item.getPrice() * item.getQuantity())
                     .roomNumber(roomNumber)
@@ -113,12 +117,45 @@ public class OrdersService {
                 .collect(Collectors.toList());
     }
 
+    // ✅ 카테고리 자동 매핑 메소드 추가
+    private String getCategoryByMenuItem(String itemName) {
+        if (itemName == null) return "기타";
+
+        // 햄버거
+        if (itemName.contains("클래식 비프 버거") || itemName.contains("치킨 버거") ||
+                itemName.contains("더블 치즈 버거")) {
+            return "햄버거";
+        }
+        // 피자
+        if (itemName.contains("마르게리타 피자") || itemName.contains("페퍼로니 피자") ||
+                itemName.contains("고구마 피자")) {
+            return "피자";
+        }
+        // 주류
+        if (itemName.contains("하우스 와인") || itemName.contains("칵테일") ||
+                itemName.contains("생맥주")) {
+            return "주류";
+        }
+        // 디저트
+        if (itemName.contains("초콜릿 케이크") || itemName.contains("바닐라 아이스크림") ||
+                itemName.contains("쿠키 세트")) {
+            return "디저트";
+        }
+        // 음료/커피
+        if (itemName.contains("아메리카노") || itemName.contains("카푸치노") ||
+                itemName.contains("물") || itemName.contains("오렌지 주스")) {
+            return "음료/커피";
+        }
+
+        return "기타";
+    }
+
     // OrderItem 내부 클래스
     public static class OrderItem {
         private String name;
         private int quantity;
         private int price;
-        private String icon;     // Font Awesome 클래스명
+        private String icon;
 
         public OrderItem() {
         }
@@ -128,9 +165,7 @@ public class OrdersService {
             this.quantity = quantity;
             this.price = price;
             this.icon = icon;
-
         }
-
 
         public String getName() {
             return name;

@@ -4,6 +4,7 @@ import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
 import com.jojoldu.book.springboot.domain.order.OrdersRepository;
 import com.jojoldu.book.springboot.service.AdminService;
 import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
+import com.jojoldu.book.springboot.web.dto.PopularMenuDto;  // ← 추가
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.ArrayList;  // ← 추가
 
 @RequiredArgsConstructor
 @Controller
@@ -26,9 +28,27 @@ public class AdminController {
     public String Dashboard(Model model) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
+        // 통계 데이터
         model.addAttribute("todayOrders", ordersRepository.countTodayOrders());
         model.addAttribute("todayRevenue", ordersRepository.sumTodayRevenue());
         model.addAttribute("deliveringCount", ordersRepository.countByStatus("DELIVERING"));
+
+        // 인기 메뉴 데이터 추가 (물품 제외, 음식만)
+        List<Object[]> results = ordersRepository.findPopularMenus();
+        List<PopularMenuDto> popularMenus = new ArrayList<>();
+
+        int rank = 1;
+        for (Object[] result : results) {
+            if (rank > 5) break;  // 상위 5개만
+
+            String menuName = (String) result[0];
+            String category = (String) result[2];
+            Long orderCount = ((Number) result[3]).longValue();
+
+            popularMenus.add(new PopularMenuDto(rank++, menuName, category, orderCount));
+        }
+
+        model.addAttribute("popularMenus", popularMenus);
 
         // 사이드바 메뉴 활성화
         model.addAttribute("isDashboard", true);
@@ -43,7 +63,6 @@ public class AdminController {
 
         List<OrderGroupDto> orders = adminService.getOrdersByStatus(status);
 
-
         model.addAttribute("orders", orders);
         model.addAttribute("status", status); // 현재 필터 상태 유지용
 
@@ -52,5 +71,4 @@ public class AdminController {
 
         return "admin/order-management";
     }
-
 }

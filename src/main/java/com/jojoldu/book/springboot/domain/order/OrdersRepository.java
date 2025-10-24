@@ -37,4 +37,13 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     // 배달 상태에 따른 주문 조회
 //    List<Orders> findByStatus(String status);
     List<Orders> findByStatusOrderByIdDesc(String status);
+
+    // 인기 메뉴 조회 (물품 제외, 음식만)
+    @Query("SELECT o.itemName, o.option, o.category, SUM(o.quantity) " +
+            "FROM Orders o " +
+            "WHERE o.option != 'article' " +  // 물품 제외
+            "AND o.option IS NOT NULL " +
+            "GROUP BY o.itemName, o.option " +
+            "ORDER BY SUM(o.quantity) DESC")
+    List<Object[]> findPopularMenus();
 }

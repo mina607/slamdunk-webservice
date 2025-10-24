@@ -17,6 +17,7 @@ public class Orders {
     private String orderNumber;      // 주문번호
     private String userId;           // 주문한 사용자
     private String itemName;         // 메뉴명
+    private String category;
     private int quantity;            // 수량
     private int price;               // 가격
     private String roomNumber;       // 객실번호
@@ -34,7 +35,7 @@ public class Orders {
 
 
     @Builder
-    public Orders(String orderNumber, String userId, String itemName, String option,
+    public Orders(String orderNumber, String userId, String itemName, String category, String option,
                   int quantity, int price, String icon, String roomNumber,
                   String phoneNumber, String status, String orderTime, String specialRequests,
                   PaymentType paymentType) {
@@ -42,6 +43,7 @@ public class Orders {
         this.option = option;
         this.userId = userId;
         this.itemName = itemName;
+        this.category = category;
         this.quantity = quantity;
         this.price = price;
         this.roomNumber = roomNumber;
