@@ -1,36 +1,77 @@
 package com.jojoldu.book.springboot.config;
 
+import net.minidev.json.JSONObject;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import java.net.URI;
+import org.springframework.stereotype.Component;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+@Component
 public class RosBridgeClient extends WebSocketClient {
 
-    public RosBridgeClient(URI serverUri) {
-        super(serverUri);
+    private boolean advertised = false;  // advertise 여부 체크
+
+    public RosBridgeClient() throws URISyntaxException {
+        super(new URI("ws://192.168.123.250:9090"));
+        this.connect();
     }
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        System.out.println("Connected to rosbridge");
+        System.out.println("[ROSBRIDGE] Connected");
+        // 연결되자마자 토픽 advertise
+        advertiseTopic();
     }
 
     @Override
-    public void onMessage(String message) { }
+    public void onMessage(String message) {
+        System.out.println("[ROS] Message received: " + message);
+    }
 
     @Override
-    public void onClose(int code, String reason, boolean remote) { }
+    public void onClose(int code, String reason, boolean remote) {
+        System.out.println("[ROSBRIDGE] Connection closed: " + reason);
+    }
 
     @Override
     public void onError(Exception ex) {
-        ex.printStackTrace();
+        System.err.println("[ROSBRIDGE] Error: " + ex.getMessage());
     }
 
-    public void sendRobotCommand(String orderNumber) {
-        String json = String.format(
-                "{ \"op\": \"publish\", \"topic\": \"/scout/assign_order\", \"msg\": { \"order_number\": \"%s\" } }",
-                orderNumber
-        );
-        send(json);
+    // 토픽 advertise
+    private void advertiseTopic() {
+        if (!advertised) {
+            JSONObject advertiseMsg = new JSONObject();
+            advertiseMsg.put("op", "advertise");
+            advertiseMsg.put("topic", "/scout/assign_order");
+            advertiseMsg.put("type", "std_msgs/String");
+            this.send(advertiseMsg.toString());
+            advertised = true;
+            System.out.println("[ROSBRIDGE] Topic advertised: /scout/assign_order");
+        }
+    }
+
+    // 주문 publish
+    public void publishOrder(String orderNumber) {
+        // advertise가 되어있지 않으면 먼저 advertise
+        if (!advertised) {
+            advertiseTopic();
+        }
+
+        // ROS2 std_msgs/String 메시지 포맷에 맞춰 JSON 구성
+        JSONObject msg = new JSONObject();
+        msg.put("op", "publish");
+        msg.put("topic", "/scout/assign_order");
+
+        // 단순 문자열로 전달
+        JSONObject msgData = new JSONObject();
+        msgData.put("data", orderNumber);
+
+        msg.put("msg", msgData);
+
+        this.send(msg.toString());
+        System.out.println("[ROSBRIDGE] Sent order: " + msgData);
     }
 }
