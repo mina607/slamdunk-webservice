@@ -1,5 +1,6 @@
 package com.jojoldu.book.springboot.web;
 
+import com.jojoldu.book.springboot.config.RosBridgeClient;
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
 import com.jojoldu.book.springboot.domain.order.Orders;
 import com.jojoldu.book.springboot.domain.order.OrdersRepository;
@@ -28,6 +29,7 @@ public class AdminController {
     private final HttpSession httpSession;
     private final OrdersRepository ordersRepository;
     private final AdminService adminService;
+    private final RosBridgeClient rosClient;
 
     // 대시보드
     @GetMapping("/admin/index")
@@ -112,6 +114,19 @@ public class AdminController {
         response.put("success", true);
         response.put("message", "주문이 준비 완료 처리되었습니다.");
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/admin/orders/{orderNumber}/assign-robot")
+    public Map<String, Object> assignRobot(@PathVariable String orderNumber) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            rosClient.sendRobotCommand(orderNumber);
+            response.put("success", true);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+        }
+        return response;
     }
 
 }
