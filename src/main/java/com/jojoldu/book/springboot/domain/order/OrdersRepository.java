@@ -27,6 +27,15 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
     @Query("SELECT COUNT(DISTINCT o.orderNumber) FROM Orders o")
     Long countTodayOrders();
 
+    // 음식 주문 건수
+    @Query("SELECT COUNT(DISTINCT o.orderNumber) FROM Orders o WHERE o.option != 'article' AND o.option IS NOT NULL")
+    Long countFoodOrders();
+
+    // 물품 주문 건수
+    @Query("SELECT COUNT(DISTINCT o.orderNumber) FROM Orders o WHERE o.option = 'article'")
+    Long countProductOrders();
+
+
     // 전체 매출 계산 (가격 × 수량의 합계)
     @Query("SELECT COALESCE(SUM(o.price * o.quantity), 0) FROM Orders o")
     Long sumTodayRevenue();
@@ -46,4 +55,26 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "GROUP BY o.itemName, o.option " +
             "ORDER BY SUM(o.quantity) DESC")
     List<Object[]> findPopularMenus();
+
+    // 시간대별 음식 주문 건수
+    @Query(value = "SELECT CAST(SUBSTRING(order_time, 12, 2) AS INTEGER) as \"hour\", " +
+            "COUNT(DISTINCT order_number) as \"count\" " +
+            "FROM orders " +
+            "WHERE option != 'article' " +
+            "AND option IS NOT NULL " +
+            "AND order_time IS NOT NULL " +
+            "GROUP BY CAST(SUBSTRING(order_time, 12, 2) AS INTEGER) " +
+            "ORDER BY \"hour\"",
+            nativeQuery = true)
+    List<Object[]> findHourlyFoodOrders();
+
+    @Query(value = "SELECT CAST(SUBSTRING(order_time, 12, 2) AS INTEGER) as \"hour\", " +
+            "COUNT(DISTINCT order_number) as \"count\" " +
+            "FROM orders " +
+            "WHERE option = 'article' " +
+            "AND order_time IS NOT NULL " +
+            "GROUP BY CAST(SUBSTRING(order_time, 12, 2) AS INTEGER) " +
+            "ORDER BY \"hour\"",
+            nativeQuery = true)
+    List<Object[]> findHourlyProductOrders();
 }

@@ -33,79 +33,64 @@ window.addEventListener('load', () => {
 
 
 // 시간대별 주문 추이 차트
-const ctx = document.getElementById('orderChart').getContext('2d');
-const orderChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'],
-        datasets: [{
-            label: '주문 건수',
-            data: [2, 5, 8, 15, 12, 10, 18, 22, 16, 8],
-            borderColor: '#2c5530',
-            backgroundColor: 'rgba(44, 85, 48, 0.1)',
-            tension: 0.4,
-            fill: true,
-            pointRadius: 5,
-            pointBackgroundColor: '#2c5530',
-            pointBorderColor: '#fff',
-            pointBorderWidth: 2,
-            pointHoverRadius: 7
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top',
-                labels: {
-                    font: {
-                        size: 12,
-                        family: "'Segoe UI', sans-serif"
+document.addEventListener('DOMContentLoaded', function() {
+    // 시간대별 주문 추이 차트
+    const ctx = document.getElementById('orderChart');
+
+    if (ctx) {
+        // 서버에서 전달받은 데이터 사용
+        const hourlyData = JSON.parse(ctx.dataset.hourlyOrders || '[]');
+
+        const labels = hourlyData.map(item => item.hour + ':00');
+        const foodData = hourlyData.map(item => item.foodCount);
+        const productData = hourlyData.map(item => item.productCount);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: '음식 주문',
+                        data: foodData,
+                        borderColor: '#2c5530',
+                        backgroundColor: 'rgba(44, 85, 48, 0.1)',
+                        tension: 0.4,
+                        fill: true
                     },
-                    color: '#2c5530',
-                    padding: 15
-                }
+                    {
+                        label: '물품 주문',
+                        data: productData,
+                        borderColor: '#eab308',
+                        backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
             },
-            tooltip: {
-                backgroundColor: 'rgba(44, 85, 48, 0.9)',
-                padding: 12,
-                titleFont: {
-                    size: 14
-                },
-                bodyFont: {
-                    size: 13
-                },
-                cornerRadius: 8
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 5,
-                    color: '#666',
-                    font: {
-                        size: 11
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
                     }
                 },
-                grid: {
-                    color: 'rgba(0, 0, 0, 0.05)'
-                }
-            },
-            x: {
-                ticks: {
-                    color: '#666',
-                    font: {
-                        size: 11
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
                     }
-                },
-                grid: {
-                    display: false
                 }
             }
-        }
+        });
     }
 });
 

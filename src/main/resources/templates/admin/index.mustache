@@ -36,11 +36,8 @@
                             <i class="fas fa-shopping-cart"></i>
                         </div>
                     </div>
-                    <div class="stat-value" id="today-orders">{{todayOrders}}</div>
-                    <div class="stat-label">총 주문 건수</div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-arrow-up"></i> 전일 대비 +12%
-                    </div>
+                    <div class="stat-value" id="today-orders">{{foodOrders}} / {{productOrders}}</div>
+                    <div class="stat-label">🍽️ 룸 서비스 수 / 📦 물품 서비스 수</div>
                 </div>
 
                 <div class="stat-card">
@@ -52,9 +49,6 @@
                     </div>
                     <div class="stat-value" id="today-revenue">{{todayRevenue}}</div>
                     <div class="stat-label">총 매출액</div>
-                    <div class="stat-change positive">
-                        <i class="fas fa-arrow-up"></i> 전일 대비 +8%
-                    </div>
                 </div>
 
                 <div class="stat-card">
@@ -145,10 +139,10 @@
                     <div class="dashboard-card">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-chart-area me-2"></i>시간대별 주문 추이</h3>
-<!--                            <a href="#" class="card-action">리포트 다운로드 <i class="fas fa-download ms-1"></i></a>-->
                         </div>
                         <div class="chart-container">
-                            <canvas id="orderChart"></canvas>
+                            <canvas id="orderChart"
+                                    data-hourly-orders='{{hourlyOrdersJson}}'></canvas>
                         </div>
                     </div>
                 </div>
