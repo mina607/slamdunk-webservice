@@ -2,6 +2,7 @@ package com.jojoldu.book.springboot.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.domain.order.Orders;
 import com.jojoldu.book.springboot.domain.order.OrdersRepository;
 import com.jojoldu.book.springboot.service.AdminService;
 import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
@@ -9,9 +10,12 @@ import com.jojoldu.book.springboot.web.dto.PopularMenuDto;
 import com.jojoldu.book.springboot.web.dto.HourlyOrderDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
@@ -116,7 +120,13 @@ public class AdminController {
                 .mapToLong(o -> o.getCountByStatus("ORDERED"))
                 .sum();
 
+        long preparedCount = orders.stream()
+                .mapToLong(o -> o.getCountByStatus("PREPARED"))
+                .sum();
+
+
         model.addAttribute("pendingCount", pendingCount);
+        model.addAttribute("preparedCount", preparedCount);
 
         model.addAttribute("orders", orders);
         model.addAttribute("status", status); // 현재 필터 상태 유지용
@@ -125,6 +135,29 @@ public class AdminController {
         model.addAttribute("isOrderManagement", true);
 
         return "admin/order-management";
+    }
+
+    @PostMapping("/admin/orders/{orderNumber}/prepared")
+    public ResponseEntity<Map<String, Object>> markOrderPrepared(@PathVariable String orderNumber) {
+        Map<String, Object> response = new HashMap<>();
+
+        // 주문 조회
+        List<Orders> orders = ordersRepository.findByOrderNumber(orderNumber);
+        if (orders.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "주문을 찾을 수 없습니다.");
+            return ResponseEntity.ok(response);
+        }
+
+        // status 변경
+        orders.forEach(o -> o.setStatus("PREPARED"));
+
+        // DB 저장
+        ordersRepository.saveAll(orders);
+
+        response.put("success", true);
+        response.put("message", "주문이 준비 완료 처리되었습니다.");
+        return ResponseEntity.ok(response);
     }
 
 }

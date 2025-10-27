@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Orders {
@@ -22,7 +24,7 @@ public class Orders {
     private int price;               // 가격
     private String roomNumber;       // 객실번호
     private String phoneNumber;      // 연락처
-    private String status;           // 상태 (ORDERED, COOKING, DELIVERING, COMPLETED)
+    private String status;           // 상태 (ORDERED, PREPARED, DELIVERING, COMPLETED)
     private String orderTime;        // 주문시간
     private String specialRequests;        // 특별 요청사항
     private String icon;        // 아이콘
@@ -55,5 +57,7 @@ public class Orders {
         this.paymentType = paymentType;
     }
 
-
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -56,6 +56,9 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "ORDER BY SUM(o.quantity) DESC")
     List<Object[]> findPopularMenus();
 
+    // 주문 번호 조회
+    List<Orders> findByOrderNumber(String orderNumber);
+
     // 시간대별 음식 주문 건수
     @Query(value = "SELECT CAST(SUBSTRING(order_time, 12, 2) AS INTEGER) as \"hour\", " +
             "COUNT(DISTINCT order_number) as \"count\" " +
