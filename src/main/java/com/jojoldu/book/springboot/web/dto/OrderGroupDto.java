@@ -20,6 +20,7 @@ public class OrderGroupDto {
     private String specialRequests;
     private PaymentType paymentType;
     private Map<String, Long> statusCount;
+    private String statusText;
 
     public OrderGroupDto(String orderNumber, List<Orders> orders) {
         if (orders.isEmpty()) {
@@ -41,9 +42,20 @@ public class OrderGroupDto {
                         .filter(s -> !s.trim().isEmpty())
                         .orElse("없음");
         this.paymentType = first.getPaymentType();
+//        this.statusCount = orders.stream()
+//                .collect(Collectors.groupingBy(Orders::getStatus, Collectors.counting()));
         this.statusCount = orders.stream()
-                .collect(Collectors.groupingBy(Orders::getStatus, Collectors.counting()));
-
+                .collect(Collectors.groupingBy(
+                        Orders::getStatus,
+                        Collectors.mapping(
+                                Orders::getOrderNumber,
+                                Collectors.collectingAndThen(
+                                        Collectors.toSet(), // 중복 제거
+                                        set -> (long) set.size() // 개수 세기
+                                )
+                        )
+                ));
+        this.statusText = setStatus(first.getStatus());
 
         // 각 주문을 아이템으로 변환
 //        this.items = orders.stream()
@@ -82,6 +94,18 @@ public class OrderGroupDto {
 
     public long getCountByStatus(String status) {
         return statusCount.getOrDefault(status, 0L);
+    }
+
+    public String setStatus(String status) {
+        this.status = status;
+        this.statusText = switch (status.toLowerCase()) {
+            case "ORDERED" -> "대기중";
+            case "PREPARED" -> "준비중";
+            case "DELIVERING" -> "배달중";
+            case "COMPLETED" -> "완료";
+            default -> "대기중";
+        };
+        return statusText;
     }
 
     @Getter
