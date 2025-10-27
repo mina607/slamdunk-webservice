@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 labels: labels,
                 datasets: [
                     {
-                        label: '음식 주문',
+                        label: '룸 서비스 주문',
                         data: foodData,
                         borderColor: '#2c5530',
                         backgroundColor: 'rgba(44, 85, 48, 0.1)',
