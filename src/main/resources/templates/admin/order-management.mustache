@@ -233,28 +233,25 @@
 
     // 준비 완료 요청
     function preRobot(orderNumber) {
-        if (confirm(`주문 ${orderNumber}을 준비완료 처리하시겠습니까?`)) {
-            fetch('/admin/orders/' + orderNumber + '/prepared', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            showToast('주문이 완료되었습니다.', 'success');
-                            setTimeout(() => location.reload(), 1500);
-                        } else {
-                            showToast('주문 완료 처리에 실패했습니다.', 'error');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showToast('오류가 발생했습니다.', 'error');
-                    });
-        }
-
+        fetch('/admin/orders/' + orderNumber + '/prepared', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast('준비가 완료되었습니다.', 'success');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showToast('주문 완료 처리에 실패했습니다.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('오류가 발생했습니다.', 'error');
+        });
     }
 
     // 로봇 배달 요청
@@ -267,20 +264,20 @@
                     'Content-Type': 'application/json'
                 }
             })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            showToast('로봇 배달이 요청되었습니다.', 'success');
-                            // 페이지 새로고침 또는 동적 업데이트
-                            setTimeout(() => location.reload(), 1500);
-                        } else {
-                            showToast('배달 요청에 실패했습니다.', 'error');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showToast('오류가 발생했습니다.', 'error');
-                    });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('로봇 배달이 요청되었습니다.', 'success');
+                    // 페이지 새로고침 또는 동적 업데이트
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showToast('배달 요청에 실패했습니다.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('오류가 발생했습니다.', 'error');
+            });
         }
     }
 
