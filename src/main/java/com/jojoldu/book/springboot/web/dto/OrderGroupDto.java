@@ -21,6 +21,9 @@ public class OrderGroupDto {
     private PaymentType paymentType;
     private Map<String, Long> statusCount;
     private String statusText;
+    private boolean showPreButton;
+    private boolean showRobotButton;
+    private boolean showCompleteButton;
 
     public OrderGroupDto(String orderNumber, List<Orders> orders) {
         if (orders.isEmpty()) {
@@ -56,18 +59,10 @@ public class OrderGroupDto {
                         )
                 ));
         this.statusText = setStatus(first.getStatus());
+        // 상태에 따라 버튼 표시 여부 설정
+        setButtonVisibility(first.getStatus());
 
         // 각 주문을 아이템으로 변환
-//        this.items = orders.stream()
-//                .map(order -> new OrderItemDto(
-//                        order.getItemName(),
-//                        order.getQuantity(),
-//                        order.getPrice(),
-//                        order.getIcon()
-//
-//                ))
-//                .collect(Collectors.toList());
-
         this.items = orders.stream()
                 .map(order -> {
                     // itemName 기반 icon 매핑
@@ -92,6 +87,14 @@ public class OrderGroupDto {
         System.out.println("icon: " + this.items);
     }
 
+    // 상태별 버튼 노출
+    private void setButtonVisibility(String status) {
+        this.showPreButton = "ORDERED".equalsIgnoreCase(status);
+        this.showRobotButton = "PREPARED".equalsIgnoreCase(status);
+        this.showCompleteButton = "DELIVERING".equalsIgnoreCase(status);
+    }
+
+    // 상태별 주문번호 개수 카운팅
     public long getCountByStatus(String status) {
         return statusCount.getOrDefault(status, 0L);
     }

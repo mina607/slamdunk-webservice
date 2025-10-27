@@ -46,4 +46,7 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "GROUP BY o.itemName, o.option " +
             "ORDER BY SUM(o.quantity) DESC")
     List<Object[]> findPopularMenus();
+
+    // 주문 번호 조회
+    List<Orders> findByOrderNumber(String orderNumber);
 }

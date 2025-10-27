@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Orders {
@@ -55,5 +57,7 @@ public class Orders {
         this.paymentType = paymentType;
     }
 
-
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

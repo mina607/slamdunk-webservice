@@ -79,16 +79,16 @@
                     <button class="filter-btn active" data-status="all">
                         <i class="fas fa-list me-1"></i> 전체
                     </button>
-                    <button class="filter-btn" data-status="pending">
+                    <button class="filter-btn" data-status="ORDERED">
                         <i class="fas fa-clock me-1"></i> 대기중
                     </button>
-                    <button class="filter-btn" data-status="ready">
+                    <button class="filter-btn" data-status="PREPARED">
                         <i class="fas fa-box me-1"></i> 준비완료
                     </button>
-                    <button class="filter-btn" data-status="delivering">
+                    <button class="filter-btn" data-status="DELIVERING">
                         <i class="fas fa-robot me-1"></i> 배달중
                     </button>
-                    <button class="filter-btn" data-status="completed">
+                    <button class="filter-btn" data-status="COMPLETED">
                         <i class="fas fa-check-circle me-1"></i> 완료
                     </button>
 
@@ -154,19 +154,21 @@
                             </div>
 
                             <div class="order-actions">
-                                {{!#showRobotButton}}
+                                {{#showPreButton}}
+                                <button class="action-btn btn-orange" onclick="preRobot('{{orderNumber}}')">
+                                    <i class="fas fa-box"></i> 준비 완료
+                                </button>
+                                {{/showPreButton}}
+                                {{#showRobotButton}}
                                     <button class="action-btn btn-robot" onclick="assignRobot('{{orderNumber}}')">
                                         <i class="fas fa-robot"></i> 로봇 배달 요청
                                     </button>
-                                {{!/showRobotButton}}
-                                {{!#showCompleteButton}}
+                                {{/showRobotButton}}
+                                {{#showCompleteButton}}
                                     <button class="action-btn btn-complete" onclick="completeOrder('{{orderNumber}}')">
                                         <i class="fas fa-check"></i> 배달 완료
                                     </button>
-                                {{!/showCompleteButton}}
-<!--                                <button class="action-btn btn-cancel" onclick="viewOrderDetail('{{!orderNumber}}')">-->
-<!--                                    <i class="fas fa-info-circle"></i> 상세보기-->
-<!--                                </button>-->
+                                {{/showCompleteButton}}
                             </div>
                         </div>
                     </div>
@@ -228,6 +230,32 @@
             }
         });
     });
+
+    // 준비 완료 요청
+    function preRobot(orderNumber) {
+        if (confirm(`주문 ${orderNumber}을 준비완료 처리하시겠습니까?`)) {
+            fetch('/admin/orders/' + orderNumber + '/prepared', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast('주문이 완료되었습니다.', 'success');
+                            setTimeout(() => location.reload(), 1500);
+                        } else {
+                            showToast('주문 완료 처리에 실패했습니다.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast('오류가 발생했습니다.', 'error');
+                    });
+        }
+
+    }
 
     // 로봇 배달 요청
     function assignRobot(orderNumber) {
