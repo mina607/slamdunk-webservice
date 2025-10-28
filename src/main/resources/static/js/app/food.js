@@ -171,7 +171,7 @@ function placeOrder(option,paymentType = null) {
 
             message += `\n\n${roomNumber}호로 배달이 시작됩니다.`;
 
-            showToast(message, true, roomNumber);
+            showToast(message, true, roomNumber,option);
 
 
             // 장바구니 초기화

@@ -13,7 +13,7 @@
 <div class="overlay">
     <div class="order-container">
         <div class="header-container">
-            <a href="javascript:void(0);" class="back-button" onclick="history.back()">
+            <a href="javascript:void(0);" class="back-button" onclick="backHistory()">
                 <i class="fas fa-arrow-left"></i> 돌아가기
             </a>
 
@@ -218,7 +218,20 @@
         // WebSocket이나 polling으로 실시간 업데이트 구현
     }
 
-    // 페이지 로드 시 실행
+    function backHistory() {
+        // 현재 페이지 URL에서 쿼리 파라미터 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        // 'type' 파라미터 값 가져오기
+        const type = urlParams.get('type');
+
+        console.log('type:', type);
+
+        if (type == 'food') {
+            window.location.href = '/food-delivery';
+        } else if (type == 'article') {
+            window.location.href = '/article-delivery';
+        }
+    }
 <!--    window.onload = function() {-->
 <!--        updateDeliveryStatus();-->
 

@@ -4,8 +4,10 @@ function showToast(message, withButton = false, roomNumber = null, option = null
     const toast = createToastContainer(message);
 
     // 옵션별 UI 구성
-    if (withButton && roomNumber && !option) {
-        toast.appendChild(createOrderButton(roomNumber));
+    if (withButton && roomNumber) {
+        if(option == 'food' || option == 'article'){
+        toast.appendChild(createOrderButton(roomNumber,option));
+        }
     }
 
     if (option === 'admin') {
@@ -44,11 +46,11 @@ function createToastContainer(message) {
 }
 
 // 주문 내역 버튼
-function createOrderButton(roomNumber) {
+function createOrderButton(roomNumber, option) {
     const btn = document.createElement('button');
     btn.className = 'toast-btn';
     btn.textContent = '주문 내역';
-    btn.onclick = () => (window.location.href = `/order-status?room=${roomNumber}`);
+    btn.onclick = () => (window.location.href = `/order-status?room=${roomNumber}&type=${option}`);
     return btn;
 }
 
