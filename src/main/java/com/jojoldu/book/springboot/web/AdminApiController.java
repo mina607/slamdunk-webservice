@@ -51,5 +51,12 @@ public class AdminApiController {
         }
         return ResponseEntity.ok(true);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        return ResponseEntity.ok(true);
+    }
+
 }
 

@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.status === 401) {
                 // 세션이 없으면 로그인 모달 표시
                 //const modal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+                const logoutBtn = document.getElementById('adminLogoutBtn');
+                logoutBtn.style.display = 'none';
                 const modal = new bootstrap.Modal(document.getElementById('adminLoginModal'), {
                     backdrop: 'static', // 배경 클릭 시 닫히지 않도록
                     keyboard: false     // ESC 키 눌러도 닫히지 않도록
@@ -50,7 +52,7 @@ window.addEventListener('load', () => {
     });
 });
 
-// 💡 관리자 로그인 처리 함수
+// 관리자 로그인 처리 함수
 function adminLogin() {
     const id = document.getElementById('adminId').value.trim();
     const password = document.getElementById('adminPassword').value.trim();
@@ -102,6 +104,29 @@ function adminLogin() {
             modal.show();
         });
 }
+
+// 로그아웃 처리
+document.getElementById('adminLogoutBtn').addEventListener('click', () => {
+    fetch('/api/v1/auth/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                // 로그아웃 성공 → 메인 페이지 이동
+                window.location.href = '/';
+            } else {
+                alert('로그아웃 중 오류가 발생했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('로그아웃 오류:', error);
+            alert('네트워크 오류가 발생했습니다.');
+        });
+});
+
 
 
 // 시간대별 주문 추이 차트
