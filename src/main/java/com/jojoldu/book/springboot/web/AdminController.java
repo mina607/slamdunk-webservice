@@ -119,9 +119,14 @@ public class AdminController {
     @GetMapping("/admin/order-management")
     public String orderManagement(
             @RequestParam(value = "status", required = false, defaultValue = "") String status,
-            Model model) {
+            Model model, HttpSession session) {
 
         List<OrderGroupDto> orders = adminService.getOrdersByStatus(status);
+
+        String admin = (String) session.getAttribute("admin");
+
+        // 세션이 유효하면 관리자 이름을 모델에 담아 전달
+        model.addAttribute("adminName", admin);
 
         // 상태별 개수 계산
         long pendingCount = orders.stream()
