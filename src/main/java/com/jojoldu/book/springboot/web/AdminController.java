@@ -139,9 +139,14 @@ public class AdminController {
                 .mapToLong(o -> o.getCountByStatus("PREPARED"))
                 .sum();
 
+        long deliveringCount = orders.stream()
+                .mapToLong(o -> o.getCountByStatus("DELIVERING"))
+                .sum();
+
 
         model.addAttribute("pendingCount", pendingCount);
         model.addAttribute("preparedCount", preparedCount);
+        model.addAttribute("deliveringCount", deliveringCount);
 
         model.addAttribute("orders", orders);
         model.addAttribute("status", status); // 현재 필터 상태 유지용

@@ -21,6 +21,7 @@ public class OrderGroupDto {
     private PaymentType paymentType;
     private Map<String, Long> statusCount;
     private String statusText;
+    private String statusIcon;
     private boolean showPreButton;
     private boolean showRobotButton;
     private boolean showCompleteButton;
@@ -102,14 +103,21 @@ public class OrderGroupDto {
     public String setStatus(String status) {
         this.status = status;
         this.statusText = switch (status.toLowerCase()) {
-            case "ORDERED" -> "대기중";
-            case "PREPARED" -> "준비중";
-            case "DELIVERING" -> "배달중";
-            case "COMPLETED" -> "완료";
+            case "prepared" -> "준비완료";
+            case "delivering" -> "배달중";
+            case "completed" -> "완료";
             default -> "대기중";
+        };
+
+        this.statusIcon = switch (status.toLowerCase()) {
+            case "prepared" -> "fas fa-box";
+            case "delivering" -> "fas fa-robot";
+            case "completed" -> "fas fa-check";
+            default -> "fas fa-clock";
         };
         return statusText;
     }
+
 
     @Getter
     public static class OrderItemDto {
@@ -125,4 +133,5 @@ public class OrderGroupDto {
             this.icon = icon;
         }
     }
+
 }

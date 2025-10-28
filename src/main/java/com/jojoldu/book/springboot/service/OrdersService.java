@@ -122,28 +122,25 @@ public class OrdersService {
         if (itemName == null) return "기타";
 
         // 햄버거
-        if (itemName.contains("클래식 비프 버거") || itemName.contains("치킨 버거") ||
-                itemName.contains("더블 치즈 버거")) {
+        if (itemName.contains("버거")){
             return "햄버거";
         }
         // 피자
-        if (itemName.contains("마르게리타 피자") || itemName.contains("페퍼로니 피자") ||
-                itemName.contains("고구마 피자")) {
+        if (itemName.contains("피자")) {
             return "피자";
         }
         // 주류
-        if (itemName.contains("하우스 와인") || itemName.contains("칵테일") ||
+        if (itemName.contains("와인") || itemName.contains("칵테일") ||
                 itemName.contains("생맥주")) {
             return "주류";
         }
         // 디저트
-        if (itemName.contains("초콜릿 케이크") || itemName.contains("바닐라 아이스크림") ||
-                itemName.contains("쿠키 세트")) {
+        if (itemName.contains("케이크") || itemName.contains("아이스크림") ||
+                itemName.contains("쿠키")) {
             return "디저트";
         }
         // 음료/커피
-        if (itemName.contains("아메리카노") || itemName.contains("카푸치노") ||
-                itemName.contains("물") || itemName.contains("오렌지 주스")) {
+        if (itemName.contains("아메리카노") || itemName.contains("카푸치노") || itemName.contains("오렌지 주스")) {
             return "음료/커피";
         }
 
