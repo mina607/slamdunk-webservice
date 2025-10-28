@@ -82,8 +82,8 @@
                         </div>
                         <div class="robot-name">Mini</div>
                         <div class="robot-status-badge available">사용가능</div>
-                        <div class="battery-info">
-                            <i class="fas fa-battery-full text-success"></i> 배터리: 95%
+                        <div class="battery-info" id="battery_display">
+
                         </div>
                     </div>
 
@@ -175,7 +175,8 @@
 
 <!--관리자 로그인 모달창-->
 {{>layout/login}}
-
+<script src="https://cdn.jsdelivr.net/npm/roslib/build/roslib.min.js"></script>
+<script src="/js/app/roslib.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
