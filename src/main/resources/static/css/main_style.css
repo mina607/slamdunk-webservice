@@ -23,15 +23,48 @@
     }
 
     .back-button {
-        position: absolute;
-        left: 0;
-        color: white;
-        font-size: 1.2rem;
+      padding: 12px 24px;
+      background: white;
+      color: #2c5530;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-left: 20px;
+      position: absolute;
+      left: 0;
+      color: #2c5530;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .main-button {
+        padding: 12px 24px;
+        background: white;
+        color: #2c5530;
+        border-radius: 8px;
         text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        left: 160px;
+        top: 20;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        transition: all 0.3s ease;
+    }
+
+    .main-button:hover {
+        background: #2c5530;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(44, 85, 48, 0.2);
     }
 
     .header-title {
@@ -43,8 +76,10 @@
     }
 
     .back-button:hover {
-        color: #a8d5aa;
-        text-decoration: none;
+        background: #2c5530;
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(44, 85, 48, 0.2);
     }
 
     /* 메인 페이지 */
