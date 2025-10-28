@@ -11,6 +11,7 @@ import com.jojoldu.book.springboot.web.dto.PopularMenuDto;
 import com.jojoldu.book.springboot.web.dto.HourlyOrderDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,8 +42,11 @@ public class AdminController {
 
     // 대시보드
     @GetMapping("/admin/index")
-    public String Dashboard(Model model) throws Exception {
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+    public String Dashboard(Model model, HttpSession session) throws Exception {
+        String admin = (String) session.getAttribute("admin");
+
+        // 세션이 유효하면 관리자 이름을 모델에 담아 전달
+        model.addAttribute("adminName", admin);
 
         // 통계 데이터 (음식 / 물품 분리)
         Long foodOrders = ordersRepository.countFoodOrders();

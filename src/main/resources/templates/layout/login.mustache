@@ -1,0 +1,35 @@
+<!-- 관리자 로그인용 모달창 -->
+<div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminLoginModalLabel">관리자 로그인</h5>
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+            </div>
+            <div class="modal-body text-center">
+                <p>관리자 페이지 접근을 위해 ID와 Password를 입력해주세요.</p>
+                <form id="adminLoginForm" onsubmit="event.preventDefault(); adminLogin();">
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" id="adminId" name="adminId" class="form-control" placeholder="관리자 ID" required>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <input type="password" id="adminPassword" name="adminPassword" class="form-control" placeholder="Password" required>
+                    </div>
+
+                    <small class="text-danger" id="loginErrorMsg" style="display: none;">ID 또는 Password가 올바르지 않습니다.</small>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>-->
+                <button type="submit" form="adminLoginForm" class="btn user-button">
+                    <i class="fas fa-sign-in-alt"></i> 로그인
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
