@@ -81,4 +81,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "ORDER BY \"hour\"",
             nativeQuery = true)
     List<Object[]> findHourlyProductOrders();
+
+    List<Orders> findByRoomNumberAndStatus(String roomNumber, String status);
 }
