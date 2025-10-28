@@ -12,6 +12,7 @@ import com.jojoldu.book.springboot.web.dto.HourlyOrderDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class AdminController {
     private final HttpSession httpSession;
     private final OrdersRepository ordersRepository;
     private final AdminService adminService;
-    private final RosBridgeClient rosClient;
+    private final RosBridgeClient rosBridgeClient;
     private final ObjectMapper objectMapper;
 
     // 대시보드
@@ -140,7 +141,8 @@ public class AdminController {
     }
 
     @PostMapping("/admin/orders/{orderNumber}/prepared")
-    public ResponseEntity<Map<String, Object>> markOrderPrepared(@PathVariable String orderNumber) {
+    public ResponseEntity<Map<String, Object>> markOrderPrepared(
+        @PathVariable("orderNumber") String orderNumber) {
         Map<String, Object> response = new HashMap<>();
 
         // 주문 조회
@@ -162,17 +164,11 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/admin/orders/{orderNumber}/assign-robot")
-    public Map<String, Object> assignRobot(@PathVariable String orderNumber) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            rosClient.sendRobotCommand(orderNumber);
-            response.put("success", true);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", e.getMessage());
-        }
-        return response;
+
+    @MessageMapping("/assign-robot")
+    public void sendOrder(String orderNumber) {
+        System.out.println("[SPRING] Received order: " + orderNumber);
+        rosBridgeClient.publishOrder(orderNumber);  // ROS2로 전달
     }
 
 }
