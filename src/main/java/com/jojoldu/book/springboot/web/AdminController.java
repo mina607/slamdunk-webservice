@@ -10,7 +10,9 @@ import com.jojoldu.book.springboot.web.dto.OrderGroupDto;
 import com.jojoldu.book.springboot.web.dto.PopularMenuDto;
 import com.jojoldu.book.springboot.web.dto.HourlyOrderDto;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -174,11 +176,74 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    // ----------------------------
+    // 내부 DTO 클래스
+    // ----------------------------
+    @Setter
+    @Getter
+    public static class OrderRequest {
+        // setter
+        // getter
+        private String orderNumber;
+
+    }
+
 
     @MessageMapping("/assign-robot")
-    public void sendOrder(String orderNumber) {
-        System.out.println("[SPRING] Received order: " + orderNumber);
-        rosBridgeClient.publishOrder(orderNumber);  // ROS2로 전달
+    public void sendOrder(OrderRequest request) {
+        String orderNumber = request.getOrderNumber();
+
+        // 주문 상태 업데이트(DELIVERING)
+        updateOrderStatusToDelivering(orderNumber);
+
+        try {
+            // ROS2로 주문 전달
+            rosBridgeClient.publishOrder(orderNumber);
+            System.out.println("[SPRING] Order published to ROS2: " + orderNumber);
+
+        } catch (Exception e) {
+            System.err.println("[SPRING] Failed to send order to ROS2: " + e.getMessage());
+        }
+
+    }
+
+    private void updateOrderStatusToDelivering(String orderNumber) {
+        List<Orders> orders = ordersRepository.findByOrderNumber(orderNumber);
+
+        if (orders.isEmpty()) {
+            System.err.println("[SPRING] 주문을 찾을 수 없습니다: " + orderNumber);
+            return;
+        }
+
+        // 상태 변경 및 저장
+        orders.forEach(o -> o.setStatus("DELIVERING"));
+        ordersRepository.saveAll(orders);
+
+        System.out.println("[SPRING] 주문 상태를 DELIVERING로 변경 완료: " + orderNumber);
+    }
+
+    @PostMapping("/admin/orders/{orderNumber}/complete")
+    public ResponseEntity<Map<String, Object>> markOrderCompleted(
+            @PathVariable("orderNumber") String orderNumber) {
+        Map<String, Object> response = new HashMap<>();
+
+        // 주문 조회
+        List<Orders> orders = ordersRepository.findByOrderNumber(orderNumber);
+        if (orders.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "주문을 찾을 수 없습니다.");
+            return ResponseEntity.ok(response);
+        }
+
+        // status 변경
+        orders.forEach(o -> o.setStatus("COMPLETED"));
+
+        // DB 저장
+        ordersRepository.saveAll(orders);
+
+        response.put("success", true);
+        response.put("message", "주문이 준비 완료 처리되었습니다.");
+        return ResponseEntity.ok(response);
     }
 
     // 로봇 관리
