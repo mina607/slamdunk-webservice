@@ -183,7 +183,10 @@ public class AdminController {
 
     // 로봇 관리
     @GetMapping("/admin/robot-management")
-    public String robotManagement() {
+    public String robotManagement(Model model) {
+
+        // 사이드바 메뉴 활성화
+        model.addAttribute("isRobotManagement", true);
         return "admin/robot-management";
     }
 
