@@ -288,31 +288,7 @@
             setTimeout(() => location.reload(), 1500);
         }
     }
-    // function assignRobot(orderNumber) {
-    //     if (confirm(`주문 ${orderNumber}을 로봇에게 배달 요청하시겠습니까?`)) {
-    //         // AJAX 요청으로 서버에 로봇 배달 요청
-    //         fetch('/admin/orders/' + orderNumber + '/assign-robot', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data.success) {
-    //                 showToast('로봇 배달이 요청되었습니다.', 'success');
-    //                 // 페이지 새로고침 또는 동적 업데이트
-    //                 setTimeout(() => location.reload(), 1500);
-    //             } else {
-    //                 showToast('배달 요청에 실패했습니다.', 'error');
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //             showToast('오류가 발생했습니다.', 'error');
-    //         });
-    //     }
-    // }
+
 
     // 주문 완료
     function completeOrder(orderNumber) {
