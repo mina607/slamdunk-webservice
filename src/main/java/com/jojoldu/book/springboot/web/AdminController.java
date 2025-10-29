@@ -181,4 +181,10 @@ public class AdminController {
         rosBridgeClient.publishOrder(orderNumber);  // ROS2로 전달
     }
 
+    // 로봇 관리
+    @GetMapping("/admin/robot-management")
+    public String robotManagement() {
+        return "admin/robot-management";
+    }
+
 }
