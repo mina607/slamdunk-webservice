@@ -213,7 +213,7 @@ function requestPayment(roomNumber, paymentType) {
         pg: "html5_inicis", // 테스트용
         pay_method: "card",
         merchant_uid: "order_" + new Date().getTime(),
-        name: "[BELLBOT] 룸서비스",
+        name: "[ServingGO] 룸서비스",
         amount: `${totalPrice}`, // 실제 금액
         buyer_name: `Room ${roomNumber}`
     }, function (rsp) {
