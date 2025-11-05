@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="/css/toast.css">
 </head>
 <body>
-
 <div class="overlay">
     <div class="admin-container">
         <!-- 사이드바 -->
@@ -18,6 +17,7 @@
 
         <!-- 메인 콘텐츠 -->
         <main class="main-content">
+
             <!-- 헤더 -->
             <div class="content-header">
                 <h2><i class="fas fa-robot me-2"></i>로봇 관리</h2>
@@ -35,9 +35,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <span class="stat-title">배터리 잔량</span>
-                        <div class="stat-icon green">
-                            <i class="fas fa-battery-three-quarters"></i>
-                        </div>
+                        <div class="stat-icon green"><i class="fas fa-battery-three-quarters"></i></div>
                     </div>
                     <div class="stat-value">78%</div>
                     <div class="stat-label">정상 수준</div>
@@ -46,9 +44,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <span class="stat-title">현재 위치</span>
-                        <div class="stat-icon blue">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
+                        <div class="stat-icon blue"><i class="fas fa-map-marker-alt"></i></div>
                     </div>
                     <div class="stat-value">3층 복도</div>
                     <div class="stat-label">301호 근처</div>
@@ -57,9 +53,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <span class="stat-title">임무 상태</span>
-                        <div class="stat-icon orange">
-                            <i class="fas fa-tasks"></i>
-                        </div>
+                        <div class="stat-icon orange"><i class="fas fa-tasks"></i></div>
                     </div>
                     <div class="stat-value">배달 중</div>
                     <div class="stat-label">305호로 이동 중</div>
@@ -68,41 +62,36 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <span class="stat-title">오늘 배달 완료</span>
-                        <div class="stat-icon red">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
+                        <div class="stat-icon red"><i class="fas fa-check-circle"></i></div>
                     </div>
                     <div class="stat-value">24건</div>
                     <div class="stat-label">성공률 96%</div>
                 </div>
             </div>
 
-            <!-- 로봇 제어 패널 -->
+            <!-- 로봇 제어 및 지도 -->
             <div class="dashboard-card">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-gamepad"></i> 로봇 제어</h3>
                 </div>
 
+                <!-- 제어 버튼 -->
                 <div class="robot-control-panel">
                     <button class="control-btn btn-danger" onclick="cancelMission()">
-                        <i class="fas fa-stop-circle"></i>
-                        <span>임무 중단</span>
+                        <i class="fas fa-stop-circle"></i><span>임무 중단</span>
                     </button>
                     <button class="control-btn btn-success" onclick="goHome()">
-                        <i class="fas fa-home"></i>
-                        <span>홈으로 복귀</span>
+                        <i class="fas fa-home"></i><span>홈으로 복귀</span>
                     </button>
                     <button class="control-btn btn-primary" onclick="pauseMission()">
-                        <i class="fas fa-pause-circle"></i>
-                        <span>일시 정지</span>
+                        <i class="fas fa-pause-circle"></i><span>일시 정지</span>
                     </button>
                     <button class="control-btn btn-warning" onclick="chargeBattery()">
-                        <i class="fas fa-charging-station"></i>
-                        <span>충전 시작</span>
+                        <i class="fas fa-charging-station"></i><span>충전 시작</span>
                     </button>
                 </div>
 
-                <!-- 현재 위치 -->
+                <!-- 위치 정보 -->
                 <div class="location-display">
                     <div class="location-icon">
                         <i class="fas fa-map-pin"></i>
@@ -114,20 +103,34 @@
                     </div>
                 </div>
 
-                <!-- 임무 상태 -->
-                <div class="mission-status">
-                    <div class="mission-status-item">
-                        <span class="status-label">목적지</span>
-                        <span class="status-value">305호</span>
+                <!-- 지도 및 임무 상태 -->
+                <div class="map-section">
+                    <div class="map-container">
+                        <div class="map-visualization">
+                            <div class="path-line"></div>
+                            <div class="robot-marker"><i class="fas fa-robot"></i></div>
+                            <div class="destination-marker"><i class="fas fa-flag"></i></div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; color: #2c5530;">
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">실시간 위치 </p>
+                        </div>
                     </div>
-                    <div class="mission-status-item">
-                        <span class="status-label">예상 도착 시간</span>
-                        <span class="status-value">2분 30초</span>
+
+                    <!-- 목적지·예상 도착 -->
+                    <div class="mission-status" style="display:flex; justify-content:center; gap:2rem; padding:1rem;">
+                        <div class="mission-status-item">
+                            <span class="status-label">목적지</span>
+                            <span class="status-value">305호</span>
+                        </div>
+                        <div class="mission-status-item">
+                            <span class="status-label">예상 도착 시간</span>
+                            <span class="status-value">2분 30초</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 배달 로그 -->
+            <!-- 배달 기록 -->
             <div class="dashboard-card">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-history"></i> 배달 기록</h3>
@@ -135,75 +138,73 @@
 
                 <table class="log-table">
                     <thead>
-                    <tr>
-                        <th>시간</th>
-                        <th>객실</th>
-                        <th>물품</th>
-                        <th>소요 시간</th>
-                        <th>상태</th>
-                    </tr>
+                        <tr>
+                            <th>시간</th>
+                            <th>객실</th>
+                            <th>물품</th>
+                            <th>소요 시간</th>
+                            <th>상태</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>14:32</td>
-                        <td>305호</td>
-                        <td>커피 2잔, 샌드위치 1개</td>
-                        <td>3분 25초</td>
-                        <td><span class="status-badge badge-warning">진행중</span></td>
-                    </tr>
-                    <tr>
-                        <td>14:15</td>
-                        <td>412호</td>
-                        <td>타올 세트</td>
-                        <td>4분 12초</td>
-                        <td><span class="status-badge badge-success">완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>13:48</td>
-                        <td>208호</td>
-                        <td>미네랄워터 4병</td>
-                        <td>2분 58초</td>
-                        <td><span class="status-badge badge-success">완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>13:22</td>
-                        <td>515호</td>
-                        <td>룸서비스 (점심)</td>
-                        <td>5분 33초</td>
-                        <td><span class="status-badge badge-success">완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>12:55</td>
-                        <td>310호</td>
-                        <td>어메니티 세트</td>
-                        <td>3분 07초</td>
-                        <td><span class="status-badge badge-success">완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>12:30</td>
-                        <td>203호</td>
-                        <td>신문, 커피</td>
-                        <td>실패</td>
-                        <td><span class="status-badge badge-danger">실패</span></td>
-                    </tr>
+                        <tr>
+                            <td>14:32</td>
+                            <td>305호</td>
+                            <td>커피 2잔, 샌드위치 1개</td>
+                            <td>3분 25초</td>
+                            <td><span class="status-badge badge-warning">진행중</span></td>
+                        </tr>
+                        <tr>
+                            <td>14:15</td>
+                            <td>412호</td>
+                            <td>타올 세트</td>
+                            <td>4분 12초</td>
+                            <td><span class="status-badge badge-success">완료</span></td>
+                        </tr>
+                        <tr>
+                            <td>13:48</td>
+                            <td>208호</td>
+                            <td>미네랄워터 4병</td>
+                            <td>2분 58초</td>
+                            <td><span class="status-badge badge-success">완료</span></td>
+                        </tr>
+                        <tr>
+                            <td>13:22</td>
+                            <td>515호</td>
+                            <td>룸서비스 (점심)</td>
+                            <td>5분 33초</td>
+                            <td><span class="status-badge badge-success">완료</span></td>
+                        </tr>
+                        <tr>
+                            <td>12:55</td>
+                            <td>310호</td>
+                            <td>어메니티 세트</td>
+                            <td>3분 07초</td>
+                            <td><span class="status-badge badge-success">완료</span></td>
+                        </tr>
+                        <tr>
+                            <td>12:30</td>
+                            <td>203호</td>
+                            <td>신문, 커피</td>
+                            <td>실패</td>
+                            <td><span class="status-badge badge-danger">실패</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
+
         </main>
     </div>
 </div>
 
 <div id="toast-container"></div>
 
-<!--관리자 로그인 모달창-->
+<!-- 관리자 로그인 모달 -->
 {{>layout/login}}
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script src="/js/app/admin.js"></script>
-
-<script></script>
-
 {{>layout/footer}}
 </body>
 </html>
