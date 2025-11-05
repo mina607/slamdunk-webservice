@@ -91,26 +91,28 @@
                     </button>
                 </div>
 
-                <!-- 위치 정보 -->
-                <div class="location-display">
-                    <div class="location-icon">
-                        <i class="fas fa-map-pin"></i>
-                    </div>
-                    <div class="location-info">
-                        <h4>현재 위치</h4>
-                        <p>3층 복도 (X: 12.5m, Y: 8.3m)</p>
-                        <p>목적지: 305호 (거리: 15.2m)</p>
-                    </div>
-                </div>
-
-                <!-- 지도 및 임무 상태 -->
+                <!-- 지도 및 현재 위치 -->
                 <div class="map-section">
-                    <div class="map-container">
+                    <div class="map-container" style="position: relative;">
+
+                        <!-- ✅ 현재 위치 박스 맵 안으로 이동 -->
+                        <div class="location-display">
+                            <div class="location-icon">
+                                <i class="fas fa-map-pin"></i>
+                            </div>
+                            <div class="location-info">
+                                <h4>현재 위치</h4>
+                                <p>3층 복도 (X: 12.5m, Y: 8.3m)</p>
+                                <p>목적지: 305호 (거리: 15.2m)</p>
+                            </div>
+                        </div>
+
                         <div class="map-visualization">
                             <div class="path-line"></div>
                             <div class="robot-marker"><i class="fas fa-robot"></i></div>
                             <div class="destination-marker"><i class="fas fa-flag"></i></div>
                         </div>
+
                         <div style="text-align: center; padding: 1rem; color: #2c5530;">
                             <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">실시간 위치 </p>
                         </div>
