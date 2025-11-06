@@ -163,7 +163,7 @@
                                 </button>
                                 {{/showPreButton}}
                                 {{#showRobotButton}}
-                                    <button class="action-btn btn-robot" onclick="assignRobot('{{orderNumber}}')">
+                                    <button class="action-btn btn-robot" onclick="assignRobot('{{orderNumber}}', '{{roomNumber}}')">
                                         <i class="fas fa-robot"></i> 로봇 배달 요청
                                     </button>
                                 {{/showRobotButton}}
@@ -267,7 +267,7 @@
     }
 
     // 로봇 배달 요청
-    function assignRobot(orderNumber) {
+    function assignRobot(orderNumber, roomNumber) {
         if (!stompClient || !stompClient.connected) {
             alert("WebSocket 연결이 끊어졌습니다. 새로고침 후 다시 시도하세요.");
             return;
@@ -275,7 +275,8 @@
 
         // 주문번호를 WebSocket으로 전송
         stompClient.send("/app/assign-robot", {}, JSON.stringify({
-            orderNumber: orderNumber
+            orderNumber: orderNumber,
+            roomNumber: roomNumber
         }));
 
         // 성공 메시지 출력

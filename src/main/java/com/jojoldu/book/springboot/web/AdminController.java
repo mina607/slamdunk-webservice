@@ -190,6 +190,7 @@ public class AdminController {
         // setter
         // getter
         private String orderNumber;
+        private String roomNumber;
 
     }
 
@@ -197,14 +198,16 @@ public class AdminController {
     @MessageMapping("/assign-robot")
     public void sendOrder(OrderRequest request) {
         String orderNumber = request.getOrderNumber();
+        String roomNumber = request.getRoomNumber();
 
         // 주문 상태 업데이트(DELIVERING)
         updateOrderStatusToDelivering(orderNumber);
+        System.out.println("[SPRING] roomNumber: " + roomNumber);
 
         try {
             // ROS2로 주문 전달
-            rosBridgeClient.publishOrder(orderNumber);
-            System.out.println("[SPRING] Order published to ROS2: " + orderNumber);
+            rosBridgeClient.publishOrder(roomNumber);
+            System.out.println("[SPRING] Order published to ROS2: " + roomNumber);
 
         } catch (Exception e) {
             System.err.println("[SPRING] Failed to send order to ROS2: " + e.getMessage());
