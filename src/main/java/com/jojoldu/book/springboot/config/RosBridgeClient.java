@@ -61,7 +61,19 @@ public class RosBridgeClient extends WebSocketClient {
         }
         System.out.println("[SPRING]hihi " + roomNumber);
 
-        // ROS2 std_msgs/String 메시지 포맷에 맞춰 JSON 구성
+        // 첫 번째 명령: /speaker_command -> "start_delivery"
+        JSONObject speakerMsg = new JSONObject();
+        speakerMsg.put("op", "publish");
+        speakerMsg.put("topic", "/speaker_command");
+
+        JSONObject speakerMsgData = new JSONObject();
+        speakerMsgData.put("data", "start_delivery");
+        speakerMsg.put("msg", speakerMsgData);
+
+        // 전송
+        this.send(speakerMsg.toString());
+
+        // 두 번째 명령: /room_command -> "go_roomX"
         JSONObject msg = new JSONObject();
         msg.put("op", "publish");
         msg.put("topic", "/room_command");

@@ -15,7 +15,7 @@
     <div class="order-container">
 
         <div class="header-container">
-            <a href="/" class="back-button">
+            <a href="/" id="backButton" class="back-button">
                 <i class="fas fa-arrow-left"></i> 돌아가기
             </a>
 
@@ -24,7 +24,7 @@
             </h1>
 
             <!-- 주문 내역 버튼 -->
-            <a href="/order-status?type=food" class="s-primary-btn">
+            <a href="/order-status?type=food" id="statusButton" class="s-primary-btn">
                 <i class="fas fa-receipt me-2"></i>
                 <span>주문 내역</span>
             </a>
@@ -328,6 +328,20 @@
 <div id="toast-container"></div>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="/js/app/food.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const backButton = document.getElementById('backButton');
+        const statusButton = document.getElementById('statusButton');
+
+        // 현재 URL의 쿼리 파라미터를 추출
+        const queryParams = new URLSearchParams(window.location.search);
+        const room = queryParams.get('room');
+        // href에 붙이기
+        backButton.href = "/?" + queryParams;
+        statusButton.href = `/order-status?type=food&room=${room}`;
+
+    });
+</script>
 {{>layout/footer}}
 </body>
 </html>

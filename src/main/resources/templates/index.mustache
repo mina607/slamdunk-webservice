@@ -11,7 +11,16 @@
 <body>
 
 <div class="overlay">
+
     <div class="admin-login-area">
+
+        <!-- 객실 선택 버튼 -->
+        <a href="#"
+           id="roomSelectBtn"
+           class="r-primary-btn top-0 mt-2">
+            <i class="fas fa-bed me-2"></i>
+            <span>객실 선택</span>
+        </a>
         {{^userName}}
             <div class="admin-login-icon position-absolute top-0 end-0 p-3">
                 <button type="button"
@@ -25,15 +34,16 @@
                 </button>
             </div>
         {{/userName}}
+
     </div>
     <div class="kiosk-container">
         <h1 class="text-center header-title">
-            <i class="fas fa-robot me-3"></i>BELLBOT
+            <i class="fas fa-robot me-3"></i>Serving GO
         </h1>
 
         <p class="welcome-text">
-            룸서비스부터 물품 배달까지, 언제나 곁에 있는 도우미 BELLBOT<br>
-            필요한 서비스를 선택하시면 BELLBOT이 신속하게 도와드리겠습니다.
+            룸서비스부터 물품 배달까지, 언제나 곁에 있는 도우미 Serving GO<br>
+            필요한 서비스를 선택하시면 Serving GO가 신속하게 도와드리겠습니다.
         </p>
 
         <div class="row justify-content-center">
@@ -46,7 +56,7 @@
                         즐겨보세요
                     </p>
 
-                    <a href="/food-delivery" role="button" class="btn service-button">
+                    <a id="foodLink" href="/food-delivery" role="button" class="btn service-button">
                         <i class="fas fa-shopping-cart me-2"></i> 주문하기
                     </a>
                 </div>
@@ -60,8 +70,7 @@
                         수건, 어메니티, 청소용품 등<br>
                         필요한 물품을 신속하게 제공해드립니다
                     </p>
-
-                    <a href="/article-delivery" role="button" class="btn service-button">
+                    <a id="articleLink" href="/food-article" role="button" class="btn service-button">
                         <i class="fas fa-hands-helping me-2"></i>물품 요청하기
                     </a>
                 </div>
@@ -84,7 +93,7 @@
                 <div class="col-md-4 text-center mb-3">
                     <i class="fas fa-mobile-alt text-success mb-2" style="font-size: 2rem;"></i>
                     <h6>실시간 알림</h6>
-                    <small class="text-muted">객실 전화로 도착 안내</small>
+                    <small class="text-muted">주문 진행 상황을 실시간으로 확인하세요</small>
                 </div>
             </div>
         </div>
@@ -126,11 +135,40 @@
         </div>
     </div>
 </div>
+
+
+<!-- 모달 -->
+<div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roomModalLabel">객실 번호 선택</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <select id="roomSelect" class="form-select">
+                    <option value="" disabled selected>객실 선택</option>
+                    <option value="501">501호</option>
+                    <option value="502">502호</option>
+                    <option value="503">503호</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" id="roomConfirm"  onclick="confirmRoomSelection()" class="btn user-button">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/app/room.js"></script>
 <script>
     // 툴팁
     document.addEventListener('DOMContentLoaded', function () {
         const tooltip = new bootstrap.Tooltip(document.getElementById('adminLoginBtn'));
+
     });
 
     // 💡 관리자 로그인 처리 함수

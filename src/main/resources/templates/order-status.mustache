@@ -17,7 +17,7 @@
                 <i class="fas fa-arrow-left"></i> 돌아가기
             </a>
 
-            <a href="/" class="main-button">
+            <a href="/" id="mainButton" class="main-button">
                 <i class="fas fa-home"></i> 메인으로
             </a>
 
@@ -30,13 +30,6 @@
                 <p id="currentRoom"></p>
             </div>
 
-            <!-- 객실 선택 버튼 -->
-            <a href="#"
-               id="roomSelectBtn"
-               class="s-primary-btn">
-                <i class="fas fa-bed me-2"></i>
-                <span>객실 선택</span>
-            </a>
 
         </div>
 
@@ -165,31 +158,10 @@
 </div>
 
 
-<!-- 모달 -->
-<div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="roomModalLabel">객실 번호 선택</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <select id="roomSelect" class="form-select">
-                    <option value="" disabled selected>객실 선택</option>
-                    <option value="501">501호</option>
-                    <option value="502">502호</option>
-                    <option value="503">503호</option>
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="button" id="roomConfirm"  onclick="confirmRoomSelection()" class="btn user-button">확인</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/app/room.js"></script>
 <script>
     function switchOrderTab(tabName) {
         // 탭 버튼 활성화 상태 변경
@@ -216,129 +188,38 @@
     }
 
     function goBackToOrder() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const room = urlParams.get('room');
-    const orderType = urlParams.get('type');
+        const urlParams = new URLSearchParams(window.location.search);
+        const room = urlParams.get('room');
+        const orderType = urlParams.get('type');
 
-    // 객실이 선택된 경우에만 주문 페이지로 이동
-    if (room && orderType) {
-        if (orderType === 'food') {
-            window.location.href = '/food-delivery';
-        } else if (orderType === 'article') {
-            window.location.href = '/article-delivery';
+        // 객실이 선택된 경우에만 주문 페이지로 이동
+        if (room && orderType) {
+            if (orderType === 'food') {
+                window.location.href = '/food-delivery?room=' + room;
+            } else if (orderType === 'article') {
+                window.location.href = '/article-delivery?room=' + room;
+            } else {
+                history.back();
+            }
         } else {
             history.back();
         }
-    } else {
-        history.back();
     }
-}
 
-    function backHistory() {
-        // 현재 페이지 URL에서 쿼리 파라미터 가져오기
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const mainButton = document.getElementById('mainButton');
         const urlParams = new URLSearchParams(window.location.search);
-        // 'type' 파라미터 값 가져오기
-        const type = urlParams.get('type');
+        const room = urlParams.get('room');
+        // href에 붙이기
+        mainButton.href = "/?room=" + room;
 
-        console.log('type:', type);
 
-        if (type == 'food') {
-            window.location.href = '/food-delivery';
-        } else if (type == 'article') {
-            window.location.href = '/article-delivery';
-        }
-    }
-<!--    window.onload = function() {-->
-<!--        updateDeliveryStatus();-->
-
-<!--        switchOrderTab('history');-->
-<!--    };-->
+    });
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
 
-    // room 파라미터 확인 함수
-    function getRoomParam() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('room');
-    }
-
-    // 객실 선택 버튼 클릭 이벤트
-    const roomSelectBtn = document.getElementById('roomSelectBtn');
-    if (roomSelectBtn) {
-        roomSelectBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            showRoomModal();
-        });
-    }
-
-    // 객실 선택 확인 함수
-    window.confirmRoomSelection = function() {
-        const selectedRoom = document.getElementById('roomSelect').value;
-
-        if (selectedRoom) {
-            navigateToRoom(selectedRoom);
-        } else {
-            alert('객실을 선택해주세요.');
-        }
-    };
-
-    // 선택한 객실로 이동하는 함수
-    function navigateToRoom(selectedRoom) {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('room', selectedRoom);
-        window.location.href = currentUrl.toString();
-    }
-
-    // 모달 표시 함수
-    function showRoomModal() {
-        const roomModalElement = document.getElementById('roomModal');
-        const roomModal = new bootstrap.Modal(roomModalElement);
-
-        roomModal.show();
-
-        // 기존 이벤트 리스너 제거 (중복 방지)
-        const confirmBtn = document.getElementById('roomConfirm');
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-        // 새로운 이벤트 리스너 등록
-        newConfirmBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const selectedRoom = document.getElementById('roomSelect').value;
-
-            if (selectedRoom) {
-                roomModal.hide();
-
-                // URL 파라미터 갱신
-                const currentUrl = new URL(window.location.href);
-                currentUrl.searchParams.set('room', selectedRoom);
-
-                console.log(currentUrl);
-
-                // 약간의 지연을 주어 모달이 완전히 닫힌 후 이동
-                setTimeout(() => {
-                    window.location.href = currentUrl.toString();
-                }, 300);
-            } else {
-                alert('객실을 선택해주세요.');
-            }
-        });
-    }
-
-    // 초기 로드 시 처리
-    const room = getRoomParam();
-    if (!room) {
-        showRoomModal();
-    } else {
-        console.log('선택된 객실 번호:', room);
-        document.getElementById('currentRoom').textContent = `${room} 호`;
-    }
-
-    // 언제든 다시 호출 가능
-    window.openRoomModal = showRoomModal;
-});
 
 </script>
 
