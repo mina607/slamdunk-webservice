@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const room = getRoomParam();
 
         console.log('선택된 객실 번호:', room);
-        // document.getElementById('currentRoom').textContent = `${room} 호`;
+        document.getElementById('currentRoom').textContent = `${room} 호`;
 
         // room이 존재하면 '주문하기' 링크에 적용
         const foodLink = document.getElementById('foodLink');

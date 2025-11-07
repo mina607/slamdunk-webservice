@@ -12,7 +12,7 @@
     .overlay {
         background-color: rgba(0, 0, 0, 0.5);
         min-height: 100vh;
-        padding: 2rem 0;
+        padding: 3.2rem 0;
     }
     .header-container {
         display: flex;
@@ -620,7 +620,7 @@
 
 .current-room {
     position: absolute;
-    right: 185px;
+    right: 230px;
     font-weight: bold;
     display: flex;
     align-items: center;
