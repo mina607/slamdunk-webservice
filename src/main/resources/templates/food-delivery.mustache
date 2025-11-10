@@ -340,6 +340,15 @@
         backButton.href = "/?" + queryParams;
         statusButton.href = `/order-status?type=food&room=${room}`;
 
+        const select = document.getElementById('room-number');
+        // 해당 값이 select 안에 있는 옵션인지 확인
+        const optionExists = Array.from(select.options).some(opt => opt.value === room);
+
+        if (optionExists) {
+            select.value = room;       // 선택 설정
+            select.disabled = true;    // 변경 못 하도록 비활성화
+        }
+
     });
 </script>
 {{>layout/footer}}
