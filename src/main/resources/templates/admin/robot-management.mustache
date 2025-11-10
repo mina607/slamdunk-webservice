@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="/css/admin_style.css">
     <link rel="stylesheet" href="/css/admin_robot_style.css">
     <link rel="stylesheet" href="/css/toast.css">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/easeljs@1/lib/easeljs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eventemitter2@6/lib/eventemitter2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+    <script src="https://raw.githack.com/RobotWebTools/ros2djs/develop/build/ros2d.js"></script>
 </head>
 <body>
 <div class="overlay">
@@ -107,10 +113,10 @@
                             </div>
                         </div>
 
-                        <div class="map-visualization">
-                            <div class="path-line"></div>
-                            <div class="robot-marker"><i class="fas fa-robot"></i></div>
-                            <div class="destination-marker"><i class="fas fa-flag"></i></div>
+                        <div class="map-visualization" id="map">
+<!--                            <div class="path-line"></div>-->
+<!--                            <div class="robot-marker"><i class="fas fa-robot"></i></div>-->
+<!--                            <div class="destination-marker"><i class="fas fa-flag"></i></div>-->
                         </div>
 
                         <div style="text-align: center; padding: 1rem; color: #2c5530;">
@@ -203,6 +209,8 @@
 
 <!-- 관리자 로그인 모달 -->
 {{>layout/login}}
+
+<script src="/js/app/rosmap.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
