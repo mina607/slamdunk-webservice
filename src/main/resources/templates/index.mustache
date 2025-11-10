@@ -104,6 +104,7 @@
 </div>
 
 <!-- 관리자 로그인용 모달창 -->
+<!-- 취소 버튼 살려야 해서 다른 login 페이지와 구분-->
 <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -126,7 +127,11 @@
                     </div>
 
                     <small class="text-danger" id="loginErrorMsg" style="display: none;">ID 또는 Password가 올바르지 않습니다.</small>
-
+                    <div class="float-end">
+                        <small>
+                            <a href="#" style="color:#2c5530" onclick="alert('개발자에게 문의해주세요.'); return false;">관리자 계정 찾기</a>
+                        </small>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

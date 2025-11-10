@@ -23,7 +23,7 @@ public class Application {
     public CommandLineRunner initData(AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
         return (args) -> {
 
-            final String ADMIN_ID = "eddy";
+            final String ADMIN_ID = "admin";
             final String ADMIN_PW = "1234";
 
             // ID가 "eddy"인 계정이 이미 존재하는지 확인
